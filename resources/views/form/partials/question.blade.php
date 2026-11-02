@@ -377,6 +377,9 @@
             </div>
         @endif
 
+        @if (($assignment->notes[$question['id']] ?? '') !== '')
+            <p class="fill-review-note" role="note"><b>Catatan pemeriksa:</b> {{ $assignment->notes[$question['id']] }}</p>
+        @endif
         @if (($question['concept'] ?? '') !== '')
             <details class="fill-concept">
                 <summary>Lihat konsep dan definisi</summary>

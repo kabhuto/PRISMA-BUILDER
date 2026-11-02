@@ -388,3 +388,4 @@ body.nav-open{overflow:hidden}
 /* Waiting for a signal to send */
 .fill-offline{position:fixed;left:50%;bottom:16px;z-index:60;width:min(560px,calc(100% - 32px));transform:translateX(-50%);padding:12px 16px;border-radius:12px;background:var(--k-1f2a30);color:var(--k-ffffff);font-size:13.5px;line-height:1.45;box-shadow:0 10px 30px rgb(0 0 0 / .25)}
 .fill-offline b{color:var(--k-f0d49a)}
+.fill-review-note{margin:8px 0 0;padding:8px 12px;border-radius:8px;border-left:3px solid var(--k-d99a2b);background:var(--k-fff7e6);font-size:14px}

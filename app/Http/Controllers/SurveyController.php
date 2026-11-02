@@ -55,6 +55,10 @@ class SurveyController extends Controller
 
     public function update(StoreSurveyRequest $request, Survey $survey): RedirectResponse
     {
+        if ($survey->isLocked()) {
+            return back()->withInput()->with('error', 'Instrumen sedang dikunci ('.($survey->locked_note ?: 'pendataan berjalan').'). Buka kuncinya dulu bila perubahan memang diperlukan.');
+        }
+
         $survey->update($request->surveyData());
         $message = 'Perubahan kuesioner tersimpan.';
         // Petugas may be filling it in right now: answers from here on belong to a new version.
@@ -67,6 +71,16 @@ class SurveyController extends Controller
         }
 
         return $this->afterSaving($request, $survey, $message);
+    }
+
+    /**
+     * Releases the instrument by hand, for a change that cannot wait; the versions show what changed.
+     */
+    public function unlock(Survey $survey): RedirectResponse
+    {
+        $survey->update(['locked_at' => null, 'locked_note' => null]);
+
+        return back()->with('status', 'Kunci instrumen dibuka. Perubahan berikutnya tercatat sebagai versi baru dan langsung berlaku bagi petugas.');
     }
 
     public function destroy(Survey $survey): RedirectResponse

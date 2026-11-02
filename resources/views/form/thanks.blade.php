@@ -14,8 +14,8 @@
         <section class="cawi-card">
             @include('partials.kop', ['class' => 'kop-cawi'])
             @if (($assignmentClosed ?? null) !== null)
-                <span class="thanks-mark" aria-hidden="true">{{ $assignmentClosed === 'submitted' ? '✓' : '⏱' }}</span>
-                <h1>{{ $assignmentClosed === 'submitted' ? 'Penugasan ini sudah dikirim. Terima kasih.' : 'Tautan penugasan ini sudah kedaluwarsa.' }}</h1>
+                <span class="thanks-mark" aria-hidden="true">{{ $assignmentClosed === 'submitted' ? '✓' : ($assignmentClosed === 'assignment-only' ? '🔒' : '⏱') }}</span>
+                <h1>{{ match ($assignmentClosed) { 'submitted' => 'Penugasan ini sudah dikirim. Terima kasih.', 'assignment-only' => 'Formulir ini hanya dapat diisi lewat tautan penugasan dari petugas.', default => 'Tautan penugasan ini sudah kedaluwarsa.' } }}</h1>
                 <p>{{ $survey->title }}</p>
             @else
             <span class="thanks-mark" aria-hidden="true">✓</span>

@@ -129,6 +129,12 @@
                 $checkErrors = array_filter($checks, fn ($problem) => $problem['level'] === 'error');
                 $checkWarnings = array_filter($checks, fn ($problem) => $problem['level'] === 'warning');
             @endphp
+            @if (! $isNew && $survey->isLocked())
+                <div class="publish-check has-errors builder-lock" role="status">
+                    <span><b>Instrumen dikunci:</b> {{ $survey->locked_note ?: 'pendataan sedang berjalan' }}. Simpan ditolak agar semua petugas mengisi versi yang sama.</span>
+                    <button class="button button-ghost" type="submit" form="unlock-form" onclick="return confirm('Buka kunci instrumen? Perubahan berikutnya langsung berlaku bagi petugas yang sedang mengisi.')">Buka kunci</button>
+                </div>
+            @endif
             <details @class(['publish-check', 'has-errors' => $checkErrors, 'is-clean' => ! $checks]) @if ($publishErrors) open @endif>
                 <summary>
                     <span class="publish-check-title">Pemeriksaan publikasi</span>
@@ -428,6 +434,7 @@
         @unless ($isNew)
             <form id="publish-form" method="POST" action="{{ route('published-surveys.store', $survey) }}" hidden>@csrf</form>
             <form id="unpublish-form" method="POST" action="{{ route('published-surveys.destroy', $survey) }}" hidden>@csrf @method('DELETE')</form>
+            <form id="unlock-form" method="POST" action="{{ route('surveys.unlock', $survey) }}" hidden>@csrf</form>
         @endunless
     </main>
     <script>

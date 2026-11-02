@@ -413,3 +413,4 @@ body{background:var(--k-ffffff)}.topbar,.page-intro,.toolbox,.settings-panel,.ed
 .publish-check-list li.is-error b{color:#c92a2a}
 .publish-check-list li.is-warning b{color:#9a6700}
 .publish-check-list .mono{color:var(--text-2)}
+.builder-lock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px}

@@ -7,6 +7,7 @@
 - PHP 8.3 atau lebih baru, dengan ekstensi `pdo_sqlite`, `sqlite3`, `fileinfo`, `gd`, dan `zip`
 - Composer 2
 - Git
+- **Kendali saat pendataan** (lewat PRISMA SM atau API `PUT /surveys/{id}/pendataan`): instrumen dikunci agar semua petugas mengisi versi yang sama (bisa dibuka manual dari halaman penyusun), tautan umum ditutup sehingga isian hanya lewat tautan penugasan, masa berlaku banyak tautan diatur sekaligus, dan catatan pemeriksa tampil per pertanyaan.
 
 Node.js **tidak** diperlukan: CSS dan JavaScript aplikasi sudah tersedia di folder `public/`.
 

@@ -29,6 +29,11 @@ class FormSubmissionController extends Controller
             return view('form.thanks', ['survey' => $survey, 'assignmentClosed' => $assignment->isSubmitted() ? 'submitted' : 'expired']);
         }
 
+        // A field activity takes answers only through its units' links.
+        if (! $assignment && $survey->assignment_only) {
+            return view('form.thanks', ['survey' => $survey, 'assignmentClosed' => 'assignment-only']);
+        }
+
         // An assignment's pre-filled answers start the form, unless the respondent's own input is back after an error.
         if ($assignment && ! $request->session()->hasOldInput()) {
             $request->session()->now('_old_input', ['answers' => $assignment->predata ?? []]);
@@ -44,6 +49,7 @@ class FormSubmissionController extends Controller
     public function store(SubmitSurveyResponseRequest $request, Survey $survey): RedirectResponse
     {
         abort_unless($survey->isPublished(), 404);
+        abort_if($survey->assignment_only && ! $request->assignment(), 403, 'Formulir ini hanya dapat diisi lewat tautan penugasan.');
 
         // Sent again after a lost connection: the first one was stored, so just say thanks.
         $submissionId = $this->submissionId($request);

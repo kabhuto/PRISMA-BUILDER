@@ -50,6 +50,19 @@ class AssignmentController extends Controller
     }
 
     /**
+     * Opens or closes links together, when a field period starts, ends or is extended:
+     * {"ids": [...], "expires_at": "2026-11-15T23:59:59+07:00"}, or null for no end.
+     */
+    public function expiry(Request $request, Survey $survey): JsonResponse
+    {
+        $data = $request->validate(['ids' => ['required', 'array', 'max:5000'], 'ids.*' => ['integer'], 'expires_at' => ['nullable', 'date']]);
+        $count = $survey->assignments()->whereIn('id', $data['ids'])->whereNull('response_id')
+            ->update(['expires_at' => isset($data['expires_at']) ? date('Y-m-d H:i:s', strtotime($data['expires_at'])) : null]);
+
+        return response()->json(['data' => ['updated' => $count]]);
+    }
+
+    /**
      * Checks then creates assignments; pre-filled answers may only name questions of this survey.
      *
      * @param  list<mixed>  $items
@@ -83,6 +96,7 @@ class AssignmentController extends Controller
                 'label' => $item['label'] ?? null,
                 'predata' => $predata,
                 'locked' => array_values($locked),
+                'notes' => is_array($item['notes'] ?? null) ? array_filter($item['notes'], fn ($note, $id): bool => in_array($id, $questionIds, true) && is_string($note) && $note !== '', ARRAY_FILTER_USE_BOTH) : null,
                 'expires_at' => isset($item['expires_at']) ? date('Y-m-d H:i:s', strtotime((string) $item['expires_at'])) : null,
             ];
         }

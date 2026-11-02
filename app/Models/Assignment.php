@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
  * One respondent's copy of a survey (FormGear's assignment): a private link whose form opens
  * with pre-filled answers ("predata"), some of them locked, and that can be sent once.
  */
-#[Fillable(['token', 'label', 'predata', 'locked', 'response_id', 'expires_at'])]
+#[Fillable(['token', 'label', 'predata', 'locked', 'notes', 'response_id', 'expires_at'])]
 class Assignment extends Model
 {
     /**
@@ -24,6 +24,7 @@ class Assignment extends Model
         return [
             'predata' => 'array',
             'locked' => 'array',
+            'notes' => 'array',
             'expires_at' => 'datetime',
         ];
     }
@@ -129,6 +130,7 @@ class Assignment extends Model
             'url' => $this->url(),
             'predata' => $this->predata ?: (object) [],
             'locked' => $this->locked ?? [],
+            'notes' => $this->notes ?: (object) [],
             'response_id' => $this->response_id,
             'expires_at' => $this->expires_at?->toIso8601String(),
             'created_at' => $this->created_at?->toIso8601String(),

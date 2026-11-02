@@ -31,6 +31,8 @@ class SurveyController extends Controller
                 'POST /api/v1/surveys' => 'Buat kuesioner dari JSON (format PRISMA atau template FormGear)',
                 'PUT /api/v1/surveys/{id}' => 'Ganti definisi kuesioner',
                 'POST|DELETE /api/v1/surveys/{id}/publish' => 'Terbitkan / tarik kuesioner',
+                'PUT /api/v1/surveys/{id}/pendataan' => 'Kunci instrumen selama pendataan dan batasi pengisian hanya lewat tautan penugasan',
+                'PUT /api/v1/surveys/{id}/assignments/kedaluwarsa' => 'Atur masa berlaku banyak tautan penugasan sekaligus',
                 'POST /api/v1/surveys/{id}/validate' => 'Periksa jawaban tanpa menyimpan',
                 'GET|POST /api/v1/surveys/{id}/responses' => 'Daftar / kirim respons',
                 'POST /api/v1/surveys/{id}/responses/batch' => 'Kirim banyak respons sekaligus',
@@ -76,6 +78,9 @@ class SurveyController extends Controller
 
     public function update(Request $request, Survey $survey): JsonResponse
     {
+        if ($survey->isLocked()) {
+            return response()->json(['message' => 'Instrumen sedang dikunci: '.($survey->locked_note ?: 'pendataan berjalan').'.'], 423);
+        }
         [$definition, $notes] = $this->definitionFrom($request->all());
         $survey->update($definition);
         if ($survey->isPublished()) {
@@ -83,6 +88,23 @@ class SurveyController extends Controller
         }
 
         return response()->json(['data' => self::summary($survey->loadCount('responses')), 'notes' => $notes]);
+    }
+
+    /**
+     * The controls of a running field activity: {"locked": bool, "note": "...", "assignment_only": bool}.
+     */
+    public function collection(Request $request, Survey $survey): JsonResponse
+    {
+        $data = $request->validate(['locked' => ['sometimes', 'boolean'], 'note' => ['nullable', 'string', 'max:255'], 'assignment_only' => ['sometimes', 'boolean']]);
+        if (array_key_exists('locked', $data)) {
+            $survey->fill(['locked_at' => $data['locked'] ? ($survey->locked_at ?? now()) : null, 'locked_note' => $data['locked'] ? ($data['note'] ?? null) : null]);
+        }
+        if (array_key_exists('assignment_only', $data)) {
+            $survey->assignment_only = $data['assignment_only'];
+        }
+        $survey->save();
+
+        return response()->json(['data' => self::summary($survey->loadCount('responses'))]);
     }
 
     public function publish(Survey $survey): JsonResponse
@@ -128,6 +150,9 @@ class SurveyController extends Controller
             'published' => $survey->isPublished(),
             'published_at' => $survey->published_at?->toIso8601String(),
             'version' => $survey->versions()->max('number'),
+            'locked' => $survey->isLocked(),
+            'locked_note' => $survey->locked_note,
+            'assignment_only' => (bool) $survey->assignment_only,
             'responses_count' => $survey->responses_count ?? $survey->responses()->count(),
             'updated_at' => $survey->updated_at?->toIso8601String(),
             'links' => [

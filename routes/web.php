@@ -37,6 +37,7 @@ Route::middleware('admin')->group(function (): void {
     Route::get('/surveys/{survey}/preview', [FormSubmissionController::class, 'preview'])->name('surveys.preview');
     Route::get('/surveys/{survey}/preview/hp', [FormSubmissionController::class, 'phonePreview'])->name('surveys.preview-phone');
     Route::get('/surveys/{survey}/versi', [SurveyController::class, 'versions'])->name('surveys.versions.index');
+    Route::post('/surveys/{survey}/buka-kunci', [SurveyController::class, 'unlock'])->name('surveys.unlock');
     Route::post('/published-surveys/{survey}', [PublishedSurveyController::class, 'store'])->name('published-surveys.store');
     Route::delete('/published-surveys/{survey}', [PublishedSurveyController::class, 'destroy'])->name('published-surveys.destroy');
     Route::get('/surveys/{survey}/print', [SurveyPrintController::class, 'form'])->name('surveys.print');

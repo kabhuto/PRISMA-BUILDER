@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at'])]
+#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at', 'locked_at', 'locked_note', 'assignment_only'])]
 class Survey extends Model
 {
     public const QUESTION_TYPES = [
@@ -343,6 +343,8 @@ class Survey extends Model
             'header' => 'array',
             'intro' => 'array',
             'published_at' => 'datetime',
+            'locked_at' => 'datetime',
+            'assignment_only' => 'boolean',
         ];
     }
 
@@ -402,6 +404,14 @@ class Survey extends Model
     public function scopePublished(Builder $query): void
     {
         $query->whereNotNull('published_at');
+    }
+
+    /**
+     * Whether the instrument is held still because a field activity is running on it.
+     */
+    public function isLocked(): bool
+    {
+        return $this->locked_at !== null;
     }
 
     public function isPublished(): bool

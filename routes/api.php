@@ -27,7 +27,9 @@ Route::prefix('v1')->middleware(['throttle:240,1', 'api.token'])->name('api.')->
         Route::delete('surveys/{survey}/publish', [SurveyController::class, 'unpublish'])->name('surveys.unpublish');
         Route::post('surveys/{survey}/responses', [ResponseController::class, 'store'])->name('responses.store');
         Route::post('surveys/{survey}/responses/batch', [ResponseController::class, 'batch'])->name('responses.batch');
+        Route::put('surveys/{survey}/pendataan', [SurveyController::class, 'collection'])->name('surveys.collection');
         Route::post('surveys/{survey}/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+        Route::put('surveys/{survey}/assignments/kedaluwarsa', [AssignmentController::class, 'expiry'])->name('assignments.expiry');
         Route::delete('surveys/{survey}/assignments/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy')->scopeBindings();
         Route::post('references', [ReferenceController::class, 'store'])->name('references.store');
         Route::put('references/{referenceList:slug}', [ReferenceController::class, 'update'])->name('references.update');
