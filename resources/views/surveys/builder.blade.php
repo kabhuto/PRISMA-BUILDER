@@ -60,6 +60,11 @@
             <span class="context-divider">/</span> {{ $isNew ? 'KUESIONER BARU' : str($survey->title)->limit(40) }}
         </div>
         <div class="topbar-actions">
+            {{-- A new tab, so unsaved changes to the form stay where they are. --}}
+            <a class="button button-ghost help-link" href="{{ \App\Support\Guide::linkFor(request()->route()?->getName()) }}" target="_blank" rel="noopener" title="Panduan menyusun kuesioner (tab baru)">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+                Panduan
+            </a>
             @include('partials.accent-picker')
             @include('partials.theme-toggle')
             <button class="button button-ghost" type="submit" form="builder-form" name="intent" value="print" title="Simpan lalu buka tampilan cetak kertas">

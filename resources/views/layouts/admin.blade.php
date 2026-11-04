@@ -29,6 +29,12 @@
             @endforeach
         </nav>
         <div class="topbar-tools">
+            @unless (request()->routeIs('login'))
+                <a class="button button-ghost button-small help-link" href="{{ \App\Support\Guide::linkFor(request()->route()?->getName()) }}" title="Panduan untuk halaman ini">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
+                    Panduan
+                </a>
+            @endunless
             @include('partials.accent-picker', ['showLabel' => true])
             @include('partials.theme-toggle', ['showLabel' => true])
             @auth

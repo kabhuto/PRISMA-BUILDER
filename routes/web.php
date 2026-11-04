@@ -27,6 +27,7 @@ Route::post('/keluar', [LoginController::class, 'destroy'])->name('logout');
 // Admin: build, preview, publish and review surveys (signed in, or from the LAN when allowed).
 Route::middleware('admin')->group(function (): void {
     Route::redirect('/', '/surveys');
+    Route::view('/panduan', 'panduan.index')->name('panduan');
 
     Route::post('/surveys/import', [SurveyJsonController::class, 'import'])->name('surveys.import');
     Route::get('/surveys/{survey}/export.json', [SurveyJsonController::class, 'export'])->name('surveys.export-json');

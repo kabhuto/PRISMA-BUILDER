@@ -1,0 +1,321 @@
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| Panduan pemakaian PRISMA Builder
+|--------------------------------------------------------------------------
+| One section per page or feature. "rute" lists the route names a section explains (wildcards
+| allowed): the help button of those pages opens that section. "buka" is a page without
+| parameters the reader can jump to. Edit the text here; the page /panduan shows it.
+*/
+
+return [
+    'aplikasi' => 'PRISMA Builder',
+    'pengantar' => 'PRISMA Builder dipakai untuk menyusun kuesioner (instrumen), menerbitkannya sebagai formulir, dan mengelola respons yang masuk. Panduan ini menjelaskan setiap halaman dan fiturnya. Tombol "Panduan" di bilah atas selalu membuka bagian yang menjelaskan halaman yang sedang Anda buka.',
+
+    // The whole PRISMA chain, the same in every app; the app being read is marked on the page.
+    'alur' => [
+        ['aplikasi' => 'Forum Satu Data', 'tahap' => 'Kebutuhan & rancangan', 'isi' => 'Menetapkan data apa yang dibutuhkan, konsep dan definisi, serta rancangan kegiatan. Berada di luar PRISMA.', 'oleh' => 'Walidata, produsen data'],
+        ['aplikasi' => 'PRISMA Builder', 'tahap' => 'Membangun instrumen', 'isi' => 'Menyusun kuesioner, logika, dan validasi, lalu menerbitkannya. Menyediakan tautan formulir, penugasan, dan API.', 'oleh' => 'Admin instrumen'],
+        ['aplikasi' => 'PRISMA SM', 'tahap' => 'Manajemen lapangan', 'isi' => 'Membuat kegiatan, mengunggah unit sampel, mengalokasikan petugas, lalu memeriksa dan menyetujui isian.', 'oleh' => 'Admin, pegawai, pengawas, pemeriksa'],
+        ['aplikasi' => 'PRISMA Collect', 'tahap' => 'Pengumpulan data', 'isi' => 'Aplikasi HP pencacah: melihat tugas, membuka formulir unit, melapor hasil kunjungan, dan menandai lokasi.', 'oleh' => 'Pencacah, pengawas lapangan'],
+        ['aplikasi' => 'PRISMA DataLab', 'tahap' => 'Pengolahan', 'isi' => 'Menarik data SM dan Builder ke gudang data, mengolah dengan SQL, dan menyiapkan paket Open Data.', 'oleh' => 'Pengolah data'],
+        ['aplikasi' => 'PRISMA Dashboard', 'tahap' => 'Analisis & monitoring', 'isi' => 'Memantau progres, mutu, dan kinerja petugas, serta menampilkan hasil olahan DataLab.', 'oleh' => 'Pimpinan, ketua tim'],
+        ['aplikasi' => 'SATU DATA', 'tahap' => 'Diseminasi', 'isi' => 'Portal Open Data: Walidata memeriksa kiriman dari DataLab lalu menerbitkannya untuk publik.', 'oleh' => 'Walidata, Pembina Data'],
+    ],
+
+    'peran' => [
+        'Admin' => 'Masuk ke Builder, menyusun dan menerbitkan kuesioner, melihat respons, mengelola data referensi, token API, dan admin lain.',
+        'Responden / pencacah' => 'Tidak perlu akun. Mengisi formulir lewat tautan umum atau tautan penugasan (biasanya dibuka dari PRISMA Collect).',
+        'Aplikasi PRISMA lain' => 'SM dan DataLab membaca kuesioner dan respons lewat API dengan token dari halaman Akses API.',
+    ],
+
+    'halaman' => [
+        [
+            'id' => 'dashboard',
+            'kelompok' => 'Mulai',
+            'judul' => 'Masuk dan daftar kuesioner',
+            'rute' => ['login', 'surveys.index'],
+            'buka' => 'surveys.index',
+            'untuk' => 'Admin',
+            'ringkas' => 'Halaman Dashboard berisi semua kuesioner beserta statusnya (draf, terbit, ditutup), jumlah respons, dan tautan formulirnya.',
+            'langkah' => [
+                'Masuk dengan email atau nama pengguna admin dan kata sandi.',
+                'Pilih "Buat kuesioner" untuk mulai dari kosong, atau "Buat dari template" untuk memakai contoh siap pakai.',
+                'Untuk memindahkan kuesioner dari aplikasi lain, impor file JSON ekspor PRISMA atau template FormGear.',
+                'Klik judul kuesioner untuk menyusunnya; pakai "Salin tautan" untuk membagikan formulir yang sudah terbit.',
+            ],
+            'fitur' => [
+                'Buat dari template' => 'Menyalin kuesioner contoh (mis. absensi harian) sebagai titik awal yang bisa diubah.',
+                'Publikasikan / Tutup' => 'Membuka atau menghentikan penerimaan isian tanpa menghapus respons.',
+                'Hapus' => 'Menghapus kuesioner beserta responsnya. Tidak bisa dibatalkan.',
+            ],
+        ],
+        [
+            'id' => 'menyusun',
+            'kelompok' => 'Menyusun kuesioner',
+            'judul' => 'Penyusun kuesioner',
+            'rute' => ['surveys.create', 'surveys.edit', 'logos.index'],
+            'buka' => 'surveys.create',
+            'untuk' => 'Admin',
+            'ringkas' => 'Halaman penyusun terdiri dari tiga kolom: Komponen (jenis pertanyaan) di kiri, lembar kuesioner di tengah, dan Properti untuk isian yang dipilih di kanan.',
+            'langkah' => [
+                'Isi judul, subjudul, dan nama kegiatan di bagian atas lembar.',
+                'Tambah blok dengan "Blok baru". Satu blok biasanya satu bagian kuesioner (mis. Blok I Keterangan Tempat).',
+                'Tarik jenis pertanyaan dari kolom Komponen ke dalam blok. Urutan bisa diubah dengan menarik pertanyaan.',
+                'Klik sebuah pertanyaan untuk mengatur teks, pilihan jawaban, wajib/tidak, logika, dan validasinya di panel kanan.',
+                'Simpan. Perubahan pada kuesioner yang sudah terbit dicatat sebagai versi baru.',
+            ],
+            'fitur' => [
+                'Struktur formulir' => 'Daftar blok dan pertanyaan untuk berpindah cepat di kuesioner yang panjang.',
+                'Kode variabel' => 'Nama kolom pertanyaan di data (mis. R101). Harus unik; dipakai di ekspor, DataLab, dan Open Data.',
+                'Satuan, konsep dan definisi' => 'Ditampilkan sebagai bantuan saat mengisi dan masuk ke pedoman pencacah di PRISMA Collect.',
+                'Lebar isian' => 'Menata beberapa isian dalam satu baris (1/2, 1/3, …) di formulir responden.',
+                'Nilai awal dan teks contoh' => 'Isi bawaan dan contoh isian (placeholder) di dalam kotak jawaban.',
+            ],
+            'tips' => [
+                'Beri kode variabel sejak awal; mengubahnya setelah data masuk membuat kolom lama dan baru berbeda.',
+                'Pakai jenis "Keterangan" untuk teks penjelas di antara pertanyaan.',
+            ],
+        ],
+        [
+            'id' => 'jenis-pertanyaan',
+            'kelompok' => 'Menyusun kuesioner',
+            'judul' => 'Jenis pertanyaan',
+            'ringkas' => 'Builder menyediakan jenis pertanyaan untuk survei rumah tangga, usaha, maupun formulir administrasi.',
+            'fitur' => [
+                'Jawaban singkat, Paragraf' => 'Teks bebas satu baris atau beberapa baris. Bisa diberi batas karakter dan format isian (masking).',
+                'Pilihan tunggal, lebih dari satu, Daftar pilihan' => 'Opsi dari daftar yang Anda tulis, dari data referensi (mis. desa per kecamatan), atau dari jawaban pertanyaan lain. Bisa ditambah opsi "Lainnya".',
+                'Angka, Rupiah, Penggeser' => 'Isian angka dengan batas minimal/maksimal, desimal, dan satuan.',
+                'Tanggal, Jam, Email, Nomor telepon, Tautan (URL)' => 'Isian dengan format yang diperiksa otomatis.',
+                'Isian kode' => 'Kotak-kotak kode seperti di kuesioner kertas BPS (mis. 4 kotak kode KBLI).',
+                'Kotak centang, Rating bintang, Skala linear' => 'Persetujuan, penilaian, dan skala sikap.',
+                'Matriks pilihan' => 'Beberapa baris pernyataan dengan kolom pilihan yang sama.',
+                'Identitas wilayah' => 'Provinsi sampai SLS dalam satu isian; kode wilayah terisi otomatis.',
+                'Tabel / listing' => 'Tabel dengan kolom teks, angka, pilihan, atau tanggal; baris tetap atau ditambah responden.',
+                'Daftar nama/isian' => 'Daftar isian berulang, mis. nama anggota rumah tangga, yang bisa menjadi dasar rincian berulang.',
+                'Hitungan (rumus)' => 'Nilai dihitung dari jawaban lain, mis. total pengeluaran.',
+                'Lokasi (GPS)' => 'Titik koordinat dengan peta dan batas akurasi.',
+                'Unggah berkas/foto, Tanda tangan' => 'Bukti foto, dokumen, atau tanda tangan responden. Foto besar dikompres otomatis.',
+                'Keterangan' => 'Teks penjelas tanpa jawaban.',
+            ],
+        ],
+        [
+            'id' => 'logika',
+            'kelompok' => 'Menyusun kuesioner',
+            'judul' => 'Logika, validasi, dan rincian berulang',
+            'ringkas' => 'Aturan ini membuat formulir hanya menanyakan yang relevan dan menolak jawaban yang tidak masuk akal sebelum dikirim.',
+            'fitur' => [
+                'Logika tampil blok' => 'Blok hanya muncul bila syarat terpenuhi, mis. Blok Usaha bila R401 = "Ya". Gabungkan beberapa syarat dengan DAN atau ATAU.',
+                'Logika pertanyaan' => '"Jika kondisi berikut terpenuhi, lakukan tindakan berikut": tampilkan atau sembunyikan, aktifkan atau nonaktifkan, dan jadikan wajib atau opsional pertanyaan lain.',
+                'Aturan isian' => 'Batas nilai, panjang, atau pola jawaban, dengan pesan sendiri bila tidak terpenuhi.',
+                'Pemeriksaan konsistensi' => 'Membandingkan antarjawaban, mis. umur anak tidak boleh lebih tua dari umur ibu. Bisa berupa galat (harus diperbaiki) atau peringatan yang cukup dikonfirmasi.',
+                'Sisipkan tag jawaban (piping)' => 'Menampilkan jawaban sebelumnya di teks pertanyaan, mis. "Apa pekerjaan {nama}?".',
+                'Rincian berulang (roster)' => 'Mengulang satu blok untuk setiap anggota, sesuai jumlah atau daftar nama yang diisi sebelumnya.',
+                'Jawaban khusus' => 'Mengizinkan "Tidak tahu" atau "Menolak menjawab" agar beda dari isian yang terlewat.',
+                'Rumus' => 'Pertanyaan hitungan memakai kode variabel lain, mis. R501 + R502.',
+            ],
+            'tips' => [
+                'Syarat hanya bisa merujuk pertanyaan yang letaknya sebelum pertanyaan atau blok itu.',
+                'Cek hasilnya di Pratinjau sebelum menerbitkan; pemeriksaan publikasi juga menandai logika yang tidak pernah bisa terpenuhi.',
+            ],
+        ],
+        [
+            'id' => 'tampilan',
+            'kelompok' => 'Menyusun kuesioner',
+            'judul' => 'Kop, tampilan, dan pengaturan formulir',
+            'ringkas' => 'Panel Properti formulir (tanpa pertanyaan terpilih) mengatur tampilan dan perilaku formulir secara keseluruhan.',
+            'fitur' => [
+                'Kop & pembuka' => 'Logo, teks kop kiri/tengah/kanan, teks sambutan, dan tampilan pembuka sebelum responden mulai mengisi.',
+                'Penomoran pertanyaan' => 'Per blok (101, 102, 201) seperti kuesioner BPS, atau berurutan (1, 2, 3).',
+                'Warna dan tampilan responden' => 'Warna tema formulir dan tanda RAHASIA di lembar.',
+                'Periode' => 'Triwulan, semester, atau bulan yang tercetak di lembar dan tersimpan bersama respons.',
+                'Bantuan pengisian kuesioner' => 'Kontak call center, email, dan petunjuk pengisian yang tampil di formulir.',
+                'Pesan setelah mengirim' => 'Teks di halaman terima kasih.',
+                'Ukuran kertas cetak dan orientasi' => 'Dipakai saat mencetak kuesioner kosong atau respons.',
+                'Webhook dan Google Drive' => 'Mengabarkan respons baru ke aplikasi lain dan menyalin berkas unggahan ke folder Drive.',
+            ],
+        ],
+        [
+            'id' => 'pratinjau',
+            'kelompok' => 'Menyusun kuesioner',
+            'judul' => 'Pratinjau, Mode HP, dan cetak',
+            'rute' => ['surveys.preview', 'surveys.preview-phone', 'surveys.print'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Mencoba formulir sebelum terbit tanpa menyimpan jawaban.',
+            'fitur' => [
+                'Pratinjau' => 'Formulir persis seperti yang dilihat responden, lengkap dengan logika dan validasi.',
+                'Mode HP' => 'Pratinjau dalam bingkai layar ponsel, untuk memastikan formulir nyaman diisi pencacah.',
+                'Cetak' => 'Kuesioner kosong dalam bentuk lembar kertas (PAPI), mengikuti ukuran kertas dan orientasi di pengaturan.',
+            ],
+        ],
+        [
+            'id' => 'publikasi',
+            'kelompok' => 'Menerbitkan',
+            'judul' => 'Publikasi, kunci instrumen, dan versi',
+            'rute' => ['surveys.versions.index'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Kuesioner baru menerima isian setelah dipublikasikan. Sebelum terbit, Builder memeriksa kesalahan yang sering terjadi.',
+            'langkah' => [
+                'Klik "Publikasikan". Pemeriksaan publikasi menampilkan hal yang harus diperbaiki, misalnya pilihan kurang dari dua, rumus kosong, atau pertanyaan yang tak pernah tampil.',
+                'Bila semua beres ("Siap dipublikasikan"), salin tautan responden dari bilah tautan.',
+                'Untuk menghentikan isian sementara, pilih "Tutup formulir".',
+            ],
+            'fitur' => [
+                'Riwayat versi' => 'Setiap perubahan kuesioner yang sudah terbit disimpan sebagai versi. Respons mencatat versi yang dipakai saat diisi.',
+                'Kunci instrumen' => 'Dipasang oleh PRISMA SM selama periode pendataan berjalan, agar semua petugas mengisi versi yang sama. Selama terkunci, kuesioner tidak bisa diubah.',
+                'Buka kunci' => 'Membuka kunci secara manual dari halaman penyusun bila perubahan benar-benar perlu. Catat alasannya kepada tim.',
+                'Tutup tautan umum' => 'Bila diatur dari SM, formulir hanya bisa diisi lewat tautan penugasan unit, bukan tautan umum.',
+            ],
+        ],
+        [
+            'id' => 'pengisian',
+            'kelompok' => 'Menerbitkan',
+            'judul' => 'Formulir yang diisi responden',
+            'rute' => ['form.*'],
+            'untuk' => 'Responden, pencacah',
+            'ringkas' => 'Tampilan formulir bergaya CAWI per blok. Responden berpindah blok dengan tombol Lanjut/Kembali.',
+            'fitur' => [
+                'Pemeriksaan saat pindah blok' => 'Isian wajib dan aturan di blok itu diperiksa sebelum lanjut, sehingga kesalahan ditemukan lebih awal.',
+                'Antrean kirim saat offline' => 'Bila sinyal hilang saat mengirim, isian disimpan di perangkat dan dikirim otomatis begitu tersambung.',
+                'ID kiriman unik' => 'Kiriman yang terulang karena sinyal buruk tidak tercatat dua kali.',
+                'Catatan pemeriksa' => 'Bila unit dikembalikan dari SM, catatan pemeriksa tampil di pertanyaan yang perlu diperbaiki.',
+                'Bantuan pengisian' => 'Petunjuk dan kontak bantuan yang diatur penyusun.',
+            ],
+        ],
+        [
+            'id' => 'respons',
+            'kelompok' => 'Data masuk',
+            'judul' => 'Respons, listing, dan ekspor',
+            'rute' => ['surveys.responses.*'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Halaman respons menampilkan gambaran isian yang masuk dan tabel semua respons.',
+            'fitur' => [
+                'Gambaran respons' => 'Jumlah respons per hari, jam pengiriman, perangkat responden, dan ringkasan jawaban per pertanyaan (grafik).',
+                'Semua respons' => 'Tabel dengan saringan per kolom. Tanda tangan tampil sebagai gambar.',
+                'Rincian respons' => 'Satu respons lengkap beserta waktu, perangkat, dan berkas unggahan; bisa dicetak.',
+                'Tampilan listing' => 'Respons sebagai daftar ringkas, cocok untuk kegiatan listing.',
+                'Ekspor CSV / Excel' => 'Unduh semua respons dengan kode variabel sebagai judul kolom.',
+            ],
+            'tips' => [
+                'Untuk kegiatan lapangan, pemeriksaan dan persetujuan isian dilakukan di PRISMA SM, bukan di sini.',
+            ],
+        ],
+        [
+            'id' => 'penugasan',
+            'kelompok' => 'Data masuk',
+            'judul' => 'Penugasan dan predata',
+            'rute' => ['assignments.*'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Penugasan adalah tautan pribadi untuk satu unit (mis. satu rumah tangga sampel) yang sudah berisi jawaban awal (predata) dan hanya bisa dikirim sekali.',
+            'langkah' => [
+                'Unduh "Contoh CSV" dan isi satu baris per unit: label serta kolom kode variabel yang ingin terisi.',
+                'Unggah CSV. Centang "Kunci predata" bila jawaban dari CSV tidak boleh diubah responden.',
+                'Bagikan tautannya, atau unduh semua tautan sebagai CSV.',
+            ],
+            'tips' => [
+                'Bila kegiatan dikelola di PRISMA SM, penugasan dibuat otomatis oleh SM saat unit sampel diunggah. Tidak perlu membuatnya manual di sini.',
+                'Masa berlaku tautan bisa diatur sekaligus dari SM lewat periode kegiatan.',
+            ],
+        ],
+        [
+            'id' => 'referensi',
+            'kelompok' => 'Pendukung',
+            'judul' => 'Data referensi',
+            'rute' => ['references.*'],
+            'buka' => 'references.index',
+            'untuk' => 'Admin',
+            'ringkas' => 'Daftar kode dan nama (mis. kecamatan dan desa, KBLI) yang dipakai sebagai sumber pilihan jawaban.',
+            'langkah' => [
+                'Siapkan CSV dengan baris pertama berisi judul kolom. Pemisah koma atau titik koma.',
+                'Beri nama data, mis. "Desa Kabupaten Bangkalan", lalu unggah.',
+                'Di pertanyaan pilihan, pilih Sumber pilihan = Data referensi. Untuk pilihan berjenjang (kecamatan lalu desa), atur agar bergantung pada jawaban pertanyaan sebelumnya.',
+            ],
+        ],
+        [
+            'id' => 'google-drive',
+            'kelompok' => 'Pendukung',
+            'judul' => 'Google Drive',
+            'rute' => ['google-drive.*'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Menyalin berkas dan foto dari setiap respons ke folder Google Drive milik Anda.',
+            'langkah' => [
+                'Tempel tautan folder Drive tujuan.',
+                'Klik "Buat skrip", buka Google Apps Script dengan akun pemilik folder, lalu tempel skripnya.',
+                'Terapkan sebagai Aplikasi web (Jalankan sebagai: Saya, Akses: Siapa saja) dan izinkan aksesnya.',
+                'Tempel URL aplikasi web, lalu "Simpan & tes". Respons lama bisa dikirim ulang dari halaman yang sama.',
+            ],
+        ],
+        [
+            'id' => 'validasi',
+            'kelompok' => 'Pendukung',
+            'judul' => 'Validasi data',
+            'rute' => ['validation.*'],
+            'buka' => 'validation.create',
+            'untuk' => 'Admin, pengolah data',
+            'ringkas' => 'Memeriksa data dari luar (mis. hasil entri aplikasi lain) dengan aturan validasi sebuah kuesioner, tanpa menyimpan apa pun.',
+            'langkah' => [
+                'Unggah template, yaitu file JSON hasil "Ekspor JSON" kuesioner.',
+                'Unggah data yang diperiksa (JSON berisi daftar record), atau kosongkan untuk memeriksa respons di dalam template.',
+                'Klik "Periksa data". Hasilnya per record: sesuai semua aturan, atau daftar temuannya.',
+            ],
+        ],
+        [
+            'id' => 'ekspor-impor',
+            'kelompok' => 'Pendukung',
+            'judul' => 'Ekspor dan impor kuesioner',
+            'rute' => ['surveys.export-json', 'surveys.export-formgear'],
+            'untuk' => 'Admin',
+            'ringkas' => 'Memindahkan kuesioner antaraplikasi atau antarkomputer.',
+            'fitur' => [
+                'Ekspor JSON' => 'Seluruh definisi kuesioner. Bisa diimpor lagi di halaman Dashboard (daftar kuesioner), atau dipakai di Validasi data.',
+                'Ekspor FormGear (ZIP)' => 'Template dan validasi dalam format FormGear/FASIH.',
+                'Impor' => 'Dari halaman Dashboard (daftar kuesioner), unggah JSON ekspor PRISMA atau template FormGear untuk membuat kuesioner baru.',
+            ],
+        ],
+        [
+            'id' => 'api',
+            'kelompok' => 'Sistem',
+            'judul' => 'Akses API dan webhook',
+            'rute' => ['api-access.*'],
+            'buka' => 'api-access.index',
+            'untuk' => 'Admin sistem',
+            'ringkas' => 'Token untuk aplikasi lain, termasuk PRISMA SM dan DataLab, agar bisa membaca kuesioner, membuat penugasan, dan mengambil respons.',
+            'langkah' => [
+                'Isi nama pemakai token, centang "Boleh mengubah data" bila aplikasi itu perlu menulis (SM perlu), lalu "Buat token".',
+                'Salin token saat itu juga. Token hanya ditampilkan sekali.',
+                'Tempel di .env aplikasi pemakai (mis. BUILDER_TOKEN di SM dan DataLab).',
+            ],
+            'tips' => [
+                'Cabut token yang tidak dipakai lagi. Aplikasi yang memakainya langsung kehilangan akses.',
+                'Daftar alamat API dan contoh permintaannya ada di bagian bawah halaman Akses API.',
+            ],
+        ],
+        [
+            'id' => 'admin',
+            'kelompok' => 'Sistem',
+            'judul' => 'Admin',
+            'rute' => ['admins.*'],
+            'buka' => 'admins.index',
+            'untuk' => 'Admin',
+            'ringkas' => 'Menambah, mengubah, dan menghapus akun admin Builder.',
+            'tips' => [
+                'Akun petugas lapangan tidak dibuat di sini. Petugas dikelola di PRISMA SM.',
+            ],
+        ],
+        [
+            'id' => 'panduan-ini',
+            'kelompok' => 'Sistem',
+            'judul' => 'Tentang panduan ini',
+            'rute' => ['panduan'],
+            'ringkas' => 'Halaman ini. Gunakan kotak pencarian untuk menemukan fitur, atau tombol "Panduan" di bilah atas setiap halaman untuk langsung ke bagian yang relevan.',
+        ],
+    ],
+
+    'tanya' => [
+        'Mengapa kuesioner tidak bisa diubah?' => 'Kuesioner sedang dikunci oleh PRISMA SM selama periode pendataan. Buka kunci dari halaman penyusun bila perubahan memang perlu.',
+        'Mengapa responden tidak bisa membuka tautan umum?' => 'Kuesioner ditutup, belum dipublikasikan, atau SM mengatur agar isian hanya lewat tautan penugasan unit.',
+        'Bagaimana data sampai ke PRISMA SM?' => 'Setiap respons baru dikirim ke SM lewat webhook, dan SM juga bisa menyinkronkan ulang lewat API ("Sinkronkan dengan Builder" di SM).',
+        'Respons dobel karena sinyal buruk?' => 'Setiap kiriman membawa ID unik, sehingga kiriman ulang yang sama tidak dicatat dua kali.',
+    ],
+];
