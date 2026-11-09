@@ -1,10 +1,14 @@
 <?php
 
 use App\Http\Controllers\Api\AssignmentController;
+use App\Http\Controllers\Api\PortalCardController;
 use App\Http\Controllers\Api\ReferenceController;
 use App\Http\Controllers\Api\ResponseController;
 use App\Http\Controllers\Api\SurveyController;
 use Illuminate\Support\Facades\Route;
+
+// Kartu profil publik untuk portal BangData (tanpa token, tanpa data kuesioner).
+Route::get('portal/kartu', PortalCardController::class)->middleware('throttle:60,1')->name('api.portal.kartu');
 
 // JSON API v1. Every request needs a token from the "Akses API" page; changes need a write token.
 Route::prefix('v1')->middleware(['throttle:240,1', 'api.token'])->name('api.')->group(function () {

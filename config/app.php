@@ -53,6 +53,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    // Alamat publik aplikasi ini untuk kartu di portal BangData (kosong = alamat pemanggil)
+    'portal_publik_url' => env('PORTAL_PUBLIK_URL'),
 
     /*
     |--------------------------------------------------------------------------

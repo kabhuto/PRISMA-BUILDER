@@ -38,15 +38,23 @@
             @include('partials.accent-picker', ['showLabel' => true])
             @include('partials.theme-toggle', ['showLabel' => true])
             @auth
-                <span class="user-chip" title="{{ auth()->user()->loginName() }}">
-                    <span class="user-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
-                    <span class="user-name">{{ auth()->user()->name }}</span>
-                </span>
+                <details class="user-menu" data-user-menu>
+                    <summary class="user-chip" title="{{ auth()->user()->loginName() }}">
+                        <span class="user-avatar" aria-hidden="true">{{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}</span>
+                        <span class="user-name">{{ auth()->user()->name }}</span>
+                        <svg class="user-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </summary>
+                    <div class="user-menu-pop">
+                        <strong>{{ auth()->user()->name }}</strong>
+                        <small>{{ auth()->user()->loginName() }}</small>
+                        <a href="{{ route('admins.index') }}">Kelola admin</a>
+                        <a href="{{ route('panduan') }}">Panduan</a>
+                    </div>
+                </details>
                 <form class="nav-logout" method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button class="button button-ghost button-small" type="submit">
+                    <button class="icon-logout" type="submit" aria-label="Keluar" title="Keluar">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5m5 5H3"/></svg>
-                        Keluar
                     </button>
                 </form>
             @endauth
@@ -67,6 +75,11 @@
     </main>
 
     <script>
+        // The account menu closes on a click anywhere else.
+        document.addEventListener('click', event => {
+            const menu = document.querySelector('[data-user-menu][open]');
+            if (menu && !menu.contains(event.target)) menu.open = false;
+        });
         document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => {
             const field = document.querySelector(button.dataset.copy);
             try {

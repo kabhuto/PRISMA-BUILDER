@@ -20,9 +20,13 @@ class SurveyController extends Controller
 {
     public function index(): View
     {
+        $surveys = Survey::query()->withCount('responses')->latest('updated_at')->get();
+
         return view('surveys.index', [
-            'surveys' => Survey::query()->withCount('responses')->latest('updated_at')->get(),
+            'surveys' => $surveys,
             'templates' => SurveyTemplates::all(),
+            // The periods the list can be narrowed to, e.g. "Triwulan 2".
+            'periods' => $surveys->map->periodLabel()->filter()->unique()->sort()->values(),
         ]);
     }
 
