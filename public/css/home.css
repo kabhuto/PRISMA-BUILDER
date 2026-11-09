@@ -297,3 +297,7 @@
     .home-hero *,.home-section *,.home-waves *,.home-title h1{animation:none!important}
     .home-anim .home-hero-body,.home-anim .home-stat,.home-anim .template-tile,.home-anim .survey-row,.home-anim .home-section-head,.home-anim .home-list-head{opacity:1;transform:none}
 }
+
+/* The copyright line continues the deepest wave. */
+.home-anim .app-footer,.admin-page:has(.home-waves) .app-footer{position:relative;z-index:1;border-top:0;background:var(--wave-deep);color:rgb(255 255 255 / .78)}
+.admin-page:has(.home-waves) .app-footer span:first-child{color:#fff}

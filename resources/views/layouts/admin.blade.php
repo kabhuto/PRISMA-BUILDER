@@ -74,6 +74,11 @@
         @yield('content')
     </main>
 
+    <footer class="app-footer">
+        <span>© {{ now()->year }} BPS Kabupaten Bangkalan. Hak cipta dilindungi.</span>
+        <span>PRISMA · Platform Riset, Survei, dan Manajemen Data</span>
+    </footer>
+
     <script>
         // The account menu closes on a click anywhere else.
         document.addEventListener('click', event => {
