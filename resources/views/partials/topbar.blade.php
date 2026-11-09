@@ -27,6 +27,11 @@
                     <small>{{ auth()->user()->loginName() }}</small>
                     <a href="{{ route('admins.index') }}">Kelola admin</a>
                     <a href="{{ route('panduan') }}">Panduan</a>
+                    {{-- On a phone the logout icon leaves the bar, so it lives here. --}}
+                    <form class="user-menu-logout" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Keluar</button>
+                    </form>
                 </div>
             </details>
             <form class="nav-logout" method="POST" action="{{ route('logout') }}">

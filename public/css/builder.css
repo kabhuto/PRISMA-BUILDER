@@ -414,3 +414,6 @@ body{background:var(--k-ffffff)}.topbar,.page-intro,.toolbox,.settings-panel,.ed
 .publish-check-list li.is-warning b{color:#9a6700}
 .publish-check-list .mono{color:var(--text-2)}
 .builder-lock{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px}
+/* Phones: one column. The tablet rule above came later in the file and won over the phone one. */
+@media(max-width:760px){.builder-grid{grid-template-columns:minmax(0,1fr)}.builder-grid>*{min-width:0}.builder-grid .settings-panel{grid-column:1}}
+@media(max-width:760px){.builder-grid .paper{overflow-x:auto}}

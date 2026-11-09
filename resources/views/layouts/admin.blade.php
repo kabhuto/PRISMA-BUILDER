@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/builder.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ui.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages.css') }}">
     @stack('head')
 </head>
 <body class="admin-page">

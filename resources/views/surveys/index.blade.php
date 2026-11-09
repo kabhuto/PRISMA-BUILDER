@@ -136,7 +136,7 @@
                 <h2 id="template-heading">Template Kuesioner</h2>
                 <p>Mulai lebih cepat dengan template siap pakai sesuai kebutuhan survei.</p>
             </div>
-            <button class="home-link" type="button" data-open-templates>Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></button>
+            <button class="home-link" type="button" aria-expanded="false" data-open-templates>Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></button>
         </header>
         <div class="template-cards">
             @foreach ($templates as $key => $template)
@@ -364,7 +364,16 @@
                 document.querySelectorAll('.row-menu[open]').forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
             });
             const dialog = document.querySelector('[data-template-dialog]');
-            document.querySelector('[data-open-templates]')?.addEventListener('click', () => dialog.showModal());
+            // On a phone the cards are hidden until asked for, then open in place; elsewhere the full list opens.
+            const phone = matchMedia('(max-width: 760px)');
+            const cards = document.querySelector('.template-cards');
+            document.querySelector('[data-open-templates]')?.addEventListener('click', event => {
+                if (!phone.matches) return dialog.showModal();
+                const open = cards.classList.toggle('is-open');
+                event.currentTarget.classList.toggle('is-open', open);
+                event.currentTarget.firstChild.textContent = open ? 'Sembunyikan template ' : 'Lihat semua template ';
+                event.currentTarget.setAttribute('aria-expanded', String(open));
+            });
             dialog.querySelector('[data-close-templates]').addEventListener('click', () => dialog.close());
             dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
         })();

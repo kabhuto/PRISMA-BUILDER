@@ -357,3 +357,37 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
 .editor-bar .button{height:36px}
 .builder-page .toolbox,.builder-page .settings-panel{top:136px}
 @media(max-width:760px){.sticky-head{position:relative}.editor-bar{padding:8px 12px}}
+
+/* ---------- Top bar: elegant on desktop, one slim row plus a bottom tab bar on phones ---------- */
+.topbar{position:sticky;top:0;box-shadow:0 1px 0 rgb(15 42 61 / .03),0 8px 24px rgb(15 42 61 / .04)}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--brand) 0%,#1d6fe0 45%,#0fa38f 70%,#f28c28 100%);opacity:.55;pointer-events:none}
+.nav-link{position:relative;transition:background .2s,color .2s,transform .2s}
+.nav-link:not(.is-active)::after{content:"";position:absolute;left:14px;right:14px;bottom:5px;height:2px;border-radius:2px;background:var(--brand);transform:scaleX(0);transition:transform .25s}
+.nav-link:not(.is-active):hover::after{transform:scaleX(1)}
+.nav-link.is-active{background:linear-gradient(135deg,var(--brand),color-mix(in srgb,var(--brand) 65%,#1d4f91))}
+.nav-link.is-active svg{filter:drop-shadow(0 1px 1px rgb(0 0 0 / .15))}
+.user-avatar{background:linear-gradient(135deg,var(--brand-soft),color-mix(in srgb,var(--brand) 22%,var(--surface)));box-shadow:0 0 0 2px var(--surface),0 0 0 3px color-mix(in srgb,var(--brand) 35%,transparent)}
+.user-menu-logout{margin:4px 0 0;padding-top:4px;border-top:1px solid var(--border)}
+.user-menu-logout button{display:block;width:100%;padding:8px;border:0;border-radius:8px;background:none;color:var(--k-c0392b);font:inherit;font-size:13.5px;font-weight:600;text-align:left;cursor:pointer}
+.user-menu-logout button:hover{background:var(--surface-2)}
+@media(min-width:761px){.user-menu-logout{display:none}}
+@media(max-width:760px){
+    .topbar{height:58px;min-height:0;flex-wrap:nowrap;gap:6px;padding:0 12px}
+    .brand-name span{font-size:9px;letter-spacing:1.4px}
+    .topbar-tools{gap:6px;margin-left:auto}
+    .topbar-tools .help-link,.topbar-tools .theme-toggle{width:38px;min-width:38px;height:38px;padding:0;justify-content:center;font-size:0}
+    .topbar-tools .help-link svg{margin:0}
+    .user-menu>summary{padding:2px}
+    .user-caret,.nav-logout{display:none}
+    .user-menu-pop{position:fixed;top:64px;right:10px;left:auto;width:min(280px,calc(100vw - 20px))}
+    /* The menu becomes a tab bar along the bottom, like an Android app. */
+    .main-nav{position:fixed;z-index:40;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));order:0;width:auto;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:6px;border:1px solid var(--border);border-radius:18px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 12px 32px rgb(15 42 61 / .16)}
+    .nav-link{flex-direction:column;justify-content:center;gap:3px;height:54px;padding:4px 2px;border-radius:13px;font-size:11px;font-weight:600}
+    .nav-link::after{display:none}
+    .nav-link svg{width:21px;height:21px}
+    .nav-link.is-active{box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 35%,transparent)}
+    .admin-page{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+    .home-top{bottom:calc(92px + env(safe-area-inset-bottom))}
+    .accent-pop{top:66px}
+}
+@media(max-width:760px){.topbar{backdrop-filter:none;-webkit-backdrop-filter:none;background:var(--surface)}}
