@@ -350,3 +350,10 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
 .admin-page{min-height:100vh;display:flex;flex-direction:column}
 .admin-page>.app-shell{flex:1 0 auto;width:100%}
 @media(max-width:760px){.app-footer{justify-content:flex-start;padding:16px 74px 16px 16px;text-align:left}}
+.sticky-head{position:sticky;top:0;z-index:15}
+.sticky-head .topbar{position:relative;z-index:2}
+.editor-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;padding:8px 24px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.editor-bar .topbar-actions{flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.editor-bar .button{height:36px}
+.builder-page .toolbox,.builder-page .settings-panel{top:136px}
+@media(max-width:760px){.sticky-head{position:relative}.editor-bar{padding:8px 12px}}

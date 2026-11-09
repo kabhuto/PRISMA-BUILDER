@@ -50,23 +50,15 @@
     <link rel="stylesheet" href="{{ asset('css/ui.css') }}">
 </head>
 <body class="admin-page builder-page">
-    <header class="topbar">
-        <a class="brand" href="{{ route('surveys.index') }}" aria-label="Kembali ke dashboard">
-            @include('partials.brand')
-        </a>
+    <div class="sticky-head">
+    @include('partials.topbar', ['newTabHelp' => true])
+    <div class="editor-bar">
         <div class="topbar-context">
             <span class="live-dot {{ $survey->isPublished() ? '' : 'is-draft' }}"></span>
             {{ $survey->isPublished() ? 'TERBIT' : 'DRAF' }}
             <span class="context-divider">/</span> {{ $isNew ? 'KUESIONER BARU' : str($survey->title)->limit(40) }}
         </div>
         <div class="topbar-actions">
-            {{-- A new tab, so unsaved changes to the form stay where they are. --}}
-            <a class="button button-ghost help-link" href="{{ \App\Support\Guide::linkFor(request()->route()?->getName()) }}" target="_blank" rel="noopener" title="Panduan menyusun kuesioner (tab baru)">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
-                Panduan
-            </a>
-            @include('partials.accent-picker')
-            @include('partials.theme-toggle')
             <button class="button button-ghost" type="submit" form="builder-form" name="intent" value="print" title="Simpan lalu buka tampilan cetak kertas">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></svg>
                 Cetak
@@ -91,7 +83,8 @@
                 Simpan
             </button>
         </div>
-    </header>
+    </div>
+    </div>
 
     @if (session('status'))
         <div class="toast" role="status">{{ session('status') }}</div>
@@ -448,5 +441,15 @@
     </script>
     <script src="{{ asset('js/builder-header.js') }}" defer></script>
     <script src="{{ asset('js/builder.js') }}" defer></script>
+    <script>
+        (() => {
+            const form = document.getElementById('builder-form');
+            let changed = false;
+            ['input', 'change', 'drop'].forEach(type => form?.addEventListener(type, () => (changed = true)));
+            document.addEventListener('click', event => { if (event.target.closest('.paper, .settings-panel, .toolbox')) changed = true; });
+            document.addEventListener('submit', () => (changed = false));
+            addEventListener('beforeunload', event => { if (changed) { event.preventDefault(); event.returnValue = ''; } });
+        })();
+    </script>
 </body>
 </html>

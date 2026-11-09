@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/ui.css') }}">
 </head>
 <body class="admin-page phone-preview-page">
+    @include('partials.topbar')
     <header class="phone-preview-bar">
         <a class="button button-ghost button-small" href="{{ route('surveys.edit', $survey) }}">← Kembali ke builder</a>
         <strong>{{ $survey->title }}</strong>
@@ -23,7 +24,7 @@
     </header>
     <main class="phone-stage">
         <div class="phone-frame" data-phone-frame style="--phone-width: 390px">
-            <iframe src="{{ route('surveys.preview', $survey) }}" title="Pratinjau formulir di HP"></iframe>
+            <iframe src="{{ route('surveys.preview', [$survey, 'bingkai' => 1]) }}" title="Pratinjau formulir di HP"></iframe>
         </div>
         <p class="muted phone-note">Coba isi seperti petugas: alur lompatan, pertanyaan berulang, pesan validasi, nilai awal, dan ringkasan sebelum kirim. Jawaban pratinjau tidak tersimpan.</p>
     </main>

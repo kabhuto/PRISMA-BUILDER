@@ -27,7 +27,11 @@
     @endif
 </head>
 <body class="fill-page" style="--accent: {{ $survey->themeColor() }}; --accent-ink: {{ $survey->themeInk() }}">
-    @include('partials.theme-toggle', ['class' => 'theme-toggle-floating'])
+    @if (request()->boolean('bingkai'))
+        @include('partials.theme-toggle', ['class' => 'theme-toggle-floating'])
+    @else
+        @include('partials.fill-topbar')
+    @endif
     @if ($isPreview)
         <div class="preview-banner">
             <span><b>Mode pratinjau</b> — beginilah tampilan untuk responden. Jawaban tidak disimpan.</span>

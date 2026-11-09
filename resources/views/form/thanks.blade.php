@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="{{ asset('css/fill.css') }}">
 </head>
 <body class="fill-page" style="--accent: {{ $survey->themeColor() }}; --accent-ink: {{ $survey->themeInk() }}">
-    @include('partials.theme-toggle', ['class' => 'theme-toggle-floating'])
+    @if (request()->boolean('bingkai'))
+        @include('partials.theme-toggle', ['class' => 'theme-toggle-floating'])
+    @else
+        @include('partials.fill-topbar')
+    @endif
     <main class="fill-thanks">
         <section class="cawi-card">
             @include('partials.kop', ['class' => 'kop-cawi'])

@@ -158,7 +158,11 @@ class InstrumentQualityTest extends TestCase
         $survey = $this->survey();
 
         $this->get(route('surveys.preview-phone', $survey))->assertOk()
-            ->assertSee('<iframe src="'.route('surveys.preview', $survey).'"', false)
+            ->assertSee('<iframe src="'.route('surveys.preview', [$survey, 'bingkai' => 1]).'"', false)
             ->assertSee('HP kecil');
+
+        // Inside the phone frame the form shows without the PRISMA bar; on its own it has one.
+        $this->get(route('surveys.preview', [$survey, 'bingkai' => 1]))->assertOk()->assertDontSee('class="fill-topbar"', false);
+        $this->get(route('surveys.preview', $survey))->assertOk()->assertSee('class="fill-topbar"', false);
     }
 }
