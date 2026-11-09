@@ -25,14 +25,21 @@
         'arrow' => 'M5 12h14m-5-5 5 5-5 5',
         'chevron' => 'm6 9 6 6 6-6',
     ];
+    // Filled two-tone pictures (inner SVG) for the number cards and the templates.
+    $people = '<circle cx="9" cy="8" r="3.6"/><path d="M2 20a7 7 0 0 1 14 0Z"/><circle cx="17" cy="8.5" r="3" opacity=".45"/><path d="M15.5 13.2A6 6 0 0 1 22 19.5h-4.5a8.5 8.5 0 0 0-2-6.3Z" opacity=".45"/>';
+    $pictures = [
+        'clipboard' => '<rect x="4" y="4" width="16" height="18" rx="2.5"/><rect x="8" y="2" width="8" height="4.5" rx="1.5" fill="#fff" stroke="currentColor" stroke-width="1.6"/><path d="M8 11.5h8M8 15.5h5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>',
+        'layers' => '<path d="M12 2.5 2.5 7.5 12 12.5l9.5-5Z"/><path d="M4.4 11.1 2.5 12 12 17l9.5-5-1.9-.9L12 15.1Z" opacity=".7"/><path d="M4.4 15.6 2.5 16.5 12 21.5l9.5-5-1.9-.9L12 19.6Z" opacity=".45"/>',
+        'users' => $people,
+    ];
     // Each template's picture and colour on its card.
     $looks = [
-        'blank' => ['M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5M14 3l5 5h-5V3Zm5 5v4m-1 4v6m-3-3h6', '#2f6fd6'],
-        'household' => ['M3 11l9-7 9 7M5 10v10h5v-6h4v6h5V10', '#1f9d55'],
-        'business' => ['M4 9h16l-1.5-5h-13L4 9Zm0 0a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5 12v8h14v-8M10 20v-5h4v5', '#e8892b'],
-        'listing' => ['M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01', '#7c5cd6'],
-        'evaluation' => ['M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9L12 3Z', '#43a047'],
-        'registration' => [$icons['users'], '#2f6fd6'],
+        'blank' => ['<path d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z" opacity=".4"/><path d="M14 2v5h5Z" opacity=".7"/><circle cx="17.5" cy="17.5" r="5"/><path d="M17.5 15v5M15 17.5h5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>', '#2f6fd6'],
+        'household' => ['<path d="M12 3 2.5 11H5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9h2.5Z"/><path d="M10 21v-6h4v6Z" fill="#fff" opacity=".85"/>', '#1f9d55'],
+        'business' => ['<path d="M4 10h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" opacity=".4"/><path d="M3 4h18l1 5a3 3 0 0 1-5 2 3 3 0 0 1-5 0 3 3 0 0 1-5 0 3 3 0 0 1-5-2Z"/><path d="M8 4.5 7 10.5M12 4.5v6M16 4.5l1 6" stroke="#fff" stroke-width="1.4" opacity=".75"/><path d="M10 21v-5h4v5Z"/>', '#e8892b'],
+        'listing' => ['<rect x="3" y="4.5" width="3.5" height="3.5" rx="1"/><rect x="3" y="10.25" width="3.5" height="3.5" rx="1"/><rect x="3" y="16" width="3.5" height="3.5" rx="1"/><rect x="9" y="5" width="12" height="2.5" rx="1.25" opacity=".5"/><rect x="9" y="10.75" width="12" height="2.5" rx="1.25" opacity=".5"/><rect x="9" y="16.5" width="12" height="2.5" rx="1.25" opacity=".5"/>', '#7c5cd6'],
+        'evaluation' => ['<path d="M12 1.5l2.4 1.7 2.9-.3 1.2 2.7 2.7 1.2-.3 2.9 1.7 2.4-1.7 2.4.3 2.9-2.7 1.2-1.2 2.7-2.9-.3L12 22.5l-2.4-1.7-2.9.3-1.2-2.7-2.7-1.2.3-2.9L1.5 12l1.7-2.4-.3-2.9 2.7-1.2 1.2-2.7 2.9.3Z"/><path d="M12 6.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5Z" fill="#fff" opacity=".92"/>', '#43a047'],
+        'registration' => [$people, '#2f6fd6'],
     ];
     $published = $surveys->filter->isPublished()->count();
 @endphp
@@ -43,12 +50,17 @@
     @endif
 
     <section class="home-hero">
+        <svg class="hero-dots" viewBox="0 0 1200 340" preserveAspectRatio="none" aria-hidden="true">
+            @foreach (range(0, 6) as $line)
+                <path d="M-40 {{ 250 + $line * 14 }} C220 {{ 120 + $line * 18 }} 420 {{ 360 - $line * 6 }} 700 {{ 170 + $line * 16 }} S1040 {{ 60 + $line * 12 }} 1240 {{ 120 + $line * 10 }}"/>
+            @endforeach
+        </svg>
         @include('partials.hero-bridge')
         <div class="home-hero-body">
-            <div class="home-eyebrow"><span class="home-eyebrow-dots" aria-hidden="true"></span> DASHBOARD</div>
             <div class="home-title">
                 @include('partials.prisma-mark', ['class' => 'home-mark'])
                 <div>
+                    <div class="home-eyebrow"><span class="home-eyebrow-dots" aria-hidden="true"></span> DASHBOARD</div>
                     <h1>PRISMA<span>.</span></h1>
                     <p>Platform riset, survei, dan manajemen data untuk semua kegiatan BPS: buat formulir, publikasikan, lalu pantau dan olah responsnya.</p>
                 </div>
@@ -73,9 +85,9 @@
             </div>
         </div>
         <div class="home-stats">
-            @foreach ([['Kuesioner', $surveys->count(), 'clipboard', 'var(--brand)'], ['Terbit', $published, 'layers', '#1f9d55'], ['Total respons', $surveys->sum('responses_count'), 'users', '#e8892b']] as [$label, $value, $icon, $tone])
+            @foreach ([['Kuesioner', $surveys->count(), 'clipboard', '#2f6fd6'], ['Terbit', $published, 'layers', '#1f9d55'], ['Total respons', $surveys->sum('responses_count'), 'users', '#e8892b']] as [$label, $value, $icon, $tone])
                 <div class="home-stat" style="--tone: {{ $tone }}">
-                    <span class="home-stat-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons[$icon] }}"/></svg></span>
+                    <span class="home-stat-icon"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $pictures[$icon] !!}</svg></span>
                     <span class="home-stat-text"><small>{{ $label }}</small><strong>{{ number_format($value, 0, ',', '.') }}</strong></span>
                 </div>
             @endforeach
@@ -89,20 +101,41 @@
                 <h2 id="template-heading">Template Kuesioner</h2>
                 <p>Mulai lebih cepat dengan template siap pakai sesuai kebutuhan survei.</p>
             </div>
-            @if (count($templates) > 6)
-                <button class="home-link" type="button" data-more-templates>Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></button>
-            @endif
+            <button class="home-link" type="button" data-open-templates>Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></button>
         </header>
         <div class="template-cards">
             @foreach ($templates as $key => $template)
-                @php([$picture, $tone] = $looks[$key] ?? [$icons['clipboard'], '#2f6fd6'])
-                <a class="template-tile" href="{{ route('surveys.create', ['template' => $key]) }}" style="--tone: {{ $tone }}" @if ($loop->index >= 6) hidden data-extra-template @endif>
-                    <span class="template-tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $picture }}"/></svg></span>
+                @php([$picture, $tone] = $looks[$key] ?? [$pictures['clipboard'], '#2f6fd6'])
+                <a class="template-tile" href="{{ route('surveys.create', ['template' => $key]) }}" style="--tone: {{ $tone }}" @if ($loop->index >= 6) hidden @endif>
+                    <span class="template-tile-icon"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $picture !!}</svg></span>
                     <strong>{{ $template['label'] }}</strong>
                     <span>{{ $template['description'] }}</span>
                 </a>
             @endforeach
         </div>
+        <dialog class="template-dialog" aria-labelledby="template-dialog-title" data-template-dialog>
+            <header>
+                <h2 id="template-dialog-title">Semua template</h2>
+                <button type="button" class="row-button is-icon" aria-label="Tutup" data-close-templates>✕</button>
+            </header>
+            <p>Setiap template hanya titik awal: blok dan pertanyaannya bisa diubah setelah dibuat.</p>
+            @foreach ($templates as $key => $template)
+                @php([$picture, $tone] = $looks[$key] ?? [$pictures['clipboard'], '#2f6fd6'])
+                <article class="template-detail" style="--tone: {{ $tone }}">
+                    <span class="template-tile-icon"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $picture !!}</svg></span>
+                    <div>
+                        <strong>{{ $template['label'] }}</strong>
+                        <span>{{ $template['description'] }}</span>
+                        <ul>
+                            @foreach (\App\Support\SurveyTemplates::blocks($key) as $block)
+                                <li>{{ $block['title'] ?: 'Blok tanpa judul' }} · {{ count($block['questions'] ?? []) }} pertanyaan</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <a class="home-button" href="{{ route('surveys.create', ['template' => $key]) }}">Gunakan</a>
+                </article>
+            @endforeach
+        </dialog>
     </section>
 
     <section class="home-section" aria-labelledby="list-heading" data-survey-board>
@@ -205,7 +238,16 @@
     </section>
 
     <div class="home-waves" aria-hidden="true">
-        <svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0 70 C240 20 480 110 760 64 S1200 30 1440 80 V120 H0 Z" fill="var(--wave-1)"/><path d="M0 92 C300 60 560 120 860 88 S1260 70 1440 100 V120 H0 Z" fill="var(--wave-2)"/></svg>
+        <svg viewBox="0 0 1440 170" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="wave-teal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="var(--wave-teal-1)"/><stop offset="1" stop-color="var(--wave-teal-2)"/></linearGradient>
+                <linearGradient id="wave-orange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--wave-orange-1)"/><stop offset="1" stop-color="var(--wave-orange-2)"/></linearGradient>
+            </defs>
+            <path d="M0 70C220 20 420 40 620 80S980 130 1180 80 1360 40 1440 46V170H0Z" fill="var(--wave-mist)"/>
+            <path d="M0 96C180 70 330 92 470 122S760 168 900 150 1180 96 1440 110V170H0Z" fill="url(#wave-teal)"/>
+            <path d="M880 170C1040 150 1180 80 1300 52 1360 38 1410 34 1440 34V170Z" fill="url(#wave-orange)"/>
+            <path d="M1010 170C1120 150 1240 118 1440 112V170Z" fill="var(--wave-teal-2)" opacity=".85"/>
+        </svg>
     </div>
 
     <script>
@@ -254,10 +296,10 @@
             document.addEventListener('click', event => {
                 document.querySelectorAll('.row-menu[open]').forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
             });
-            document.querySelector('[data-more-templates]')?.addEventListener('click', event => {
-                document.querySelectorAll('[data-extra-template]').forEach(card => (card.hidden = false));
-                event.currentTarget.remove();
-            });
+            const dialog = document.querySelector('[data-template-dialog]');
+            document.querySelector('[data-open-templates]')?.addEventListener('click', () => dialog.showModal());
+            dialog.querySelector('[data-close-templates]').addEventListener('click', () => dialog.close());
+            dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
         })();
     </script>
 @endsection
