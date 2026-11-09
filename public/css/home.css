@@ -6,7 +6,8 @@
     --home-orange:#f28c28;
     --hb-sun:#ffd9b0;--hb-sea-top:#cfe3f3;--hb-sea-bottom:#eaf4fb;--hb-hill-far:#cfe0ef;--hb-hill-near:#bcd5ea;
     --hb-glint:#ffffff;--hb-deck:#2f74c8;--hb-cable:#6d9fd6;--hb-tower:#2563b8;
-    --hb-island:#5fb3a1;--hb-island-dark:#2f8f7f;
+    --hb-island:#5fb3a1;--hb-island-dark:#2f8f7f;--hb-tower-light:#5b9ae6;--hb-lamp:#ffc24d;--hb-cloud:rgb(255 255 255 / .75);
+    --home-net:rgb(47 116 200 / .35);--wave-deep:#1f7f86;--tone-navy:#1e3a8a;
     --home-ink:#11294b;--home-dot-line:rgb(47 116 200 / .28);
     --wave-mist:rgb(150 200 210 / .28);--wave-teal-1:#2a9d92;--wave-teal-2:#7fc9bf;--wave-orange-1:#fbb455;--wave-orange-2:#f28c28;
 }
@@ -17,7 +18,8 @@
         --home-navy:#3b78c9;--home-navy-hover:#4f8ad8;--home-green:#16a37a;--home-green-hover:#1bb889;
         --hb-sun:#8a5a2f;--hb-sea-top:#163a52;--hb-sea-bottom:#0f2433;--hb-hill-far:#1b3448;--hb-hill-near:#21405a;
         --hb-glint:#7fb3e0;--hb-deck:#6fa6e0;--hb-cable:#5f8fbf;--hb-tower:#7fb0ea;
-        --hb-island:#1f5a52;--hb-island-dark:#174a43;
+        --hb-island:#1f5a52;--hb-island-dark:#174a43;--hb-tower-light:#b9d8ff;--hb-lamp:#ffd36b;--hb-cloud:rgb(160 190 230 / .12);
+        --home-net:rgb(120 190 255 / .4);--wave-deep:#0f4f55;--tone-navy:#7ea2ff;
         --home-ink:#e8f0fb;--home-dot-line:rgb(120 180 255 / .22);
         --wave-mist:rgb(61 120 130 / .25);--wave-teal-1:#16675f;--wave-teal-2:#2a8f84;--wave-orange-1:#a8661f;--wave-orange-2:#c0702a;
     }
@@ -77,7 +79,7 @@
 .template-tile-icon{display:grid;place-items:center;flex:none;width:48px;height:48px;margin-bottom:8px;border-radius:14px;background:color-mix(in srgb,var(--tone) 15%,var(--surface));color:var(--tone);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tone) 12%,transparent)}
 .template-tile-icon svg{width:28px;height:28px}
 .template-tile strong{font-size:14.5px;line-height:1.3}
-.template-tile span:last-child{font-size:12.5px;line-height:1.5;color:var(--text-2)}
+.template-tile-text{font-size:12.5px;line-height:1.5;color:var(--text-2)}
 
 .template-dialog{width:min(720px,calc(100vw - 32px));max-height:min(80vh,760px);padding:22px;border:1px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);box-shadow:0 30px 80px rgb(0 0 0 / .25)}
 .template-dialog::backdrop{background:rgb(10 25 40 / .45);backdrop-filter:blur(2px)}
@@ -151,8 +153,7 @@
 .survey-rows.is-grid .survey-row-actions .row-menu-pop{left:0;right:auto}
 
 /* Decoration at the foot of the page. */
-.home-waves{position:relative;height:150px;margin:10px 0 -72px;pointer-events:none}
-.home-waves svg{position:absolute;left:50%;bottom:0;width:100vw;height:150px;transform:translateX(-50%)}
+
 
 @media(max-width:1200px){
     .template-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -194,4 +195,105 @@
     .survey-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"main kebab" "actions count";padding:14px}
     .template-tile strong{font-size:13.5px}
     .template-tile span:last-child{font-size:12px}
+}
+
+/* ---------- Life: title, live note, network, bridge, cards, rows, waves ---------- */
+.home-title h1{background:linear-gradient(100deg,var(--home-ink) 0%,var(--home-ink) 35%,#1d6fe0 62%,#0fa38f 82%,var(--home-ink) 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:home-shimmer 9s ease-in-out infinite}
+.home-title h1 span{-webkit-text-fill-color:var(--home-orange);color:var(--home-orange);display:inline-block;animation:home-bounce 2.8s ease-in-out infinite}
+@keyframes home-shimmer{0%,100%{background-position:100% 0}50%{background-position:0 0}}
+@keyframes home-bounce{0%,100%{transform:none}50%{transform:translateY(-5px)}}
+.home-eyebrow{flex-wrap:wrap}
+.home-live{display:inline-flex;align-items:center;gap:8px;margin-left:10px;padding:4px 11px 4px 9px;border:1px solid color-mix(in srgb,#1f9d55 30%,var(--border));border-radius:999px;background:color-mix(in srgb,#1f9d55 8%,var(--surface));color:var(--text-2);font-size:11.5px;font-weight:600;letter-spacing:0}
+.home-live i{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:home-ping 1.9s ease-out infinite}
+@keyframes home-ping{0%{box-shadow:0 0 0 0 rgb(34 197 94 / .7)}80%,100%{box-shadow:0 0 0 9px rgb(34 197 94 / 0)}}
+.home-mark{animation:home-float 6s ease-in-out infinite}
+@keyframes home-float{50%{transform:translateY(-6px) rotate(-2deg)}}
+
+.hero-net{position:absolute;z-index:-1;top:0;left:44%;width:min(40vw,500px);height:auto;pointer-events:none;opacity:.9}
+.hero-net line{stroke:var(--home-net);stroke-width:1;stroke-dasharray:3 4}
+.hero-net circle{fill:var(--home-net);animation:home-twinkle 4s ease-in-out infinite;animation-delay:var(--d)}
+@keyframes home-twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+
+.hb-lamps circle{animation:home-twinkle 3s ease-in-out infinite;animation-delay:var(--d)}
+.hb-beacons circle{animation:home-blink 1.6s steps(1) infinite}
+.hb-beacons circle+circle{animation-delay:.8s}
+@keyframes home-blink{50%{opacity:.15}}
+.hb-car{animation:home-drive 11s linear infinite;offset-rotate:0deg}
+.hb-car.is-back{animation:home-drive-back 13s linear infinite}
+.hb-car.is-late{animation-delay:-5.5s}
+@keyframes home-drive{from{transform:translate(20px,232.5px)}to{transform:translate(700px,206.5px)}}
+@keyframes home-drive-back{from{transform:translate(700px,209px)}to{transform:translate(20px,235px)}}
+.hb-cloud{animation:home-cloud 38s ease-in-out infinite alternate}
+.hb-cloud.is-slow{animation-duration:55s}
+@keyframes home-cloud{to{transform:translateX(70px)}}
+.hb-glints path{animation:home-twinkle 3.4s ease-in-out infinite;animation-delay:var(--d)}
+.hb-sun{transform-box:fill-box;transform-origin:center;animation:home-glow 7s ease-in-out infinite}
+@keyframes home-glow{50%{transform:scale(1.08);opacity:.85}}
+
+/* Number cards: a note under the number, the responses chart, a lift on hover. */
+.home-stat{transition:transform .2s,box-shadow .2s}
+.home-stat:hover{transform:translateY(-3px);box-shadow:0 16px 30px rgb(15 42 61 / .12)}
+.home-stat-icon{animation:home-float 5s ease-in-out infinite;animation-delay:calc(var(--i) * .6s)}
+.home-stat-text em{font-style:normal;font-size:11px;font-weight:600;color:var(--tone);white-space:nowrap}
+.home-stat-spark{position:absolute;z-index:0;left:0;right:0;bottom:3px;width:100%;height:34px;opacity:.5;pointer-events:none}
+.home-stat-icon,.home-stat-text{position:relative;z-index:1}
+.home-stat-spark .line,.row-spark .line{fill:none;stroke:var(--tone,var(--brand));stroke-width:2;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.home-stat-spark .area,.row-spark .area{fill:color-mix(in srgb,var(--tone,var(--brand)) 16%,transparent)}
+
+/* Hero buttons: a sweep of light on the main ones. */
+.home-button.is-green,.home-button.is-navy{position:relative;overflow:hidden}
+.home-button.is-green::after,.home-button.is-navy::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgb(255 255 255 / .35) 50%,transparent 70%);transform:translateX(-130%);animation:home-shine 5s ease-in-out 1.5s infinite}
+.home-button.is-navy::after{animation-delay:2.4s}
+@keyframes home-shine{0%,55%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+
+/* Template cards: a wave in the corner, the picture lifts, "Gunakan" shows. */
+.template-tile{position:relative;overflow:hidden;isolation:isolate}
+.home-section .template-tile-wave{position:absolute;z-index:-1;top:0;right:0;width:70%;height:64px;fill:color-mix(in srgb,var(--tone) 13%,transparent);stroke:none;transition:transform .35s}
+.template-tile:hover .template-tile-wave{transform:scale(1.15) translateY(-4px)}
+.template-tile-icon{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.template-tile:hover .template-tile-icon{transform:translateY(-3px) rotate(-6deg) scale(1.08)}
+.template-tile-go{display:inline-flex;align-items:center;gap:4px;margin-top:auto;padding-top:8px;color:var(--tone);font-size:12.5px;font-weight:700;opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .2s}
+.template-tile-go svg{width:14px;height:14px}
+.template-tile:hover .template-tile-go,.template-tile:focus-visible .template-tile-go{opacity:1;transform:none}
+
+/* Rows: coloured edge by status, freshness, two weeks of responses. */
+.survey-row{position:relative;overflow:visible}
+.survey-row::before{content:"";position:absolute;left:-1px;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:#e0a23c}
+.survey-row.is-published::before{background:#1f9d55}
+.survey-row-icon{transition:transform .25s}
+.survey-row:hover .survey-row-icon{transform:scale(1.08) rotate(-4deg)}
+.row-fresh{display:inline-flex;align-items:center;gap:5px;color:var(--brand-strong);font-weight:600}
+.row-fresh::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.row-spark{width:76px;height:20px;margin-top:4px;--tone:var(--brand)}
+.survey-rows.is-grid .row-spark{width:64px}
+
+/* Rise into view. */
+.home-anim .home-hero-body,.home-anim .home-stat,.home-anim .template-tile,.home-anim .survey-row,.home-anim .home-section-head,.home-anim .home-list-head{opacity:0;transform:translateY(16px)}
+.home-anim .is-in{opacity:1!important;transform:none!important;transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0) * 70ms)}
+.home-anim .survey-row.is-in,.home-anim .home-stat.is-in,.home-anim .template-tile.is-in{transition-property:opacity,transform,box-shadow,border-color}
+
+/* Drifting waves at the foot, and the way back up. */
+.home-waves{position:relative;width:100vw;height:150px;margin:10px 0 -72px calc(50% - 50vw);pointer-events:none;overflow:hidden}
+.home-waves svg{position:absolute;left:0;bottom:0;height:150px}
+.home-waves .wave-orange{width:100%;z-index:1}
+.home-waves .wave-mist,.home-waves .wave-teal,.home-waves .wave-deep{width:200%;animation:home-wave 38s linear infinite}
+.home-waves .wave-mist path{fill:var(--wave-mist)}
+.home-waves .wave-teal{z-index:2;animation-duration:26s}
+.home-waves .wave-teal path{fill:var(--wave-teal-1);opacity:.8}
+.home-waves .wave-deep{z-index:3;animation-duration:18s;animation-direction:reverse}
+.home-waves .wave-deep path{fill:var(--wave-deep);opacity:.85}
+@keyframes home-wave{to{transform:translateX(-50%)}}
+.home-top{position:fixed;z-index:25;right:20px;bottom:20px;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--home-navy);color:#fff;box-shadow:0 10px 24px rgb(29 79 145 / .35);transition:transform .2s}
+.home-top:hover{transform:translateY(-3px)}
+.home-top svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+@media(max-width:760px){
+    .hero-net{left:auto;right:0;width:min(100%,360px);opacity:.5}
+    .home-live{margin:6px 0 0}
+    .home-stat-spark{display:none}
+    .template-tile-go{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+    .home-hero *,.home-section *,.home-waves *,.home-title h1{animation:none!important}
+    .home-anim .home-hero-body,.home-anim .home-stat,.home-anim .template-tile,.home-anim .survey-row,.home-anim .home-section-head,.home-anim .home-list-head{opacity:1;transform:none}
 }

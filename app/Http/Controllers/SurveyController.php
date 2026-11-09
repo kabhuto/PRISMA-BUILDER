@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSurveyRequest;
 use App\Models\ReferenceList;
 use App\Models\Survey;
+use App\Models\SurveyResponse;
 use App\Support\FieldValidation;
 use App\Support\Formula;
 use App\Support\Lookup;
@@ -20,13 +21,27 @@ class SurveyController extends Controller
 {
     public function index(): View
     {
-        $surveys = Survey::query()->withCount('responses')->latest('updated_at')->get();
+        $surveys = Survey::query()->withCount('responses')->withMax('responses', 'created_at')->latest('updated_at')->get();
+
+        // Responses per day over the last two weeks, per form, for the small charts on the list.
+        $days = collect(range(13, 0))->map(fn (int $ago): string => now()->subDays($ago)->toDateString());
+        $daily = SurveyResponse::query()
+            ->where('created_at', '>=', now()->subDays(13)->startOfDay())
+            ->selectRaw('survey_id, DATE(created_at) as day, COUNT(*) as total')
+            ->groupBy('survey_id', 'day')
+            ->get()
+            ->groupBy('survey_id');
+        $trends = $surveys->mapWithKeys(fn (Survey $survey): array => [
+            $survey->id => $days->map(fn (string $day): int => (int) ($daily->get($survey->id)?->firstWhere('day', $day)?->total ?? 0))->all(),
+        ]);
 
         return view('surveys.index', [
             'surveys' => $surveys,
             'templates' => SurveyTemplates::all(),
             // The periods the list can be narrowed to, e.g. "Triwulan 2".
             'periods' => $surveys->map->periodLabel()->filter()->unique()->sort()->values(),
+            'trends' => $trends,
+            'totalTrend' => $days->keys()->map(fn (int $index): int => $trends->sum(fn (array $trend): int => $trend[$index]))->all(),
         ]);
     }
 
