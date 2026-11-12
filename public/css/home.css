@@ -309,3 +309,12 @@
 }
 @keyframes home-open{from{opacity:0;transform:translateY(-6px)}}
 
+
+/* Row actions in colour: edit blue, preview teal, responses orange; filled on hover. */
+.row-button.is-edit{--tone:#2f6fd6}
+.row-button.is-preview{--tone:#0f9d8f}
+.row-button.is-responses{--tone:#e8892b}
+.row-button.is-edit,.row-button.is-preview,.row-button.is-responses{border-color:color-mix(in srgb,var(--tone) 35%,var(--border));background:color-mix(in srgb,var(--tone) 10%,var(--surface));color:color-mix(in srgb,var(--tone) 80%,var(--text));transition:background .15s,color .15s,border-color .15s,transform .15s,box-shadow .15s}
+.row-button.is-edit:hover,.row-button.is-preview:hover,.row-button.is-responses:hover{border-color:var(--tone);background:var(--tone);color:#fff;transform:translateY(-1px);box-shadow:0 6px 14px color-mix(in srgb,var(--tone) 30%,transparent)}
+.survey-row-actions .row-menu>.row-button.is-icon{background:var(--surface-2)}
+.survey-row-actions .row-menu>.row-button.is-icon:hover{border-color:var(--home-navy);color:var(--home-navy)}

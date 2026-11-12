@@ -229,9 +229,9 @@
                             <p>{{ collect([$survey->activity, $survey->periodLabel()])->filter()->implode(' · ') }} · {{ count($survey->blocks ?? []) }} blok · {{ count($survey->questions()) }} pertanyaan</p>
                         </div>
                         <div class="survey-row-actions">
-                            <a class="row-button" href="{{ route('surveys.edit', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['edit'] }}"/></svg> Edit</a>
-                            <a class="row-button" href="{{ route('surveys.preview', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['eye'] }}"/></svg> Pratinjau</a>
-                            <a class="row-button" href="{{ route('surveys.responses.index', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['bars'] }}"/></svg> Respons</a>
+                            <a class="row-button is-edit" href="{{ route('surveys.edit', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['edit'] }}"/></svg> Edit</a>
+                            <a class="row-button is-preview" href="{{ route('surveys.preview', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['eye'] }}"/></svg> Pratinjau</a>
+                            <a class="row-button is-responses" href="{{ route('surveys.responses.index', $survey) }}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['bars'] }}"/></svg> Respons</a>
                             <details class="row-menu">
                                 <summary class="row-button is-icon" aria-label="Tindakan lain untuk {{ $survey->title }}" title="Tindakan lain">⋯</summary>
                                 <div class="row-menu-pop">
