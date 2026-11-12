@@ -448,3 +448,10 @@
 /* Icons in the home panels: strokes in their colour, filled pictures in their colour. */
 .home-panel svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .home-panel svg.icon-fill{fill:currentColor;stroke:none}
+/* Phones: the Suramadu bridge returns as a backdrop behind the greeting, lighter so the text stays clear. */
+@media(max-width:760px){
+    .home-hero .hero-bridge{display:block;top:0;right:calc(50% - 50vw);bottom:auto;width:100vw;height:170px;opacity:.55;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+    .home-welcome,.home-quick,.home-stats{position:relative;z-index:1}
+    .home-welcome{min-height:120px;align-items:flex-start;padding-top:4px}
+    .home-welcome>div{padding:8px 10px 8px 0;border-radius:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--home-sky-2) 85%,transparent) 60%,transparent)}
+}
