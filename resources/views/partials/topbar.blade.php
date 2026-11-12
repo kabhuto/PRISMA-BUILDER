@@ -5,6 +5,9 @@
     </a>
     <nav class="main-nav" aria-label="Navigasi utama">
         @include('partials.admin-nav')
+        <a class="nav-add" href="{{ route('surveys.create') }}" aria-label="Buat kuesioner" title="Buat kuesioner">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </a>
     </nav>
     <div class="topbar-tools">
         @unless (request()->routeIs('login'))

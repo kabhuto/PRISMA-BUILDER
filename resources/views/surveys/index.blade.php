@@ -53,6 +53,10 @@
         return [$line, $line.' L'.$width.','.$height.' L0,'.$height.' Z'];
     };
     [$totalLine, $totalArea] = $spark($totalTrend, 120, 30);
+    [$chartLine, $chartArea] = $spark($totalTrend, 320, 110);
+    $hour = (int) now('Asia/Jakarta')->format('G');
+    $greeting = match (true) { $hour < 11 => 'Selamat pagi', $hour < 15 => 'Selamat siang', $hour < 18 => 'Selamat sore', default => 'Selamat malam' };
+    $tones = ['#2f6fd6', '#0f9d8f', '#e8892b', '#7a8f8b', '#1f9d55'];
 @endphp
 
 @section('content')
@@ -78,6 +82,29 @@
             @endforeach
         </svg>
         @include('partials.hero-bridge')
+        <div class="home-welcome">
+            <div>
+                <p>{{ $greeting }},</p>
+                <h1>{{ auth()->user()?->name ?? 'Admin' }}</h1>
+                <span>{{ $today ? number_format($today, 0, ',', '.').' respons masuk hari ini' : 'Belum ada respons hari ini' }}</span>
+            </div>
+            @include('partials.prisma-mark', ['class' => 'home-welcome-mark', 'idSuffix' => 'w'])
+        </div>
+        <div class="home-quick">
+            <button type="button" data-open-templates-quick>
+                <span style="--tone: #1f9d55"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['plus'] }}"/></svg></span>Template
+            </button>
+            <a href="{{ route('validation.create') }}">
+                <span style="--tone: #2f6fd6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['shield'] }}"/></svg></span>Validasi
+            </a>
+            <form method="POST" action="{{ route('surveys.import') }}" enctype="multipart/form-data">
+                @csrf
+                <label>
+                    <span style="--tone: #e8892b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['upload'] }}"/></svg></span>Impor
+                    <input class="sr-only" type="file" name="files[]" accept=".json,application/json" multiple onchange="this.form.submit()">
+                </label>
+            </form>
+        </div>
         <div class="home-hero-body">
             <div class="home-title">
                 @include('partials.prisma-mark', ['class' => 'home-mark'])
@@ -127,6 +154,25 @@
                 </div>
             @endforeach
         </div>
+    </section>
+
+    <section class="home-mobile-panel" aria-labelledby="recent-heading">
+        <header><h2 id="recent-heading">Respons terbaru</h2><a href="#list-heading">Lihat semua</a></header>
+        @forelse ($recentResponses as $response)
+            <a class="home-activity" href="{{ route('surveys.responses.show', [$response->survey_id, $response->id]) }}" style="--tone: {{ $tones[$response->survey_id % count($tones)] }}">
+                <span class="home-activity-icon"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $pictures['clipboard'] !!}</svg></span>
+                <span class="home-activity-text"><strong>Respons baru #{{ $response->id }}</strong><small>{{ $response->survey?->title }}</small></span>
+                <time datetime="{{ $response->created_at->toIso8601String() }}">{{ $response->created_at->diffForHumans(short: true) }}</time>
+            </a>
+        @empty
+            <p class="home-activity-empty">Belum ada respons.</p>
+        @endforelse
+    </section>
+
+    <section class="home-mobile-panel" aria-labelledby="trend-heading">
+        <header><h2 id="trend-heading">Respons 14 hari</h2><span class="home-chip">{{ number_format(array_sum($totalTrend), 0, ',', '.') }} respons</span></header>
+        <svg class="home-trend" viewBox="0 0 320 110" preserveAspectRatio="none" role="img" aria-label="Respons per hari, 14 hari terakhir"><path class="area" d="{{ $chartArea }}"/><path class="line" d="{{ $chartLine }}"/></svg>
+        <div class="home-trend-axis"><span>{{ now()->subDays(13)->translatedFormat('d M') }}</span><span>Hari ini</span></div>
     </section>
 
     <section class="home-section" aria-labelledby="template-heading">
@@ -314,7 +360,8 @@
             });
 
             const top = document.querySelector('[data-to-top]');
-            addEventListener('scroll', () => (top.hidden = scrollY < 500), { passive: true });
+            // Shown once scrolled down, and out of the way again at the foot of the page.
+            addEventListener('scroll', () => (top.hidden = scrollY < 500 || scrollY + innerHeight > document.documentElement.scrollHeight - 220), { passive: true });
             top.addEventListener('click', event => { event.preventDefault(); scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' }); });
         })();
 
@@ -367,6 +414,11 @@
             // On a phone the cards are hidden until asked for, then open in place; elsewhere the full list opens.
             const phone = matchMedia('(max-width: 760px)');
             const cards = document.querySelector('.template-cards');
+            document.querySelector('[data-open-templates-quick]')?.addEventListener('click', () => {
+                const more = document.querySelector('[data-open-templates]');
+                if (!document.querySelector('.template-cards').classList.contains('is-open')) more.click();
+                document.getElementById('template-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
             document.querySelector('[data-open-templates]')?.addEventListener('click', event => {
                 if (!phone.matches) return dialog.showModal();
                 const open = cards.classList.toggle('is-open');

@@ -9,5 +9,6 @@
     <a href="{{ route($route) }}" @class(['nav-link', 'is-active' => $active]) @if ($active) aria-current="page" @endif>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icon }}"/></svg>
         <span>{{ $label }}</span>
+        @if ($label === 'Data referensi')<span class="nav-short">Referensi</span>@endif
     </a>
 @endforeach

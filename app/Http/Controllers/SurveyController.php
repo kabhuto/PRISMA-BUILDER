@@ -41,6 +41,8 @@ class SurveyController extends Controller
             // The periods the list can be narrowed to, e.g. "Triwulan 2".
             'periods' => $surveys->map->periodLabel()->filter()->unique()->sort()->values(),
             'trends' => $trends,
+            // The latest answers from any form, for the activity list on phones.
+            'recentResponses' => SurveyResponse::query()->with('survey:id,title,slug')->latest()->limit(5)->get(),
             'totalTrend' => $days->keys()->map(fn (int $index): int => $trends->sum(fn (array $trend): int => $trend[$index]))->all(),
         ]);
     }
