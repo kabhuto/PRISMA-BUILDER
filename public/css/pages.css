@@ -46,3 +46,6 @@
     .panel-section{padding:16px;border-radius:14px}
     .data-table{display:block;overflow-x:auto}
 }
+
+/* Upload forms (data referensi, validasi) stack on phones. */
+@media(max-width:760px){.validation-form{grid-template-columns:minmax(0,1fr)}.validation-drop{min-width:0}.validation-drop input{max-width:100%}.validation-form>.button{width:100%}}
