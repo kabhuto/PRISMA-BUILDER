@@ -5,8 +5,9 @@
     </a>
     <nav class="main-nav" aria-label="Navigasi utama">
         @include('partials.admin-nav')
-        <a class="nav-add" href="{{ route('surveys.create') }}" aria-label="Buat kuesioner" title="Buat kuesioner">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <a class="nav-add" href="{{ route('surveys.create') }}" title="Buat kuesioner baru">
+            <span class="nav-add-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+            <span class="nav-add-label">Buat</span>
         </a>
     </nav>
     <div class="topbar-tools">
