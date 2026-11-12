@@ -32,23 +32,44 @@ return [
 
     'halaman' => [
         [
-            'id' => 'dashboard',
+            'id' => 'beranda',
             'kelompok' => 'Mulai',
-            'judul' => 'Masuk dan daftar kuesioner',
+            'judul' => 'Masuk dan Beranda',
             'rute' => ['login', 'surveys.index'],
             'buka' => 'surveys.index',
             'untuk' => 'Admin',
-            'ringkas' => 'Halaman Dashboard berisi semua kuesioner beserta statusnya (draf, terbit, ditutup), jumlah respons, dan tautan formulirnya.',
+            'ringkas' => 'Beranda adalah tempat mulai bekerja: aksi cepat, kuesioner yang terakhir diubah, hal yang perlu perhatian, agenda terdekat, template, respons terbaru, dan alur PRISMA.',
             'langkah' => [
                 'Masuk dengan email atau nama pengguna admin dan kata sandi.',
                 'Pilih "Buat kuesioner" untuk mulai dari kosong, atau "Buat dari template" untuk memakai contoh siap pakai.',
-                'Untuk memindahkan kuesioner dari aplikasi lain, impor file JSON ekspor PRISMA atau template FormGear.',
-                'Klik judul kuesioner untuk menyusunnya; pakai "Salin tautan" untuk membagikan formulir yang sudah terbit.',
+                'Lanjutkan kuesioner yang sedang disusun dari bagian "Lanjutkan pekerjaan".',
+                'Periksa "Perlu perhatian": tautan penugasan yang hampir berakhir, kuesioner terbit tanpa respons, instrumen yang dikunci, dan draf yang belum siap terbit.',
             ],
             'fitur' => [
                 'Buat dari template' => 'Menyalin kuesioner contoh (mis. absensi harian) sebagai titik awal yang bisa diubah.',
-                'Publikasikan / Tutup' => 'Membuka atau menghentikan penerimaan isian tanpa menghapus respons.',
-                'Hapus' => 'Menghapus kuesioner beserta responsnya. Tidak bisa dibatalkan.',
+                'Agenda terdekat' => 'Lima agenda dan tenggat berikutnya dari kalender Dashboard.',
+                'Impor JSON / FormGear' => 'Membuat kuesioner dari file ekspor PRISMA atau template FormGear.',
+            ],
+        ],
+        [
+            'id' => 'pemantauan',
+            'kelompok' => 'Mulai',
+            'judul' => 'Dashboard, kalender, dan riwayat',
+            'rute' => ['dashboard', 'agenda.*'],
+            'buka' => 'dashboard',
+            'untuk' => 'Admin',
+            'ringkas' => 'Dashboard memantau semua kuesioner: berapa yang berjalan, selesai, dan draf; respons dari hari ke hari; kalender tenggat dan agenda; daftar semua kuesioner; dan riwayat apa saja yang pernah dibuat.',
+            'langkah' => [
+                'Lihat angka utama dan grafik respons 30 hari untuk gambaran cepat.',
+                'Di kalender, klik sebuah tanggal, isi judul, jenis (briefing, rapat, tenggat, pelatihan), jam, dan tempat, lalu Simpan agenda.',
+                'Di "Semua kuesioner", pilih tab Berjalan, Selesai, Draf, atau Semua; cari dan saring menurut periode.',
+                'Tutup formulir yang pendataannya sudah selesai agar pindah ke tab Selesai.',
+            ],
+            'fitur' => [
+                'Status' => 'Berjalan = terbit dan menerima isian; Selesai = sudah ditutup; Draf = belum pernah terbit.',
+                'Progres penugasan' => 'Untuk kuesioner bertautan penugasan: berapa tautan yang sudah diisi dari semuanya.',
+                'Tenggat otomatis' => 'Kalender menampilkan sendiri batas tautan penugasan, serta tanggal kuesioner terbit dan selesai.',
+                'Riwayat aktivitas' => 'Kuesioner dibuat, diterbitkan, versi baru, ditutup, dan dikunci, terbaru di atas.',
             ],
         ],
         [

@@ -109,7 +109,7 @@ class SurveyController extends Controller
 
     public function publish(Survey $survey): JsonResponse
     {
-        $survey->update(['published_at' => $survey->published_at ?? now()]);
+        $survey->update(['published_at' => $survey->published_at ?? now(), 'closed_at' => null]);
         SurveyVersions::record($survey);
 
         return response()->json(['data' => self::summary($survey->loadCount('responses'))]);
@@ -117,7 +117,7 @@ class SurveyController extends Controller
 
     public function unpublish(Survey $survey): JsonResponse
     {
-        $survey->update(['published_at' => null]);
+        $survey->update(['published_at' => null, 'closed_at' => $survey->published_at ? now() : $survey->closed_at]);
 
         return response()->json(['data' => self::summary($survey->loadCount('responses'))]);
     }

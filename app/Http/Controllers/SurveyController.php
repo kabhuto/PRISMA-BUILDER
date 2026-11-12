@@ -9,6 +9,7 @@ use App\Models\SurveyResponse;
 use App\Support\FieldValidation;
 use App\Support\Formula;
 use App\Support\Lookup;
+use App\Support\Monitoring;
 use App\Support\SurveyCheck;
 use App\Support\SurveyLogic;
 use App\Support\SurveyTemplates;
@@ -19,31 +20,22 @@ use Illuminate\View\View;
 
 class SurveyController extends Controller
 {
+    /**
+     * Beranda: where work starts. Quick actions, forms to carry on with, what needs a look, the
+     * agenda coming up, templates, and the latest responses.
+     */
     public function index(): View
     {
-        $surveys = Survey::query()->withCount('responses')->withMax('responses', 'created_at')->latest('updated_at')->get();
-
-        // Responses per day over the last two weeks, per form, for the small charts on the list.
-        $days = collect(range(13, 0))->map(fn (int $ago): string => now()->subDays($ago)->toDateString());
-        $daily = SurveyResponse::query()
-            ->where('created_at', '>=', now()->subDays(13)->startOfDay())
-            ->selectRaw('survey_id, DATE(created_at) as day, COUNT(*) as total')
-            ->groupBy('survey_id', 'day')
-            ->get()
-            ->groupBy('survey_id');
-        $trends = $surveys->mapWithKeys(fn (Survey $survey): array => [
-            $survey->id => $days->map(fn (string $day): int => (int) ($daily->get($survey->id)?->firstWhere('day', $day)?->total ?? 0))->all(),
-        ]);
+        $surveys = Survey::query()->withCount('responses')->latest('updated_at')->get();
 
         return view('surveys.index', [
             'surveys' => $surveys,
             'templates' => SurveyTemplates::all(),
-            // The periods the list can be narrowed to, e.g. "Triwulan 2".
-            'periods' => $surveys->map->periodLabel()->filter()->unique()->sort()->values(),
-            'trends' => $trends,
-            // The latest answers from any form, for the activity list on phones.
+            'totalTrend' => Monitoring::daily(14)['total'],
+            'continue' => $surveys->take(4),
+            'attention' => Monitoring::attention($surveys),
+            'upcoming' => Monitoring::upcoming(5),
             'recentResponses' => SurveyResponse::query()->with('survey:id,title,slug')->latest()->limit(5)->get(),
-            'totalTrend' => $days->keys()->map(fn (int $index): int => $trends->sum(fn (array $trend): int => $trend[$index]))->all(),
         ]);
     }
 

@@ -380,3 +380,71 @@
     .home-waves svg{height:90px}
     .admin-page:has(.home-waves) .app-footer{justify-content:center;padding:14px 16px 18px;text-align:center;font-size:11.5px}
 }
+
+/* ---------- Beranda: carry on, what needs a look, agenda, latest responses, PRISMA tour ---------- */
+.home-section-icon:not(.is-dots){display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:11px;background:color-mix(in srgb,var(--tone) 14%,var(--surface));color:var(--tone)}
+.home-section-icon:not(.is-dots) svg{width:19px;height:19px}
+.continue-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.continue-card{position:relative;display:flex;flex-direction:column;gap:6px;min-height:150px;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--text);text-decoration:none;overflow:hidden;transition:transform .15s,box-shadow .15s,border-color .15s}
+.continue-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#e0a23c}
+.continue-card.is-running::before{background:#1f9d55}
+.continue-card.is-done::before{background:#5b6b7a}
+.continue-card:hover{transform:translateY(-2px);border-color:var(--border-strong);box-shadow:0 12px 24px rgb(15 42 61 / .08)}
+.continue-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.continue-top small{font-size:11.5px;color:var(--text-3)}
+.continue-card strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.35;color:var(--home-ink)}
+.continue-meta{font-size:12px;color:var(--text-2)}
+.continue-go{display:inline-flex;align-items:center;gap:4px;margin-top:auto;color:var(--home-navy);font-size:12.5px;font-weight:700}
+.continue-go svg{width:14px;height:14px}
+.status-badge.is-done{background:color-mix(in srgb,#5b6b7a 15%,var(--surface));color:#4a5a69}
+.status-badge.is-locked{background:color-mix(in srgb,#2f6fd6 14%,var(--surface));color:#2456a6}
+.home-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin:0 0 34px}
+.home-panel{padding:18px 20px;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:0 1px 2px rgb(15 42 61 / .04)}
+.home-panel header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.home-panel h2{display:flex;align-items:center;gap:8px;margin:0;font-size:16px;font-weight:800;color:var(--home-ink)}
+.home-panel header a{color:var(--home-navy);font-size:13px;font-weight:700;text-decoration:none}
+.home-panel-dot{width:10px;height:10px;border-radius:50%;background:var(--tone);box-shadow:0 0 0 4px color-mix(in srgb,var(--tone) 18%,transparent)}
+.home-panel-empty{margin:8px 0;color:var(--text-3);font-size:13px}
+.home-panel-empty.is-good{color:#1f9d55;font-weight:600}
+.home-chip{padding:3px 10px;border:1px solid var(--border);border-radius:999px;font-size:12px;font-weight:600;color:var(--text-2)}
+.home-activity,.home-agenda{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--border);color:var(--text);text-decoration:none}
+.home-panel header+.home-activity,.home-panel header+.home-agenda{border-top:0}
+.home-activity:hover strong,.home-agenda:hover strong{color:var(--brand-strong)}
+.home-activity-icon{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:color-mix(in srgb,var(--tone) 14%,var(--surface));color:var(--tone)}
+.home-activity-icon svg{width:19px;height:19px}
+.home-activity-text{display:flex;flex-direction:column;flex:1;min-width:0}
+.home-activity-text strong{overflow:hidden;font-size:13.5px;text-overflow:ellipsis;white-space:nowrap}
+.home-activity-text small{overflow:hidden;font-size:12px;color:var(--text-3);text-overflow:ellipsis;white-space:nowrap}
+.home-activity time{flex:none;font-size:11.5px;color:var(--text-3)}
+.home-agenda-date{display:flex;flex-direction:column;align-items:center;flex:none;width:44px;padding:4px 0;border-radius:10px;background:color-mix(in srgb,var(--tone) 12%,var(--surface));color:var(--tone);line-height:1.1}
+.home-agenda-date b{font-size:17px}
+.home-agenda-date small{font-size:10.5px;font-weight:700;text-transform:uppercase}
+.home-tour{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 0;padding:0;list-style:none;counter-reset:tour}
+.home-tour li{position:relative;display:flex;flex-direction:column;padding:10px 10px 10px 40px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);counter-increment:tour}
+.home-tour li::before{content:counter(tour);position:absolute;left:10px;top:11px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--border);font-size:11.5px;font-weight:800;color:var(--text-2)}
+.home-tour li.is-here{border-color:var(--brand);background:var(--brand-soft)}
+.home-tour li.is-here::before{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.home-tour b{font-size:13px;color:var(--home-ink)}
+.home-tour span{font-size:11.5px;color:var(--text-3)}
+.home-anim .continue-card,.home-anim .home-panel{opacity:0;transform:translateY(16px)}
+
+/* Dashboard list: counts on the tabs, the finished edge, assignment progress. */
+.home-tabs b{margin-left:4px;padding:1px 7px;border-radius:999px;background:var(--surface-2);font-size:11.5px;color:var(--text-2)}
+.home-tabs button[aria-selected="true"] b{background:var(--brand-soft);color:var(--brand-strong)}
+.survey-row.is-done::before{background:#5b6b7a}
+.row-progress{display:flex;align-items:center;gap:10px;margin-top:8px}
+.row-progress-bar{flex:0 1 220px;height:7px;border-radius:999px;background:var(--surface-2);overflow:hidden}
+.row-progress-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#1f9d55,#4cc28a)}
+.row-progress small{font-size:12px;color:var(--text-2)}
+
+@media(max-width:1100px){.continue-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+    .home-pair{grid-template-columns:minmax(0,1fr);gap:16px;margin-bottom:22px}
+    .home-panel{padding:14px}
+    .continue-card{min-height:0;padding:14px}
+    .home-tour{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+    .row-progress{flex-wrap:wrap}
+}
+/* Icons in the home panels: strokes in their colour, filled pictures in their colour. */
+.home-panel svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.home-panel svg.icon-fill{fill:currentColor;stroke:none}

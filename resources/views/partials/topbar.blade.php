@@ -29,6 +29,8 @@
                 <div class="user-menu-pop">
                     <strong>{{ auth()->user()->name }}</strong>
                     <small>{{ auth()->user()->loginName() }}</small>
+                    <a href="{{ route('dashboard') }}">Dashboard</a>
+                    <a class="is-phone-only" href="{{ route('api-access.index') }}">Akses API</a>
                     <a href="{{ route('admins.index') }}">Kelola admin</a>
                     <a href="{{ route('panduan') }}">Panduan</a>
                     {{-- On a phone the logout icon leaves the bar, so it lives here. --}}

@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AccentColorController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ApiAccessController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataValidationController;
 use App\Http\Controllers\FormSubmissionController;
 use App\Http\Controllers\GoogleDriveController;
@@ -28,6 +30,9 @@ Route::post('/keluar', [LoginController::class, 'destroy'])->name('logout');
 Route::middleware('admin')->group(function (): void {
     Route::redirect('/', '/surveys');
     Route::view('/panduan', 'panduan.index')->name('panduan');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/agenda', [AgendaController::class, 'store'])->name('agenda.store');
+    Route::delete('/agenda/{agenda}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
 
     Route::post('/surveys/import', [SurveyJsonController::class, 'import'])->name('surveys.import');
     Route::get('/surveys/{survey}/export.json', [SurveyJsonController::class, 'export'])->name('surveys.export-json');

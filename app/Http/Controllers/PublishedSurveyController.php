@@ -16,7 +16,7 @@ class PublishedSurveyController extends Controller
             return back()->with('publishErrors', $errors)->with('error', 'Kuesioner belum dapat dipublikasikan. Perbaiki '.count($errors).' masalah pada pemeriksaan publikasi.');
         }
 
-        $survey->update(['published_at' => now()]);
+        $survey->update(['published_at' => now(), 'closed_at' => null]);
         $version = SurveyVersions::record($survey);
 
         return back()->with('status', "Kuesioner dipublikasikan (versi {$version->number}). Bagikan tautannya ke responden.");
@@ -24,7 +24,7 @@ class PublishedSurveyController extends Controller
 
     public function destroy(Survey $survey): RedirectResponse
     {
-        $survey->update(['published_at' => null]);
+        $survey->update(['published_at' => null, 'closed_at' => now()]);
 
         return back()->with('status', 'Kuesioner ditutup. Responden tidak dapat mengisi lagi.');
     }

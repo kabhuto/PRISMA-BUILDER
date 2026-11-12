@@ -423,3 +423,10 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
     .nav-add-circle svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
     .nav-add-label{white-space:nowrap}
 }
+/* Akses API is a tab on wide screens and an account-menu item on phones. */
+.user-menu-pop .is-phone-only{display:none}
+@media(max-width:760px){.main-nav .nav-link.is-desktop-only{display:none}.user-menu-pop .is-phone-only{display:block}}
+/* Five menu items: the tools on the right shorten step by step so the menu always fits. */
+@media(min-width:761px) and (max-width:1400px){.topbar-tools .theme-toggle-label{display:none}}
+@media(min-width:761px) and (max-width:1300px){.topbar-tools .help-link{font-size:0;gap:0;padding:0 10px}.user-menu .user-name{display:none}}
+@media(min-width:761px) and (max-width:1100px){.main-nav .nav-link span{display:none}.main-nav .nav-link{padding:0 12px}}

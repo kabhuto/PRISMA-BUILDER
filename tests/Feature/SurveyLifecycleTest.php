@@ -139,11 +139,14 @@ class SurveyLifecycleTest extends TestCase
         $survey = $this->makeSurvey();
         $survey->responses()->create(['answers' => ['q-nama' => 'Budi']]);
 
-        $this->get(route('surveys.index'))
+        $this->get(route('dashboard'))
             ->assertOk()
             ->assertSee('Survei Rumah Tangga')
-            ->assertSee('Terbit')
+            ->assertSee('Berjalan')
             ->assertSee(route('form.create', $survey));
+
+        // Beranda keeps the form at hand to carry on with.
+        $this->get(route('surveys.index'))->assertOk()->assertSee('Lanjutkan pekerjaan')->assertSee('Survei Rumah Tangga');
     }
 
     public function test_dashboard_offers_templates_for_any_activity(): void

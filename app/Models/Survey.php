@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at', 'locked_at', 'locked_note', 'assignment_only'])]
+#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at', 'closed_at', 'locked_at', 'locked_note', 'assignment_only'])]
 class Survey extends Model
 {
     public const QUESTION_TYPES = [
@@ -63,6 +63,11 @@ class Survey extends Model
      * Special answers a question may allow when the respondent cannot or will not answer; the
      * chosen one is stored under the question id plus STATUS_SUFFIX and the answer stays empty.
      */
+    /**
+     * The stages of a form, as the dashboard names them.
+     */
+    public const STATUSES = ['running' => 'Berjalan', 'done' => 'Selesai', 'draft' => 'Draf'];
+
     public const NONRESPONSE = ['tidak_tahu' => 'Tidak tahu', 'menolak' => 'Menolak menjawab'];
 
     public const STATUS_SUFFIX = '__status';
@@ -343,6 +348,7 @@ class Survey extends Model
             'header' => 'array',
             'intro' => 'array',
             'published_at' => 'datetime',
+            'closed_at' => 'datetime',
             'locked_at' => 'datetime',
             'assignment_only' => 'boolean',
         ];
@@ -417,6 +423,23 @@ class Survey extends Model
     public function isPublished(): bool
     {
         return $this->published_at !== null;
+    }
+
+    /**
+     * Where the form stands: running while published, finished once closed, a draft until first published.
+     */
+    public function status(): string
+    {
+        return match (true) {
+            $this->published_at !== null => 'running',
+            $this->closed_at !== null => 'done',
+            default => 'draft',
+        };
+    }
+
+    public function statusLabel(): string
+    {
+        return self::STATUSES[$this->status()];
     }
 
     /**
