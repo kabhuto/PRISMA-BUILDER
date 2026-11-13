@@ -5,7 +5,7 @@
     @else
         <span class="fill-brand">
     @endauth
-        <span class="brand-mark">b<span>p</span>s</span>
+        @if ($navbarLogo = \App\Support\AppSettings::logo('navbar'))<img class="brand-logo" src="{{ $navbarLogo }}" alt="Logo">@else<span class="brand-mark">b<span>p</span>s</span>@endif
         <span class="brand-name">PRISMA<span>RISET · SURVEI · DATA</span></span>
     @auth
         </a>

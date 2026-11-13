@@ -413,3 +413,6 @@ body.nav-open{overflow:hidden}
 @media(max-width:1000px){.fill-nav .nav-link span,.fill-user-name{display:none}}
 @media(max-width:760px){.fill-topbar{height:56px;gap:10px;padding:0 12px}.fill-nav{display:none}.fill-pill span,.fill-topbar .theme-toggle-label{display:none}.fill-pill,.fill-topbar .theme-toggle{padding:0 10px}}
 .fill-nav .nav-link.is-active{background:var(--k-087e78);color:var(--k-ffffff)}
+
+/* An uploaded logo in place of the "bps" mark. */
+.fill-brand .brand-logo{display:block;height:32px;width:auto;max-width:110px;object-fit:contain}

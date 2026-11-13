@@ -32,6 +32,7 @@
         <a href="#alat">Alat &amp; jenis isian</a>
         <a href="#template">Template</a>
         <a href="#kuesioner">Kuesioner</a>
+        <a href="#logo">Logo</a>
         <a href="{{ route('admins.index') }}">Kelola admin →</a>
         <a href="{{ route('api-access.index') }}">Akses API →</a>
     </nav>
@@ -177,6 +178,46 @@
                 <button class="button button-primary" type="submit">Buat template</button>
                 <p class="setting-note">Blok dan pertanyaan disalin; kuesioner sumber tidak berubah. Template baru langsung tampil di halaman Buat.</p>
             </form>
+        </div>
+    </section>
+
+    <section class="monitor-card" id="logo" aria-labelledby="logo-heading">
+        <header><h2 id="logo-heading">Logo</h2></header>
+        <p class="muted">Ganti gambar logo untuk semua pengguna. PNG dengan latar transparan paling rapi; paling besar 2 MB. Tekan <b>Bawaan</b> untuk kembali ke logo semula.</p>
+        <div class="logo-grid">
+            @foreach ($logos as $key => $logo)
+                <article class="logo-card">
+                    <div @class(['logo-preview', 'logo-preview-'.$key])>
+                        @if ($logo['url'])
+                            <img src="{{ $logo['url'] }}" alt="{{ $logo['label'] }}">
+                        @elseif ($key === 'navbar')
+                            <span class="brand-mark">b<span>p</span>s</span>
+                        @elseif ($key === 'prisma')
+                            @include('partials.prisma-mark', ['class' => 'logo-preview-mark', 'idSuffix' => 'k'])
+                        @else
+                            <span class="logo-preview-tab"><img src="{{ asset('favicon.ico') }}" alt="">PRISMA</span>
+                        @endif
+                    </div>
+                    <strong>{{ $logo['label'] }} @if ($logo['url'])<span class="logo-badge">Diganti</span>@else<span class="logo-badge is-default">Bawaan</span>@endif</strong>
+                    <small>{{ $logo['description'] }}</small>
+                    <form class="logo-form" method="POST" action="{{ route('settings.logo', $key) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <label class="logo-file">
+                            <input type="file" name="logo" accept="image/png,image/jpeg,image/webp,.ico" required onchange="this.form.requestSubmit()">
+                            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg> Unggah gambar</span>
+                        </label>
+                    </form>
+                    @if ($logo['url'])
+                        <form method="POST" action="{{ route('settings.logo', $key) }}">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="reset" value="1">
+                            <button class="button button-ghost button-small" type="submit">Bawaan</button>
+                        </form>
+                    @endif
+                </article>
+            @endforeach
         </div>
     </section>
 

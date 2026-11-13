@@ -8,6 +8,7 @@ use App\Support\AppSettings;
 use App\Support\SurveyTemplates;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -29,6 +30,7 @@ class SettingsController extends Controller
             'builtIn' => SurveyTemplates::builtIn(),
             'hiddenTemplates' => SurveyTemplates::hiddenBuiltIns(),
             'customTemplates' => SurveyTemplate::query()->with('creator:id,name')->orderBy('sort')->orderBy('id')->get(),
+            'logos' => collect(AppSettings::LOGOS)->map(fn (array $logo, string $key): array => $logo + ['url' => AppSettings::logo($key)]),
             'surveys' => Survey::query()->with('creator:id,name')->withCount('responses')->latest('updated_at')->get(),
         ]);
     }
@@ -66,6 +68,33 @@ class SettingsController extends Controller
         AppSettings::put('hidden_question_types', array_values(array_diff(array_keys(Survey::QUESTION_TYPES), $data['types'] ?? [])));
 
         return redirect()->to(route('settings.index').'#alat')->with('status', 'Alat dan jenis isian yang boleh dipakai disimpan.');
+    }
+
+    /**
+     * Uploads a new picture for a logo, or goes back to the built-in one.
+     */
+    public function logo(Request $request, string $which): RedirectResponse
+    {
+        abort_unless(array_key_exists($which, AppSettings::LOGOS), 404);
+        $old = AppSettings::get('logo_'.$which);
+        $label = AppSettings::LOGOS[$which]['label'];
+
+        if ($request->boolean('reset')) {
+            AppSettings::put('logo_'.$which, null);
+            $message = $label.' kembali ke bawaan.';
+        } else {
+            $request->validate(
+                ['logo' => ['required', 'file', 'mimes:png,jpg,jpeg,webp,ico', 'max:2048']],
+                ['logo.required' => 'Pilih gambar dulu.', 'logo.mimes' => 'Gambar harus PNG, JPG, WEBP, atau ICO.', 'logo.max' => 'Ukuran gambar paling besar 2 MB.'],
+            );
+            AppSettings::put('logo_'.$which, $request->file('logo')->store('logos', 'public'));
+            $message = $label.' diganti.';
+        }
+        if (is_string($old) && $old !== '') {
+            Storage::disk('public')->delete($old);
+        }
+
+        return redirect()->to(route('settings.index').'#logo')->with('status', $message);
     }
 
     /**

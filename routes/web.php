@@ -84,6 +84,7 @@ Route::middleware('admin')->group(function (): void {
         Route::get('/kelola', [SettingsController::class, 'index'])->name('settings.index');
         Route::put('/kelola/menu', [SettingsController::class, 'menu'])->name('settings.menu');
         Route::put('/kelola/alat', [SettingsController::class, 'tools'])->name('settings.tools');
+        Route::put('/kelola/logo/{which}', [SettingsController::class, 'logo'])->name('settings.logo');
         Route::put('/kelola/kuesioner/{survey}', [SettingsController::class, 'survey'])->name('settings.survey');
         Route::post('/kelola/template', [SurveyTemplateController::class, 'store'])->name('templates.store');
         Route::put('/kelola/template/{template}', [SurveyTemplateController::class, 'update'])->name('templates.update');

@@ -15,3 +15,6 @@
 @if ($accentColor)
     <link rel="stylesheet" href="{{ route('accent.css', ['hex' => ltrim($accentColor, '#'), 'v' => \App\Support\Palette::cssVersion()]) }}" data-accent-css>
 @endif
+@if ($tabIcon = \App\Support\AppSettings::logo('favicon'))
+    <link rel="icon" href="{{ $tabIcon }}">
+@endif

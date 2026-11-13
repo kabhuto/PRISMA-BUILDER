@@ -9,6 +9,8 @@ use App\Models\SurveyTemplate;
 use App\Models\User;
 use App\Support\AppSettings;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class RolesAndSettingsTest extends TestCase
@@ -124,6 +126,31 @@ class RolesAndSettingsTest extends TestCase
         $this->get(route('history.index'))->assertOk()->assertSee('Kuesioner Saya')->assertDontSee('Kuesioner Rekan')->assertSee('Kuesioner dibuat: Kuesioner Saya');
 
         $this->post(route('surveys.store'), [])->assertSessionHasErrors();
+    }
+
+    public function test_a_superadmin_swaps_the_logos_and_admins_cannot(): void
+    {
+        Storage::fake('public');
+        $this->actingAs(User::factory()->employee()->create());
+        $this->put(route('settings.logo', 'navbar'), ['logo' => UploadedFile::fake()->image('logo.png', 120, 40)])->assertForbidden();
+
+        $this->actingAs(User::factory()->create());
+        $this->put(route('settings.logo', 'navbar'), ['logo' => UploadedFile::fake()->image('logo.png', 120, 40)])->assertRedirect();
+        $this->put(route('settings.logo', 'prisma'), ['logo' => UploadedFile::fake()->image('p.png', 64, 74)])->assertRedirect();
+        $this->put(route('settings.logo', 'favicon'), ['logo' => UploadedFile::fake()->image('ikon.png', 64, 64)])->assertRedirect();
+        $this->put(route('settings.logo', 'navbar'), ['logo' => UploadedFile::fake()->create('logo.svg', 4, 'image/svg+xml')])->assertSessionHasErrors('logo');
+        $this->put(route('settings.logo', 'lain'), [])->assertNotFound();
+
+        $navbar = AppSettings::get('logo_navbar');
+        Storage::disk('public')->assertExists($navbar);
+        $this->get(route('surveys.index'))->assertOk()
+            ->assertSee('class="brand-logo" src="'.asset('storage/'.$navbar).'"', false)
+            ->assertSee('home-mark is-uploaded', false)
+            ->assertSee('<link rel="icon" href="'.asset('storage/'.AppSettings::get('logo_favicon')).'">', false);
+
+        $this->put(route('settings.logo', 'navbar'), ['reset' => 1])->assertRedirect();
+        Storage::disk('public')->assertMissing($navbar);
+        $this->get(route('surveys.index'))->assertSee('<span class="brand-mark">', false);
     }
 
     public function test_a_superadmin_makes_templates_from_forms_and_hides_built_in_ones(): void

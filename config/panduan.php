@@ -370,6 +370,7 @@ return [
                 'Alat & jenis isian: hapus centang alat (mis. Impor, Google Drive) atau jenis isian yang tidak boleh dipakai admin.',
                 'Template: jadikan kuesioner sebagai template kantor, ubah nama/isinya, sembunyikan, atau hapus. Template bawaan bisa disembunyikan.',
                 'Kuesioner: sembunyikan kuesioner yang tidak boleh dipakai. Admin tidak melihatnya dan tautan pengisiannya tertutup.',
+                'Logo: unggah gambar pengganti logo navbar (bps), logo PRISMA di Beranda, dan ikon tab browser. Tekan Bawaan untuk kembali ke logo semula.',
             ],
             'tips' => [
                 'Superadmin selalu melihat semua menu dan alat; yang disembunyikan ditandai coret.',

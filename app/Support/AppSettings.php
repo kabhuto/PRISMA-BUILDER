@@ -42,6 +42,28 @@ class AppSettings
     ];
 
     /**
+     * Pictures a superadmin may swap: the mark in the top bar, the PRISMA mark of the home page, and
+     * the icon in the browser tab. Each falls back to the built-in drawing when none is uploaded.
+     *
+     * @var array<string, array{label: string, description: string}>
+     */
+    public const LOGOS = [
+        'navbar' => ['label' => 'Logo navbar', 'description' => 'Pengganti tulisan "bps" di kiri atas setiap halaman (juga halaman masuk dan formulir responden).'],
+        'prisma' => ['label' => 'Logo PRISMA', 'description' => 'Pengganti logo "P" di hero Beranda dan di samping judul PRISMA.'],
+        'favicon' => ['label' => 'Ikon tab (judul)', 'description' => 'Ikon kecil di tab browser, di samping judul halaman. Paling bagus persegi, misalnya 64×64 piksel.'],
+    ];
+
+    /**
+     * The address of an uploaded logo, or null for the built-in one.
+     */
+    public static function logo(string $which): ?string
+    {
+        $path = self::get('logo_'.$which);
+
+        return is_string($path) && $path !== '' ? asset('storage/'.$path) : null;
+    }
+
+    /**
      * Settings read during this request, so the menu and the checks ask the database once.
      */
     private static function cache(): \ArrayObject
@@ -65,6 +87,12 @@ class AppSettings
 
     public static function put(string $key, mixed $value): void
     {
+        if ($value === null) {
+            AppSetting::query()->whereKey($key)->delete();
+            self::cache()[$key] = null;
+
+            return;
+        }
         AppSetting::query()->updateOrCreate(['key' => $key], ['value' => $value]);
         self::cache()[$key] = $value;
     }

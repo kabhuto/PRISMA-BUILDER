@@ -1,4 +1,7 @@
 {{-- The PRISMA mark: a faceted "P", its colours the stages data goes through. --}}
+@if ($prismaLogo = \App\Support\AppSettings::logo('prisma'))
+    <img class="{{ $class ?? 'prisma-mark' }} is-uploaded" src="{{ $prismaLogo }}" alt="" aria-hidden="true">
+@else
 @php($id = 'pm'.($idSuffix ?? ''))
 <svg class="{{ $class ?? 'prisma-mark' }}" viewBox="0 0 64 74" aria-hidden="true">
     <defs>
@@ -18,3 +21,4 @@
     <polygon points="25,14 47,23 25,26" fill="#2b77d6" opacity=".7"/>
     <polygon points="25,26 47,31 25,39" fill="#f6a24a" opacity=".55"/>
 </svg>
+@endif
