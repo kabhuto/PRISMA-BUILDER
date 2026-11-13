@@ -14,7 +14,7 @@ class AdminUserManagementTest extends TestCase
     private function signedIn(): User
     {
         config(['app.admin_open_on_lan' => false]);
-        $admin = User::query()->create(['name' => 'Admin Utama', 'username' => 'admin3526', 'email' => User::placeholderEmail('admin3526'), 'password' => 'sandi-uji-123']);
+        $admin = User::query()->create(['name' => 'Admin Utama', 'username' => 'admin3526', 'role' => 'superadmin', 'email' => User::placeholderEmail('admin3526'), 'password' => 'sandi-uji-123']);
         $this->actingAs($admin);
 
         return $admin;
@@ -37,17 +37,26 @@ class AdminUserManagementTest extends TestCase
 
         $this->post(route('admins.store'), ['name' => 'Humas', 'username' => 'humas3526', 'email' => '', 'password' => 'humas-12345', 'password_confirmation' => 'humas-12345'])
             ->assertRedirect(route('admins.index'))
-            ->assertSessionHas('status', 'Admin humas3526 ditambahkan.');
-        $this->post(route('admins.store'), ['name' => 'IPDS', 'email' => 'ipds@bps.go.id', 'password' => 'ipds-12345', 'password_confirmation' => 'ipds-12345'])->assertRedirect();
+            ->assertSessionHas('status', 'Admin (pegawai) humas3526 ditambahkan.');
+        $this->post(route('admins.store'), ['name' => 'IPDS', 'role' => 'superadmin', 'email' => 'ipds@bps.go.id', 'password' => 'ipds-12345', 'password_confirmation' => 'ipds-12345'])->assertRedirect();
 
         $humas = User::query()->where('username', 'humas3526')->sole();
         $this->assertFalse($humas->hasRealEmail());
         $this->assertNull(User::query()->where('email', 'ipds@bps.go.id')->sole()->username);
 
-        // The new admin has full access.
+        $this->assertSame('admin', $humas->role);
+        $this->assertTrue(User::query()->where('email', 'ipds@bps.go.id')->sole()->isSuperadmin());
+
+        // An admin (pegawai) works on forms but does not run the app.
         $this->post(route('logout'));
         $this->post(route('login.store'), ['login' => 'humas3526', 'password' => 'humas-12345'])->assertRedirect(route('surveys.index'));
-        $this->get(route('admins.index'))->assertOk()->assertSee('ipds@bps.go.id');
+        $this->get(route('surveys.index'))->assertOk();
+        $this->get(route('admins.index'))->assertForbidden();
+
+        // A superadmin does.
+        $this->post(route('logout'));
+        $this->post(route('login.store'), ['login' => 'ipds@bps.go.id', 'password' => 'ipds-12345']);
+        $this->get(route('admins.index'))->assertOk()->assertSee('humas3526');
     }
 
     public function test_new_admins_are_validated(): void
@@ -79,6 +88,13 @@ class AdminUserManagementTest extends TestCase
 
         $this->put(route('admins.update', $other), ['name' => 'Baru', 'password' => 'sandi-baru-2', 'password_confirmation' => 'sandi-baru-2'])->assertRedirect();
         $this->assertTrue(Hash::check('sandi-baru-2', $other->fresh()->password));
+
+        // Roles change; one's own role and the last superadmin stay.
+        $this->put(route('admins.update', $other), ['name' => 'Baru', 'role' => 'superadmin'])->assertRedirect();
+        $this->assertTrue($other->fresh()->isSuperadmin());
+        $this->put(route('admins.update', $me), ['name' => 'Admin Utama', 'role' => 'admin'])->assertSessionHasErrors(['admin' => 'Peran akun sendiri tidak dapat diturunkan.']);
+        $this->put(route('admins.update', $other), ['name' => 'Baru', 'role' => 'admin'])->assertRedirect();
+        $this->assertFalse($other->fresh()->isSuperadmin());
 
         // One's own account and the last admin stay.
         $this->delete(route('admins.destroy', $me))->assertSessionHasErrors(['admin' => 'Akun yang sedang dipakai tidak dapat dihapus.']);

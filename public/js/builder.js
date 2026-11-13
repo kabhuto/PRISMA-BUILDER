@@ -1216,7 +1216,7 @@
             ${question.disabled ? '<p class="setting-note">Isian nonaktif tampil tetapi tidak bisa diubah responden; nilainya diambil dari nilai awal.</p>' : ''}
             <label class="setting-field"><span>Jenis isian</span>
                 <select class="setting-select" data-setting="type">
-                    ${Object.entries(config.questionTypes).map(([type, label]) => `<option value="${type}" ${type === question.type ? 'selected' : ''}>${escapeHtml(label)}</option>`).join('')}
+                    ${Object.entries(config.questionTypes).filter(([type]) => type === question.type || !config.offeredTypes || config.offeredTypes.includes(type)).map(([type, label]) => `<option value="${type}" ${type === question.type ? 'selected' : ''}>${escapeHtml(label)}</option>`).join('')}
                 </select>
             </label>
             ${hasCodeBoxes ? `<label class="setting-field"><span>Jumlah kotak kode <small>(0–${config.maxCodeLength})</small></span>
@@ -1410,7 +1410,7 @@
                 <label class="setting-field"><span>Tambah isian ke blok ini</span>
                     <select class="setting-select" data-setting="add-question">
                         <option value="">Pilih jenis…</option>
-                        ${Object.entries(config.questionTypes).map(([type, label]) => `<option value="${type}">${escapeHtml(label)}</option>`).join('')}
+                        ${Object.entries(config.questionTypes).filter(([type]) => !config.offeredTypes || config.offeredTypes.includes(type)).map(([type, label]) => `<option value="${type}">${escapeHtml(label)}</option>`).join('')}
                     </select>
                 </label>
                 <div class="logic-editor" id="logic-editor"></div>

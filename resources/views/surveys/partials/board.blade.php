@@ -1,11 +1,12 @@
 {{-- Every form, by stage (running, finished, draft), with search, period filter, list or cards, and assignment progress. --}}
 @php
     $icons = \App\Support\Ui::ICONS;
+    $tool = fn (string $name): bool => \App\Support\AppSettings::toolOn($name);
     $counts = $surveys->countBy(fn ($survey) => $survey->status());
 @endphp
-<section class="home-section" aria-labelledby="list-heading" data-survey-board>
+<section class="home-section" id="semua" aria-labelledby="list-heading" data-survey-board>
     <header class="home-list-head">
-        <h2 id="list-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['clipboard'] }}"/></svg> Semua kuesioner</h2>
+        <h2 id="list-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['clipboard'] }}"/></svg> {{ $boardTitle ?? 'Semua kuesioner' }}</h2>
         <div class="home-tabs" role="tablist" aria-label="Status kuesioner">
             @foreach (['running' => 'Berjalan', 'done' => 'Selesai', 'draft' => 'Draf', 'all' => 'Semua'] as $key => $label)
                 <button type="button" role="tab" aria-selected="{{ $key === 'running' ? 'true' : 'false' }}" data-tab="{{ $key }}">{{ $label }} <b>{{ $key === 'all' ? $surveys->count() : ($counts[$key] ?? 0) }}</b></button>
@@ -36,8 +37,8 @@
         <div class="empty-state">
             <span class="empty-icon">▤</span>
             <h2>Belum ada kuesioner</h2>
-            <p>Mulai dari template di Beranda atau dari formulir kosong, lalu bagikan tautannya ke responden.</p>
-            <a class="button button-primary" href="{{ route('surveys.create') }}">Buat kuesioner kosong</a>
+            <p>Mulai dari template atau dari formulir kosong, lalu bagikan tautannya ke responden.</p>
+            <a class="button button-primary" href="{{ route('surveys.start') }}">Buat kuesioner</a>
         </div>
     @else
         <div class="survey-rows" data-survey-list>
@@ -55,13 +56,15 @@
                             <span @class(['status-badge', 'is-published' => $status === 'running', 'is-done' => $status === 'done'])>{{ $survey->statusLabel() }}</span>
                             @if ($survey->form_code)<span class="mono-chip">{{ $survey->form_code }}</span>@endif
                             @if ($survey->isLocked())<span class="status-badge is-locked" title="{{ $survey->locked_note }}">Dikunci</span>@endif
+                            @if ($survey->isHidden())<span class="status-badge is-hidden" title="Disembunyikan superadmin: admin tidak melihatnya dan tautannya tertutup">Disembunyikan</span>@endif
+                            @if ($survey->collect_deadline && $status !== 'done')<span class="row-deadline" title="Tenggat pendataan">Tenggat {{ $survey->collect_deadline->translatedFormat('d M') }}</span>@endif
                             <span class="muted">Diubah {{ $survey->updated_at->translatedFormat('d M Y, H:i') }}</span>
                             @if ($survey->responses_max_created_at)
                                 <span class="row-fresh">Respons terakhir {{ \Illuminate\Support\Carbon::parse($survey->responses_max_created_at)->diffForHumans() }}</span>
                             @endif
                         </div>
                         <h3><a href="{{ route('surveys.edit', $survey) }}">{{ $survey->title }}</a></h3>
-                        <p>{{ collect([$survey->activity, $survey->periodLabel()])->filter()->implode(' · ') }} · {{ count($survey->blocks ?? []) }} blok · {{ count($survey->questions()) }} pertanyaan</p>
+                        <p>{{ collect([$survey->activity, $survey->periodLabel()])->filter()->implode(' · ') }} · {{ count($survey->blocks ?? []) }} blok · {{ count($survey->questions()) }} pertanyaan @if ($survey->creator)· <span class="row-author">oleh {{ auth()->id() === $survey->user_id ? 'Anda' : $survey->creator->name }}</span>@endif</p>
                         @if ($total)
                             <div class="row-progress" title="Penugasan yang sudah diisi">
                                 <span class="row-progress-bar"><i style="width: {{ round($done / $total * 100) }}%"></i></span>
@@ -76,11 +79,15 @@
                         <details class="row-menu">
                             <summary class="row-button is-icon" aria-label="Tindakan lain untuk {{ $survey->title }}" title="Tindakan lain">⋯</summary>
                             <div class="row-menu-pop">
-                                <a href="{{ route('surveys.export-json', $survey) }}" title="Struktur, aturan validasi, dan semua respons">Ekspor JSON</a>
-                                <a href="{{ route('surveys.export-formgear', $survey) }}" title="Template, validasi, dan preset FormGear/FASIH (ZIP)">Ekspor FormGear</a>
-                                <a href="{{ route('assignments.index', $survey) }}">Penugasan</a>
+                                @if ($tool('laporan'))<a href="{{ route('progress.index', $survey) }}">Tenggat &amp; laporan</a>@endif
+                                @if ($tool('penugasan'))<a href="{{ route('assignments.index', $survey) }}">Penugasan</a>@endif
+                                <a href="{{ route('surveys.preview-phone', $survey) }}">Uji di HP</a>
+                                @if ($tool('ekspor'))
+                                    <a href="{{ route('surveys.export-json', $survey) }}" title="Struktur, aturan validasi, dan semua respons">Ekspor JSON</a>
+                                    <a href="{{ route('surveys.export-formgear', $survey) }}" title="Template, validasi, dan preset FormGear/FASIH (ZIP)">Ekspor FormGear</a>
+                                @endif
                                 <a href="{{ route('surveys.versions.index', $survey) }}">Riwayat versi</a>
-                                <a href="{{ route('surveys.print', $survey) }}">Cetak</a>
+                                @if ($tool('cetak'))<a href="{{ route('surveys.print', $survey) }}">Cetak</a>@endif
                                 @if ($survey->isPublished())
                                     <input class="sr-only" type="text" value="{{ route('form.create', $survey) }}" id="share-{{ $survey->id }}" readonly tabindex="-1" aria-hidden="true">
                                     <button type="button" data-copy="#share-{{ $survey->id }}">Salin tautan</button>

@@ -25,6 +25,7 @@
     $hour = (int) now('Asia/Jakarta')->format('G');
     $greeting = match (true) { $hour < 11 => 'Selamat pagi', $hour < 15 => 'Selamat siang', $hour < 18 => 'Selamat sore', default => 'Selamat malam' };
     $tones = ['#2f6fd6', '#0f9d8f', '#e8892b', '#7a8f8b', '#1f9d55'];
+    $tool = fn (string $name): bool => \App\Support\AppSettings::toolOn($name);
 @endphp
 
 @section('content')
@@ -59,19 +60,28 @@
             @include('partials.prisma-mark', ['class' => 'home-welcome-mark', 'idSuffix' => 'w'])
         </div>
         <div class="home-quick">
-            <button type="button" data-open-templates-quick>
+            <a href="{{ route('surveys.start') }}">
                 <span style="--tone: #1f9d55"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['plus'] }}"/></svg></span>Template
-            </button>
-            <a href="{{ route('validation.create') }}">
-                <span style="--tone: #2f6fd6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['shield'] }}"/></svg></span>Validasi
             </a>
-            <form method="POST" action="{{ route('surveys.import') }}" enctype="multipart/form-data">
-                @csrf
-                <label>
-                    <span style="--tone: #e8892b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['upload'] }}"/></svg></span>Impor
-                    <input class="sr-only" type="file" name="files[]" accept=".json,application/json" multiple onchange="this.form.submit()">
-                </label>
-            </form>
+            @if (\App\Support\AppSettings::menuOn('dashboard'))
+                <a href="{{ route('dashboard') }}">
+                    <span style="--tone: #0f9d8f"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z"/></svg></span>Dashboard
+                </a>
+            @endif
+            @if ($tool('validasi'))
+                <a href="{{ route('validation.create') }}">
+                    <span style="--tone: #2f6fd6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['shield'] }}"/></svg></span>Validasi
+                </a>
+            @endif
+            @if ($tool('impor'))
+                <form method="POST" action="{{ route('surveys.import') }}" enctype="multipart/form-data">
+                    @csrf
+                    <label>
+                        <span style="--tone: #e8892b"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['upload'] }}"/></svg></span>Impor
+                        <input class="sr-only" type="file" name="files[]" accept=".json,application/json" multiple onchange="this.form.submit()">
+                    </label>
+                </form>
+            @endif
         </div>
         <div class="home-hero-body">
             <div class="home-title">
@@ -85,19 +95,23 @@
                 </div>
             </div>
             <div class="home-actions">
-                <a class="home-button is-green" href="#template-heading">
+                <a class="home-button is-green" href="{{ route('surveys.start') }}">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['plus'] }}"/></svg> Buat dari template
                 </a>
-                <a class="home-button" href="{{ route('validation.create') }}">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['shield'] }}"/></svg> Validasi data
-                </a>
-                <form class="import-form" method="POST" action="{{ route('surveys.import') }}" enctype="multipart/form-data">
-                    @csrf
-                    <label class="home-button" title="File ekspor JSON PRISMA, atau template FormGear/FASIH (boleh pilih template.json + validation.json + preset.json sekaligus)">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['upload'] }}"/></svg> Impor JSON / FormGear
-                        <input class="sr-only" type="file" name="files[]" accept=".json,application/json" multiple onchange="this.form.submit()">
-                    </label>
-                </form>
+                @if ($tool('validasi'))
+                    <a class="home-button" href="{{ route('validation.create') }}">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['shield'] }}"/></svg> Validasi data
+                    </a>
+                @endif
+                @if ($tool('impor'))
+                    <form class="import-form" method="POST" action="{{ route('surveys.import') }}" enctype="multipart/form-data">
+                        @csrf
+                        <label class="home-button" title="File ekspor JSON PRISMA, atau template FormGear/FASIH (boleh pilih template.json + validation.json + preset.json sekaligus)">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['upload'] }}"/></svg> Impor JSON / FormGear
+                            <input class="sr-only" type="file" name="files[]" accept=".json,application/json" multiple onchange="this.form.submit()">
+                        </label>
+                    </form>
+                @endif
                 <a class="home-button is-navy" href="{{ route('surveys.create') }}">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['plus'] }}"/></svg> Buat kuesioner
                 </a>
@@ -129,12 +143,12 @@
             <span class="home-section-icon" style="--tone: #2f6fd6"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['edit'] }}"/></svg></span>
             <div>
                 <h2 id="continue-heading">Lanjutkan pekerjaan</h2>
-                <p>Kuesioner yang terakhir Anda ubah.</p>
+                <p>Kuesioner buatan Anda yang terakhir diubah.</p>
             </div>
-            <a class="home-link" href="{{ route('dashboard') }}#list-heading">Semua kuesioner <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></a>
+            <a class="home-link" href="#semua">Semua kuesioner <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></a>
         </header>
         @if ($continue->isEmpty())
-            <p class="home-panel-empty">Belum ada kuesioner. Mulai dari template di bawah atau tombol Buat kuesioner.</p>
+            <p class="home-panel-empty">Belum ada kuesioner. Mulai dari tombol <a href="{{ route('surveys.start') }}">Buat</a>.</p>
         @else
             <div class="continue-cards">
                 @foreach ($continue as $survey)
@@ -180,6 +194,8 @@
         </section>
     </div>
 
+    @include('surveys.partials.board', ['boardTitle' => 'Semua kuesioner'])
+
     <section class="home-section" aria-labelledby="template-heading">
         <header class="home-section-head">
             <span class="home-section-icon is-dots" aria-hidden="true"></span>
@@ -187,7 +203,7 @@
                 <h2 id="template-heading">Template Kuesioner</h2>
                 <p>Mulai lebih cepat dengan template siap pakai sesuai kebutuhan survei.</p>
             </div>
-            <button class="home-link" type="button" aria-expanded="false" data-open-templates>Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></button>
+            <a class="home-link" href="{{ route('surveys.start') }}">Lihat semua template <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons['arrow'] }}"/></svg></a>
         </header>
         <div class="template-cards">
             @foreach ($templates as $key => $template)
@@ -201,35 +217,12 @@
                 </a>
             @endforeach
         </div>
-        <dialog class="template-dialog" aria-labelledby="template-dialog-title" data-template-dialog>
-            <header>
-                <h2 id="template-dialog-title">Semua template</h2>
-                <button type="button" class="row-button is-icon" aria-label="Tutup" data-close-templates>✕</button>
-            </header>
-            <p>Setiap template hanya titik awal: blok dan pertanyaannya bisa diubah setelah dibuat.</p>
-            @foreach ($templates as $key => $template)
-                @php([$picture, $tone] = $looks[$key] ?? [$pictures['clipboard'], '#2f6fd6'])
-                <article class="template-detail" style="--tone: {{ $tone }}">
-                    <span class="template-tile-icon"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $picture !!}</svg></span>
-                    <div>
-                        <strong>{{ $template['label'] }}</strong>
-                        <span>{{ $template['description'] }}</span>
-                        <ul>
-                            @foreach (\App\Support\SurveyTemplates::blocks($key) as $block)
-                                <li>{{ $block['title'] ?: 'Blok tanpa judul' }} · {{ count($block['questions'] ?? []) }} pertanyaan</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    <a class="home-button" href="{{ route('surveys.create', ['template' => $key]) }}">Gunakan</a>
-                </article>
-            @endforeach
-        </dialog>
     </section>
 
 
     <div class="home-pair">
         <section class="home-panel" aria-labelledby="recent-heading">
-            <header><h2 id="recent-heading"><span class="home-panel-dot" style="--tone: #0f9d8f"></span>Respons terbaru</h2><a href="{{ route('dashboard') }}">Dashboard</a></header>
+            <header><h2 id="recent-heading"><span class="home-panel-dot" style="--tone: #0f9d8f"></span>Respons terbaru</h2>@if (\App\Support\AppSettings::menuOn('dashboard'))<a href="{{ route('dashboard') }}">Dashboard</a>@endif</header>
             @forelse ($recentResponses as $response)
                 <a class="home-activity" href="{{ route('surveys.responses.show', [$response->survey_id, $response->id]) }}" style="--tone: {{ $tones[$response->survey_id % count($tones)] }}">
                     <span class="home-activity-icon is-fill"><svg class="icon-fill" viewBox="0 0 24 24" aria-hidden="true">{!! $pictures['clipboard'] !!}</svg></span>
@@ -271,7 +264,7 @@
                 entry.target.classList.add('is-in');
                 shown.unobserve(entry.target);
             }), { rootMargin: '0px 0px -40px 0px' });
-            document.querySelectorAll('.home-hero-body, .home-stat, .template-tile, .continue-card, .home-panel, .home-section-head').forEach(item => shown.observe(item));
+            document.querySelectorAll('.home-hero-body, .home-stat, .template-tile, .continue-card, .home-panel, .home-section-head, .home-list-head, .survey-row').forEach(item => shown.observe(item));
 
             document.querySelectorAll('[data-count]').forEach(number => {
                 const target = Number(number.dataset.count);
@@ -296,24 +289,6 @@
             document.addEventListener('click', event => {
                 document.querySelectorAll('.row-menu[open]').forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
             });
-            const dialog = document.querySelector('[data-template-dialog]');
-            // On a phone the cards are hidden until asked for, then open in place; elsewhere the full list opens.
-            const phone = matchMedia('(max-width: 760px)');
-            const cards = document.querySelector('.template-cards');
-            document.querySelector('[data-open-templates-quick]')?.addEventListener('click', () => {
-                const more = document.querySelector('[data-open-templates]');
-                if (!document.querySelector('.template-cards').classList.contains('is-open')) more.click();
-                document.getElementById('template-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-            document.querySelector('[data-open-templates]')?.addEventListener('click', event => {
-                if (!phone.matches) return dialog.showModal();
-                const open = cards.classList.toggle('is-open');
-                event.currentTarget.classList.toggle('is-open', open);
-                event.currentTarget.firstChild.textContent = open ? 'Sembunyikan template ' : 'Lihat semua template ';
-                event.currentTarget.setAttribute('aria-expanded', String(open));
-            });
-            dialog.querySelector('[data-close-templates]').addEventListener('click', () => dialog.close());
-            dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
         })();
     </script>
 @endsection

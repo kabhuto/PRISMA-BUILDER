@@ -45,7 +45,7 @@ class SurveyController extends Controller
 
     public function index(): JsonResponse
     {
-        $surveys = Survey::query()->withCount('responses')->latest('updated_at')->get();
+        $surveys = Survey::query()->whereNull('hidden_at')->withCount('responses')->latest('updated_at')->get();
 
         return response()->json(['data' => $surveys->map(fn (Survey $survey): array => self::summary($survey))->values()]);
     }
@@ -154,11 +154,17 @@ class SurveyController extends Controller
             'locked_note' => $survey->locked_note,
             'assignment_only' => (bool) $survey->assignment_only,
             'responses_count' => $survey->responses_count ?? $survey->responses()->count(),
+            'collect_start' => $survey->collect_start?->toDateString(),
+            'collect_deadline' => $survey->collect_deadline?->toDateString(),
+            'report_schedule' => $survey->reportScheduleLabel(),
+            'next_report_due' => $survey->nextReportDue(),
             'updated_at' => $survey->updated_at?->toIso8601String(),
             'links' => [
                 'form' => route('form.create', $survey),
                 'self' => route('api.surveys.show', $survey),
                 'responses' => route('api.responses.index', $survey),
+                'reports' => route('api.reports.index', $survey),
+                'report_form' => $survey->report_every ? route('report.create', $survey) : null,
             ],
         ];
     }

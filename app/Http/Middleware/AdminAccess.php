@@ -2,6 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Survey;
+use App\Support\Access;
+use App\Support\AppSettings;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +19,8 @@ class AdminAccess
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() !== null || (config('app.admin_open_on_lan') && self::isLocal($request))) {
+            self::checkSwitchedOff($request);
+
             return $next($request);
         }
 
@@ -24,6 +29,22 @@ class AdminAccess
         }
 
         return redirect()->guest(route('login'));
+    }
+
+    /**
+     * An admin (pegawai) cannot open a menu or tool a superadmin switched off, nor a form a
+     * superadmin hid; a superadmin can open everything.
+     */
+    private static function checkSwitchedOff(Request $request): void
+    {
+        if (Access::isSuperadmin()) {
+            return;
+        }
+        $survey = $request->route('survey');
+        abort_if($survey instanceof Survey && $survey->isHidden(), 404);
+
+        $off = AppSettings::switchedOffFor((string) $request->route()?->getName());
+        abort_if($off !== null, 403, '"'.$off.'" sedang dinonaktifkan oleh superadmin.');
     }
 
     public static function isLocal(Request $request): bool

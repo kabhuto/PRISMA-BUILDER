@@ -26,11 +26,20 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'role' => 'superadmin',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * An employee admin: makes and tests forms, but does not run the app.
+     */
+    public function employee(): static
+    {
+        return $this->state(fn (array $attributes) => ['role' => 'admin']);
     }
 
     /**

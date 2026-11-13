@@ -4,6 +4,7 @@ namespace App\Support;
 
 use App\Models\Agenda;
 use App\Models\Assignment;
+use App\Models\ProgressReport;
 use App\Models\Survey;
 use App\Models\SurveyResponse;
 use App\Models\SurveyVersion;
@@ -25,6 +26,7 @@ class Monitoring
     {
         $dates = collect(range($days - 1, 0))->map(fn (int $ago): string => now()->subDays($ago)->toDateString());
         $rows = SurveyResponse::query()
+            ->whereIn('survey_id', Survey::query()->usable()->select('id'))
             ->where('created_at', '>=', now()->subDays($days - 1)->startOfDay())
             ->selectRaw('survey_id, DATE(created_at) as day, COUNT(*) as total')
             ->groupBy('survey_id', 'day')
@@ -64,6 +66,7 @@ class Monitoring
 
         // Assignment links stop working at the end of their day: a deadline for the field work.
         $deadlines = Assignment::query()
+            ->whereIn('survey_id', Survey::query()->usable()->select('id'))
             ->whereNotNull('expires_at')
             ->whereBetween('expires_at', [$from->copy()->startOfDay(), $to->copy()->endOfDay()])
             ->selectRaw('survey_id, DATE(expires_at) as day, COUNT(*) as links, SUM(CASE WHEN response_id IS NULL THEN 1 ELSE 0 END) as open')
@@ -79,11 +82,31 @@ class Monitoring
         }
 
         foreach (['published_at' => ['Terbit', '#1f9d55'], 'closed_at' => ['Selesai', '#5b6b7a']] as $column => [$label, $color]) {
-            foreach (Survey::query()->whereBetween($column, [$from->copy()->startOfDay(), $to->copy()->endOfDay()])->get(['id', 'title', $column]) as $survey) {
+            foreach (Survey::query()->usable()->whereBetween($column, [$from->copy()->startOfDay(), $to->copy()->endOfDay()])->get(['id', 'title', $column]) as $survey) {
                 $events->push([
                     'date' => $survey->{$column}->toDateString(), 'title' => $label.': '.$survey->title, 'kind' => $column === 'published_at' ? 'terbit' : 'selesai',
                     'label' => $label, 'color' => $color, 'time' => $survey->{$column}->format('H:i'), 'place' => null,
                     'url' => route('surveys.responses.index', $survey), 'agenda' => null,
+                ]);
+            }
+        }
+
+        // The field work: its last day, and the days petugas send their progress reports.
+        $scheduled = Survey::query()->usable()->whereNotNull('collect_deadline')->where('collect_deadline', '>=', $from->toDateString())
+            ->where(fn ($query) => $query->whereNull('collect_start')->orWhere('collect_start', '<=', $to->toDateString()))->get();
+        foreach ($scheduled as $survey) {
+            if ($survey->collect_deadline->betweenIncluded($from->copy()->startOfDay(), $to->copy()->endOfDay())) {
+                $events->push([
+                    'date' => $survey->collect_deadline->toDateString(), 'title' => 'Tenggat pendataan: '.$survey->title, 'kind' => 'tenggat',
+                    'label' => 'Tenggat collect', 'color' => Agenda::KINDS['tenggat']['color'], 'time' => null, 'place' => null,
+                    'url' => route('progress.index', $survey), 'agenda' => null,
+                ]);
+            }
+            foreach ($survey->reportDueDates($from, $to) as $date) {
+                $events->push([
+                    'date' => $date, 'title' => 'Laporan progres: '.$survey->title, 'kind' => 'laporan',
+                    'label' => 'Laporan progres petugas', 'color' => '#0f9d8f', 'time' => $survey->report_time, 'place' => null,
+                    'url' => route('progress.index', $survey), 'agenda' => null, 'survey_id' => $survey->id,
                 ]);
             }
         }
@@ -101,6 +124,7 @@ class Monitoring
         return self::events(now()->startOfDay(), now()->addDays($withinDays))
             ->flatMap(fn (Collection $day, string $date) => $day->map(fn (array $event): array => $event + ['date' => $date]))
             ->reject(fn (array $event): bool => in_array($event['kind'], ['terbit', 'selesai'], true))
+            ->unique(fn (array $event, int $index): string => $event['kind'] === 'laporan' ? 'laporan-'.$event['survey_id'] : 'event-'.$index)
             ->take($limit)
             ->values();
     }
@@ -110,10 +134,11 @@ class Monitoring
      *
      * @return Collection<int, array{at: Carbon, text: string, kind: string, url: string}>
      */
-    public static function history(int $limit = 12): Collection
+    public static function history(int $limit = 12, ?int $userId = null): Collection
     {
         $items = collect();
-        foreach (Survey::query()->latest('updated_at')->limit(50)->get() as $survey) {
+        $surveys = Survey::query()->usable()->when($userId, fn ($query) => $query->where('user_id', $userId));
+        foreach ($surveys->clone()->latest('updated_at')->limit(50)->get() as $survey) {
             $items->push(['at' => $survey->created_at, 'text' => 'Kuesioner dibuat: '.$survey->title, 'kind' => 'dibuat', 'url' => route('surveys.edit', $survey)]);
             if ($survey->published_at) {
                 $items->push(['at' => $survey->published_at, 'text' => 'Diterbitkan: '.$survey->title, 'kind' => 'terbit', 'url' => route('surveys.responses.index', $survey)]);
@@ -125,7 +150,7 @@ class Monitoring
                 $items->push(['at' => $survey->locked_at, 'text' => 'Dikunci untuk pendataan: '.$survey->title, 'kind' => 'kunci', 'url' => route('surveys.edit', $survey)]);
             }
         }
-        foreach (SurveyVersion::query()->with('survey:id,title')->latest()->limit(30)->get() as $version) {
+        foreach (SurveyVersion::query()->whereIn('survey_id', $surveys->clone()->select('id'))->with('survey:id,title')->latest()->limit(30)->get() as $version) {
             if ($version->survey) {
                 $items->push(['at' => $version->created_at, 'text' => 'Versi '.$version->number.' disimpan: '.$version->survey->title, 'kind' => 'versi', 'url' => route('surveys.versions.index', $version->survey_id)]);
             }
@@ -162,6 +187,21 @@ class Monitoring
             }
             if ($survey->isLocked()) {
                 $items->push(['text' => $survey->title, 'detail' => 'Instrumen dikunci untuk pendataan'.($survey->locked_note ? ' ('.$survey->locked_note.')' : ''), 'url' => route('surveys.edit', $survey), 'tone' => '#2f6fd6']);
+            }
+        }
+        $lastReports = ProgressReport::query()->whereIn('survey_id', $surveys->modelKeys())->selectRaw('survey_id, MAX(report_date) as last_date')->groupBy('survey_id')->pluck('last_date', 'survey_id');
+        foreach ($surveys as $survey) {
+            if ($survey->collect_deadline === null || $survey->status() === 'done') {
+                continue;
+            }
+            $daysLeft = (int) now()->startOfDay()->diffInDays($survey->collect_deadline, false);
+            if ($daysLeft >= 0 && $daysLeft <= 3) {
+                $items->push(['text' => $survey->title, 'detail' => 'Tenggat pendataan '.($daysLeft === 0 ? 'hari ini' : $daysLeft.' hari lagi').' ('.$survey->collect_deadline->translatedFormat('d M').')', 'url' => route('progress.index', $survey), 'tone' => '#e2493b']);
+            }
+            // The last report day that has passed (today counts once its hour is gone) with no report since.
+            $due = collect($survey->reportDueDates(now()->subDays(14), now()->subDay()))->last();
+            if ($due !== null && (string) ($lastReports[$survey->id] ?? '') < $due) {
+                $items->push(['text' => $survey->title, 'detail' => 'Belum ada laporan progres untuk '.Carbon::parse($due)->translatedFormat('d M'), 'url' => route('progress.index', $survey), 'tone' => '#0f9d8f']);
             }
         }
         foreach ($surveys->filter(fn (Survey $survey): bool => $survey->status() === 'draft')->take(5) as $survey) {

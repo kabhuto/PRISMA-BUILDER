@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSurveyRequest;
 use App\Models\ReferenceList;
 use App\Models\Survey;
 use App\Models\SurveyResponse;
+use App\Support\AppSettings;
 use App\Support\FieldValidation;
 use App\Support\Formula;
 use App\Support\Lookup;
@@ -22,20 +23,42 @@ class SurveyController extends Controller
 {
     /**
      * Beranda: where work starts. Quick actions, forms to carry on with, what needs a look, the
-     * agenda coming up, templates, and the latest responses.
+     * agenda coming up, templates, the latest responses, and every form, by anyone, by stage.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $surveys = Survey::query()->withCount('responses')->latest('updated_at')->get();
+        $surveys = Survey::query()->usable()
+            ->with('creator:id,name')
+            ->withCount(['responses', 'assignments', 'assignments as assignments_done_count' => fn ($query) => $query->whereNotNull('response_id')])
+            ->withMax('responses', 'created_at')
+            ->latest('updated_at')
+            ->get();
+        $daily = Monitoring::daily(14);
+        $mine = $surveys->where('user_id', $request->user()?->id);
 
         return view('surveys.index', [
             'surveys' => $surveys,
             'templates' => SurveyTemplates::all(),
-            'totalTrend' => Monitoring::daily(14)['total'],
-            'continue' => $surveys->take(4),
+            'totalTrend' => $daily['total'],
+            'trends' => $daily['perSurvey'],
+            'periods' => $surveys->map->periodLabel()->filter()->unique()->sort()->values(),
+            'continue' => ($mine->isNotEmpty() ? $mine : $surveys)->take(4),
             'attention' => Monitoring::attention($surveys),
             'upcoming' => Monitoring::upcoming(5),
-            'recentResponses' => SurveyResponse::query()->with('survey:id,title,slug')->latest()->limit(5)->get(),
+            'recentResponses' => SurveyResponse::query()->whereIn('survey_id', $surveys->modelKeys())->with('survey:id,title,slug')->latest()->limit(5)->get(),
+        ]);
+    }
+
+    /**
+     * "Buat": every template to start from, with what each holds, plus importing a file.
+     */
+    public function start(): View
+    {
+        $templates = SurveyTemplates::all();
+
+        return view('surveys.start', [
+            'templates' => $templates,
+            'blocks' => collect($templates)->map(fn (array $template, string $key): array => SurveyTemplates::blocks($key))->all(),
         ]);
     }
 
@@ -56,7 +79,7 @@ class SurveyController extends Controller
 
     public function store(StoreSurveyRequest $request): RedirectResponse
     {
-        $survey = Survey::query()->create($request->surveyData());
+        $survey = Survey::query()->create([...$request->surveyData(), 'user_id' => $request->user()?->id]);
 
         return $this->afterSaving($request, $survey, 'Kuesioner berhasil dibuat.');
     }
@@ -122,13 +145,14 @@ class SurveyController extends Controller
             'settings' => $survey->formSettings(),
             'intro' => $survey->formIntro(),
             'activities' => Survey::query()->distinct()->orderBy('activity')->pluck('activity'),
-            'questionTypes' => Survey::QUESTION_TYPES,
+            'questionTypes' => AppSettings::questionTypes(),
             'paperSizes' => Survey::PAPER_SIZES,
             'periodTypes' => Survey::PERIOD_TYPES,
             'themes' => Survey::THEMES,
             'numberingStyles' => Survey::NUMBERING_STYLES,
             'builderConfig' => [
                 'questionTypes' => Survey::QUESTION_TYPES,
+                'offeredTypes' => array_keys(AppSettings::questionTypes()),
                 'choiceTypes' => Survey::CHOICE_TYPES,
                 'nonLogicTypes' => Survey::NON_LOGIC_TYPES,
                 'noCodeTypes' => Survey::NO_CODE_TYPES,

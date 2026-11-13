@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\Survey;
+use App\Models\SurveyTemplate;
 use Illuminate\Support\Str;
 
 /**
@@ -16,6 +17,31 @@ class SurveyTemplates
      * @return array<string, array{label: string, description: string}>
      */
     public static function all(): array
+    {
+        $hidden = self::hiddenBuiltIns();
+        $custom = SurveyTemplate::query()->where('hidden', false)->orderBy('sort')->orderBy('id')->get()
+            ->mapWithKeys(fn (SurveyTemplate $template): array => [$template->key() => ['label' => $template->name, 'description' => (string) $template->description]])
+            ->all();
+
+        return array_diff_key(self::builtIn(), array_flip($hidden)) + $custom;
+    }
+
+    /**
+     * Built-in templates a superadmin has hidden. "Kosong" always stays.
+     *
+     * @return list<string>
+     */
+    public static function hiddenBuiltIns(): array
+    {
+        return array_values(array_diff(array_intersect((array) AppSettings::get('hidden_templates', []), array_keys(self::builtIn())), [self::DEFAULT]));
+    }
+
+    /**
+     * The templates that come with the app.
+     *
+     * @return array<string, array{label: string, description: string}>
+     */
+    public static function builtIn(): array
     {
         return [
             'blank' => ['label' => 'Kosong', 'description' => 'Mulai dari satu blok kosong dan susun sendiri.'],
@@ -37,6 +63,9 @@ class SurveyTemplates
      */
     public static function blocks(string $template): array
     {
+        if (preg_match('/^c(\d+)$/', $template, $match)) {
+            return SurveyTemplate::query()->find((int) $match[1])?->blocks ?? self::blocks(self::DEFAULT);
+        }
         $satisfaction = ['Sangat tidak puas', 'Tidak puas', 'Cukup', 'Puas', 'Sangat puas'];
 
         return match ($template) {

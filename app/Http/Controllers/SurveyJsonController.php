@@ -106,7 +106,7 @@ class SurveyJsonController extends Controller
         if ($file !== null) {
             SurveyJson::restoreLogos($file);
         }
-        $survey = Survey::query()->create($definition);
+        $survey = Survey::query()->create([...$definition, 'user_id' => $request->user()?->id]);
 
         return redirect()->route('surveys.edit', $survey)
             ->with('status', $template !== null ? 'Template FormGear berhasil diimpor sebagai draf baru.' : 'Kuesioner berhasil diimpor dari JSON sebagai draf baru.')

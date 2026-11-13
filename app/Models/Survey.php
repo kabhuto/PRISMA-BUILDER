@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Access;
 use App\Support\Palette;
 use App\Support\Piping;
 use App\Support\SurveyLogic;
@@ -9,10 +10,12 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at', 'closed_at', 'locked_at', 'locked_note', 'assignment_only'])]
+#[Fillable(['title', 'form_code', 'subtitle', 'activity', 'settings', 'header', 'intro', 'blocks', 'published_at', 'closed_at', 'locked_at', 'locked_note', 'assignment_only', 'user_id', 'hidden_at', 'collect_start', 'collect_deadline', 'report_every', 'report_weekday', 'report_time'])]
 class Survey extends Model
 {
     public const QUESTION_TYPES = [
@@ -351,6 +354,10 @@ class Survey extends Model
             'closed_at' => 'datetime',
             'locked_at' => 'datetime',
             'assignment_only' => 'boolean',
+            'hidden_at' => 'datetime',
+            'collect_start' => 'date',
+            'collect_deadline' => 'date',
+            'report_weekday' => 'integer',
         ];
     }
 
@@ -402,6 +409,94 @@ class Survey extends Model
     public function assignments(): HasMany
     {
         return $this->hasMany(Assignment::class);
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @return HasMany<ProgressReport, $this>
+     */
+    public function progressReports(): HasMany
+    {
+        return $this->hasMany(ProgressReport::class);
+    }
+
+    /**
+     * Forms the person signed in may use: a superadmin sees every form, an admin (pegawai) not the
+     * ones a superadmin has hidden.
+     *
+     * @param  Builder<Survey>  $query
+     */
+    public function scopeUsable(Builder $query): void
+    {
+        if (! Access::isSuperadmin()) {
+            $query->whereNull('hidden_at');
+        }
+    }
+
+    public function isHidden(): bool
+    {
+        return $this->hidden_at !== null;
+    }
+
+    /**
+     * How often petugas report their progress: the label of each choice.
+     */
+    public const REPORT_EVERY = ['daily' => 'Setiap hari', 'weekly' => 'Setiap minggu', 'once' => 'Sekali, di akhir pendataan'];
+
+    public const WEEKDAYS = [1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu', 4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu', 7 => 'Minggu'];
+
+    /**
+     * The days progress reports are due between two dates: every day, on the chosen weekday, or once
+     * on the collection deadline. Counting starts at the start of collection (or publication).
+     *
+     * @return list<string> dates as Y-m-d
+     */
+    public function reportDueDates(Carbon $from, Carbon $to): array
+    {
+        if ($this->report_every === null || $this->collect_deadline === null) {
+            return [];
+        }
+        $start = ($this->collect_start ?? $this->published_at ?? $this->created_at ?? now())->copy()->startOfDay();
+        $end = $this->collect_deadline->copy()->startOfDay();
+        if ($this->report_every === 'once') {
+            return $end->betweenIncluded($from->copy()->startOfDay(), $to->copy()->endOfDay()) ? [$end->toDateString()] : [];
+        }
+
+        $day = $start->max($from->copy()->startOfDay());
+        $last = $end->min($to->copy()->startOfDay());
+        $dates = [];
+        for (; $day->lte($last) && count($dates) < 400; $day = $day->copy()->addDay()) {
+            if ($this->report_every === 'daily' || $day->isoWeekday() === ($this->report_weekday ?: 5)) {
+                $dates[] = $day->toDateString();
+            }
+        }
+
+        return $dates;
+    }
+
+    /**
+     * The next day a report is due, today included, or null when there is none.
+     */
+    public function nextReportDue(): ?string
+    {
+        return $this->reportDueDates(now(), now()->addDays(400))[0] ?? null;
+    }
+
+    public function reportScheduleLabel(): ?string
+    {
+        if ($this->report_every === null) {
+            return null;
+        }
+        $label = $this->report_every === 'weekly' ? 'Setiap '.self::WEEKDAYS[$this->report_weekday ?: 5] : self::REPORT_EVERY[$this->report_every] ?? $this->report_every;
+
+        return $label.($this->report_time ? ' pukul '.$this->report_time : '');
     }
 
     /**

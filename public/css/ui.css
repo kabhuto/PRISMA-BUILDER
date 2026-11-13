@@ -430,3 +430,9 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
 @media(min-width:761px) and (max-width:1400px){.topbar-tools .theme-toggle-label{display:none}}
 @media(min-width:761px) and (max-width:1300px){.topbar-tools .help-link{font-size:0;gap:0;padding:0 10px}.user-menu .user-name{display:none}}
 @media(min-width:761px) and (max-width:1100px){.main-nav .nav-link span{display:none}.main-nav .nav-link{padding:0 12px}}
+
+/* The menu follows the order a superadmin set: "Buat" sits third in the markup, so nothing is reordered. */
+@media(max-width:760px){.main-nav .nav-link:nth-child(n+3),.main-nav .nav-add{order:0}}
+@media(min-width:761px){.main-nav .nav-link.is-phone-only{display:none}}
+.main-nav .nav-link.is-off{opacity:.6}
+.main-nav .nav-link.is-off span:first-of-type{text-decoration:line-through;text-decoration-thickness:1px}

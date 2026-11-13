@@ -5,18 +5,14 @@
     </a>
     <nav class="main-nav" aria-label="Navigasi utama">
         @include('partials.admin-nav')
-        <a class="nav-add" href="{{ route('surveys.create') }}" title="Buat kuesioner baru">
-            <span class="nav-add-circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
-            <span class="nav-add-label">Buat</span>
-        </a>
     </nav>
     <div class="topbar-tools">
-        @unless (request()->routeIs('login'))
+        @if (! request()->routeIs('login') && \App\Support\AppSettings::menuOn('panduan'))
             <a class="button button-ghost button-small help-link" href="{{ \App\Support\Guide::linkFor(request()->route()?->getName()) }}" @if ($newTabHelp ?? false) target="_blank" rel="noopener" title="Panduan untuk halaman ini (tab baru)" @else title="Panduan untuk halaman ini" @endif>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg>
                 Panduan
             </a>
-        @endunless
+        @endif
         @include('partials.accent-picker', ['showLabel' => true])
         @include('partials.theme-toggle', ['showLabel' => true])
         @auth
@@ -28,11 +24,21 @@
                 </summary>
                 <div class="user-menu-pop">
                     <strong>{{ auth()->user()->name }}</strong>
-                    <small>{{ auth()->user()->loginName() }}</small>
-                    <a href="{{ route('dashboard') }}">Dashboard</a>
-                    <a class="is-phone-only" href="{{ route('api-access.index') }}">Akses API</a>
-                    <a href="{{ route('admins.index') }}">Kelola admin</a>
-                    <a href="{{ route('panduan') }}">Panduan</a>
+                    <small>{{ auth()->user()->loginName() }} · {{ auth()->user()->roleLabel() }}</small>
+                    @if (\App\Support\AppSettings::menuOn('dashboard'))
+                        <a href="{{ route('dashboard') }}">Dashboard</a>
+                    @endif
+                    @if (\App\Support\AppSettings::menuOn('riwayat'))
+                        <a href="{{ route('history.index') }}">Riwayat saya</a>
+                    @endif
+                    @if (auth()->user()->isSuperadmin())
+                        <a href="{{ route('settings.index') }}">Kelola aplikasi</a>
+                        <a href="{{ route('admins.index') }}">Kelola admin</a>
+                        <a href="{{ route('api-access.index') }}">Akses API</a>
+                    @endif
+                    @if (\App\Support\AppSettings::menuOn('panduan'))
+                        <a href="{{ route('panduan') }}">Panduan</a>
+                    @endif
                     {{-- On a phone the logout icon leaves the bar, so it lives here. --}}
                     <form class="user-menu-logout" method="POST" action="{{ route('logout') }}">
                         @csrf

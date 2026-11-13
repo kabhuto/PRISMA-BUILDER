@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAccess;
 use App\Http\Middleware\AuthenticateApiToken;
+use App\Http\Middleware\SuperadminOnly;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['api.token' => AuthenticateApiToken::class, 'admin' => AdminAccess::class]);
+        $middleware->alias(['api.token' => AuthenticateApiToken::class, 'admin' => AdminAccess::class, 'superadmin' => SuperadminOnly::class]);
         // A tunnel (e.g. cloudflared) on this computer forwards https visitors; trust its headers only.
         $middleware->trustProxies(at: ['127.0.0.1', '::1']);
     })

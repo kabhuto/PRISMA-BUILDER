@@ -5,12 +5,13 @@
 @section('content')
     <div class="page-intro">
         <div>
-            <div class="eyebrow"><a class="back-link" href="{{ route('surveys.index') }}">← DASHBOARD</a> <span>/</span> ADMIN</div>
+            <div class="eyebrow"><a class="back-link" href="{{ route('settings.index') }}">← KELOLA</a> <span>/</span> ADMIN</div>
             <h1>Kelola admin</h1>
-            <p>Setiap admin bisa membuat dan mengubah kuesioner, melihat respons, serta menambah admin lain.</p>
+            <p><b>Superadmin</b> mengatur aplikasi: akses API, akun, template, menu dan alat, serta kuesioner yang bisa dipakai. <b>Admin (pegawai)</b> membuat dan menguji kuesioner, menentukan tenggat pendataan, dan memantau laporan progres petugas.</p>
         </div>
         <div class="stat-row">
-            <div class="stat-tile"><span>Jumlah admin</span><strong>{{ $admins->count() }}</strong></div>
+            <div class="stat-tile"><span>Superadmin</span><strong>{{ $admins->where('role', 'superadmin')->count() }}</strong></div>
+            <div class="stat-tile"><span>Admin (pegawai)</span><strong>{{ $admins->where('role', '!=', 'superadmin')->count() }}</strong></div>
         </div>
     </div>
 
@@ -29,7 +30,7 @@
                         <div class="admin-card-main">
                             <span class="user-avatar user-avatar-large" aria-hidden="true">{{ mb_strtoupper(mb_substr($admin->name, 0, 1)) }}</span>
                             <div class="admin-card-copy">
-                                <strong>{{ $admin->name }} @if ($isMe)<span class="status-badge is-published">Anda</span>@endif</strong>
+                                <strong>{{ $admin->name }} <span @class(['status-badge', 'role-badge', 'is-super' => $admin->isSuperadmin()])>{{ $admin->isSuperadmin() ? 'Superadmin' : 'Admin' }}</span> @if ($isMe)<span class="status-badge is-published">Anda</span>@endif</strong>
                                 <span class="admin-login"><span class="muted">Masuk dengan</span> <code>{{ $admin->loginName() }}</code></span>
                                 @if ($admin->username && $admin->hasRealEmail())
                                     <span class="muted">{{ $admin->email }}</span>
@@ -38,12 +39,19 @@
                             </div>
                         </div>
                         <details class="admin-edit" @if ($bag->any()) open @endif>
-                            <summary class="button button-ghost button-small">Ubah nama / kata sandi</summary>
+                            <summary class="button button-ghost button-small">Ubah nama, peran, kata sandi</summary>
                             <form method="POST" action="{{ route('admins.update', $admin) }}" class="admin-form">
                                 @csrf
                                 @method('PUT')
                                 <label class="field"><span>Nama</span>
                                     <input type="text" name="name" value="{{ $bag->any() ? old('name') : $admin->name }}" maxlength="100" required>
+                                </label>
+                                <label class="field"><span>Peran</span>
+                                    <select name="role" @disabled($isMe)>
+                                        @foreach (\App\Models\User::ROLES as $role => $label)
+                                            <option value="{{ $role }}" @selected($admin->role === $role)>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
                                 </label>
                                 <label class="field"><span>Kata sandi baru <small>(kosongkan bila tidak diganti)</small></span>
                                     <input type="password" name="password" autocomplete="new-password" minlength="8">
@@ -70,11 +78,18 @@
         </section>
 
         <section class="panel-section">
-            <div class="section-title"><span class="eyebrow">02</span><h2>Tambah admin</h2></div>
+            <div class="section-title"><span class="eyebrow">02</span><h2>Tambah akun</h2></div>
             <form method="POST" action="{{ route('admins.store') }}" class="admin-form admin-form-card">
                 @csrf
                 <label class="field"><span>Nama</span>
                     <input type="text" name="name" value="{{ $errors->create->any() ? old('name') : '' }}" maxlength="100" placeholder="mis. Humas BPS" required>
+                </label>
+                <label class="field"><span>Peran</span>
+                    <select name="role">
+                        @foreach (\App\Models\User::ROLES as $role => $label)
+                            <option value="{{ $role }}" @selected(($errors->create->any() ? old('role') : 'admin') === $role)>{{ $label }}</option>
+                        @endforeach
+                    </select>
                 </label>
                 <label class="field"><span>Username</span>
                     <input type="text" name="username" value="{{ $errors->create->any() ? old('username') : '' }}" autocapitalize="none" spellcheck="false" placeholder="mis. humas3526">

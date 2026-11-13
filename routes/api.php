@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AssignmentController;
 use App\Http\Controllers\Api\PortalCardController;
+use App\Http\Controllers\Api\ProgressReportController;
 use App\Http\Controllers\Api\ReferenceController;
 use App\Http\Controllers\Api\ResponseController;
 use App\Http\Controllers\Api\SurveyController;
@@ -20,6 +21,7 @@ Route::prefix('v1')->middleware(['throttle:240,1', 'api.token'])->name('api.')->
     Route::get('surveys/{survey}/responses', [ResponseController::class, 'index'])->name('responses.index');
     Route::get('surveys/{survey}/responses/{response}', [ResponseController::class, 'show'])->name('responses.show')->scopeBindings();
     Route::get('surveys/{survey}/assignments', [AssignmentController::class, 'index'])->name('assignments.index');
+    Route::get('surveys/{survey}/laporan', [ProgressReportController::class, 'index'])->name('reports.index');
     Route::get('surveys/{survey}/lookup/{question}', [SurveyController::class, 'lookup'])->name('surveys.lookup');
     Route::get('references', [ReferenceController::class, 'index'])->name('references.index');
     Route::get('references/{referenceList:slug}', [ReferenceController::class, 'show'])->name('references.show');
@@ -32,6 +34,7 @@ Route::prefix('v1')->middleware(['throttle:240,1', 'api.token'])->name('api.')->
         Route::post('surveys/{survey}/responses', [ResponseController::class, 'store'])->name('responses.store');
         Route::post('surveys/{survey}/responses/batch', [ResponseController::class, 'batch'])->name('responses.batch');
         Route::put('surveys/{survey}/pendataan', [SurveyController::class, 'collection'])->name('surveys.collection');
+        Route::post('surveys/{survey}/laporan', [ProgressReportController::class, 'store'])->name('reports.store');
         Route::post('surveys/{survey}/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
         Route::put('surveys/{survey}/assignments/kedaluwarsa', [AssignmentController::class, 'expiry'])->name('assignments.expiry');
         Route::delete('surveys/{survey}/assignments/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy')->scopeBindings();

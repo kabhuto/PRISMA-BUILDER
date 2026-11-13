@@ -9,14 +9,18 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataValidationController;
 use App\Http\Controllers\FormSubmissionController;
 use App\Http\Controllers\GoogleDriveController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoController;
+use App\Http\Controllers\ProgressReportController;
 use App\Http\Controllers\PublishedSurveyController;
 use App\Http\Controllers\ReferenceListController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyJsonController;
 use App\Http\Controllers\SurveyPrintController;
 use App\Http\Controllers\SurveyResponseController;
+use App\Http\Controllers\SurveyTemplateController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,6 +35,8 @@ Route::middleware('admin')->group(function (): void {
     Route::redirect('/', '/surveys');
     Route::view('/panduan', 'panduan.index')->name('panduan');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/buat', [SurveyController::class, 'start'])->name('surveys.start');
+    Route::get('/riwayat', [HistoryController::class, 'index'])->name('history.index');
     Route::post('/agenda', [AgendaController::class, 'store'])->name('agenda.store');
     Route::delete('/agenda/{agenda}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
 
@@ -58,17 +64,33 @@ Route::middleware('admin')->group(function (): void {
     Route::post('/surveys/{survey}/penugasan', [AssignmentController::class, 'store'])->name('assignments.store');
     Route::get('/surveys/{survey}/penugasan/export', [AssignmentController::class, 'export'])->name('assignments.export');
     Route::delete('/surveys/{survey}/penugasan/{assignment}', [AssignmentController::class, 'destroy'])->name('assignments.destroy')->scopeBindings();
+    Route::get('/surveys/{survey}/laporan', [ProgressReportController::class, 'index'])->name('progress.index');
+    Route::put('/surveys/{survey}/laporan/jadwal', [ProgressReportController::class, 'schedule'])->name('progress.schedule');
+    Route::delete('/surveys/{survey}/laporan/{progressReport}', [ProgressReportController::class, 'destroy'])->name('progress.destroy')->scopeBindings();
     Route::get('/referensi', [ReferenceListController::class, 'index'])->name('references.index');
     Route::post('/referensi', [ReferenceListController::class, 'store'])->name('references.store');
     Route::get('/referensi/{referenceList:slug}', [ReferenceListController::class, 'show'])->name('references.show');
     Route::delete('/referensi/{referenceList:slug}', [ReferenceListController::class, 'destroy'])->name('references.destroy');
-    Route::get('/akses-api', [ApiAccessController::class, 'index'])->name('api-access.index');
-    Route::post('/akses-api', [ApiAccessController::class, 'store'])->name('api-access.store');
-    Route::delete('/akses-api/{token}', [ApiAccessController::class, 'destroy'])->name('api-access.destroy');
-    Route::get('/admin', [AdminUserController::class, 'index'])->name('admins.index');
-    Route::post('/admin', [AdminUserController::class, 'store'])->name('admins.store');
-    Route::put('/admin/{admin}', [AdminUserController::class, 'update'])->name('admins.update');
-    Route::delete('/admin/{admin}', [AdminUserController::class, 'destroy'])->name('admins.destroy');
+
+    // Running the app: superadmin only.
+    Route::middleware('superadmin')->group(function (): void {
+        Route::get('/akses-api', [ApiAccessController::class, 'index'])->name('api-access.index');
+        Route::post('/akses-api', [ApiAccessController::class, 'store'])->name('api-access.store');
+        Route::delete('/akses-api/{token}', [ApiAccessController::class, 'destroy'])->name('api-access.destroy');
+        Route::get('/admin', [AdminUserController::class, 'index'])->name('admins.index');
+        Route::post('/admin', [AdminUserController::class, 'store'])->name('admins.store');
+        Route::put('/admin/{admin}', [AdminUserController::class, 'update'])->name('admins.update');
+        Route::delete('/admin/{admin}', [AdminUserController::class, 'destroy'])->name('admins.destroy');
+        Route::get('/kelola', [SettingsController::class, 'index'])->name('settings.index');
+        Route::put('/kelola/menu', [SettingsController::class, 'menu'])->name('settings.menu');
+        Route::put('/kelola/alat', [SettingsController::class, 'tools'])->name('settings.tools');
+        Route::put('/kelola/kuesioner/{survey}', [SettingsController::class, 'survey'])->name('settings.survey');
+        Route::post('/kelola/template', [SurveyTemplateController::class, 'store'])->name('templates.store');
+        Route::put('/kelola/template/{template}', [SurveyTemplateController::class, 'update'])->name('templates.update');
+        Route::delete('/kelola/template/{template}', [SurveyTemplateController::class, 'destroy'])->name('templates.destroy');
+        Route::put('/kelola/template-bawaan/{key}', [SurveyTemplateController::class, 'builtIn'])->name('templates.built-in');
+    });
+
     Route::put('/akun/warna', [AccentColorController::class, 'update'])->name('accent.update');
     Route::get('/surveys/{survey}/google-drive', [GoogleDriveController::class, 'show'])->name('google-drive.show');
     Route::put('/surveys/{survey}/google-drive', [GoogleDriveController::class, 'update'])->name('google-drive.update');
@@ -88,4 +110,6 @@ Route::get('/storage/{path}', function (string $path) {
 Route::get('/f/{survey:slug}', [FormSubmissionController::class, 'create'])->name('form.create');
 Route::post('/f/{survey:slug}', [FormSubmissionController::class, 'store'])->name('form.store');
 Route::get('/f/{survey:slug}/terima-kasih', [FormSubmissionController::class, 'thanks'])->name('form.thanks');
+Route::get('/f/{survey:slug}/laporan', [ProgressReportController::class, 'create'])->name('report.create');
+Route::post('/f/{survey:slug}/laporan', [ProgressReportController::class, 'store'])->middleware('throttle:30,1')->name('report.store');
 Route::get('/f/{survey:slug}/pilihan/{question}', [FormSubmissionController::class, 'lookup'])->middleware('throttle:120,1')->name('form.lookup');

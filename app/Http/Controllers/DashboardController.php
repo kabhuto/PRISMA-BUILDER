@@ -18,7 +18,8 @@ class DashboardController extends Controller
 {
     public function index(Request $request): View
     {
-        $surveys = Survey::query()
+        $surveys = Survey::query()->usable()
+            ->with('creator:id,name')
             ->withCount(['responses', 'assignments', 'assignments as assignments_done_count' => fn ($query) => $query->whereNotNull('response_id')])
             ->withMax('responses', 'created_at')
             ->latest('updated_at')
@@ -42,7 +43,7 @@ class DashboardController extends Controller
             'daily' => $daily,
             'statuses' => ['running' => $statuses['running'] ?? 0, 'done' => $statuses['done'] ?? 0, 'draft' => $statuses['draft'] ?? 0],
             'responsesTotal' => $surveys->sum('responses_count'),
-            'responsesWeek' => SurveyResponse::query()->where('created_at', '>=', now()->subDays(6)->startOfDay())->count(),
+            'responsesWeek' => SurveyResponse::query()->whereIn('survey_id', $surveys->modelKeys())->where('created_at', '>=', now()->subDays(6)->startOfDay())->count(),
             'byActivity' => $surveys->groupBy(fn (Survey $survey): string => $survey->activity ?: 'Tanpa kegiatan')
                 ->map(fn ($group): int => (int) $group->sum('responses_count'))->sortDesc()->take(6),
             'month' => $month,

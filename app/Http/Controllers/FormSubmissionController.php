@@ -23,6 +23,8 @@ class FormSubmissionController extends Controller
 {
     public function create(Request $request, Survey $survey): View
     {
+        // A form a superadmin hid cannot be used.
+        abort_if($survey->isHidden(), 404);
         $assignment = $this->assignmentFor($request, $survey);
 
         if ($assignment && ($assignment->isSubmitted() || $assignment->isExpired())) {
@@ -48,7 +50,7 @@ class FormSubmissionController extends Controller
 
     public function store(SubmitSurveyResponseRequest $request, Survey $survey): RedirectResponse
     {
-        abort_unless($survey->isPublished(), 404);
+        abort_unless($survey->isPublished() && ! $survey->isHidden(), 404);
         abort_if($survey->assignment_only && ! $request->assignment(), 403, 'Formulir ini hanya dapat diisi lewat tautan penugasan.');
 
         // Sent again after a lost connection: the first one was stored, so just say thanks.
