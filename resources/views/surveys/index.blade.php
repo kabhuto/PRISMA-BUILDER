@@ -189,7 +189,39 @@
                     <span class="home-activity-text"><strong>{{ $event['title'] }}</strong><small>{{ $event['label'] }}@if ($event['time']) · {{ $event['time'] }}@endif @if ($event['place']) · {{ $event['place'] }}@endif</small></span>
                 </a>
             @empty
-                <p class="home-panel-empty">Belum ada agenda. Tambahkan briefing, rapat, atau tenggat di <a href="{{ route('dashboard') }}#kalender">kalender Dashboard</a>.</p>
+                {{-- Nothing coming up: the week ahead at a glance, and a way to add the first agenda. --}}
+                @php($calendarOn = \App\Support\AppSettings::menuOn('dashboard'))
+                <div class="agenda-empty-state">
+                    <ol class="agenda-week" aria-label="Tujuh hari ke depan">
+                        @foreach (range(0, 6) as $offset)
+                            @php($day = now('Asia/Jakarta')->addDays($offset))
+                            <li @class(['is-today' => $offset === 0, 'is-weekend' => $day->isWeekend()])>
+                                <small>{{ $day->translatedFormat('D') }}</small>
+                                <b>{{ $day->format('d') }}</b>
+                                <i aria-hidden="true"></i>
+                            </li>
+                        @endforeach
+                    </ol>
+                    <div class="agenda-empty-body">
+                        <span class="agenda-empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm7 9v5m-2.5-2.5h5"/></svg></span>
+                        <div>
+                            <strong>Minggu ini masih kosong</strong>
+                            <p>Catat briefing petugas, rapat, pelatihan, atau tenggat agar semua tim tahu jadwalnya.</p>
+                        </div>
+                    </div>
+                    @if ($calendarOn)
+                        <div class="agenda-empty-actions">
+                            <a class="agenda-add" href="{{ route('dashboard') }}#kalender">
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Tambah agenda
+                            </a>
+                            <span class="agenda-kinds" aria-hidden="true">
+                                @foreach (\App\Models\Agenda::KINDS as $kind)
+                                    <i style="--tone: {{ $kind['color'] }}" title="{{ $kind['label'] }}"></i>
+                                @endforeach
+                            </span>
+                        </div>
+                    @endif
+                </div>
             @endforelse
         </section>
     </div>

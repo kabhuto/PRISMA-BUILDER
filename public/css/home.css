@@ -455,3 +455,28 @@
     .home-welcome{min-height:120px;align-items:flex-start;padding-top:4px}
     .home-welcome>div{padding:8px 10px 8px 0;border-radius:12px;background:linear-gradient(90deg,color-mix(in srgb,var(--home-sky-2) 85%,transparent) 60%,transparent)}
 }
+
+/* Agenda terdekat with nothing coming up: the week ahead, a short note, and the way to add one. */
+.agenda-empty-state{display:flex;flex-direction:column;gap:14px;padding:4px 0 2px}
+.agenda-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:0;padding:0;list-style:none}
+.agenda-week li{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 7px;border:1px solid var(--border);border-radius:12px;background:var(--surface);line-height:1.1}
+.agenda-week small{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-3)}
+.agenda-week b{font-size:16px;font-weight:800;color:var(--home-ink)}
+.agenda-week i{width:5px;height:5px;margin-top:3px;border-radius:50%;background:var(--border)}
+.agenda-week li.is-weekend{background:var(--surface-2)}
+.agenda-week li.is-weekend b{color:var(--text-3)}
+.agenda-week li.is-today{border-color:transparent;background:linear-gradient(160deg,#2f6fd6,#1d4f91);box-shadow:0 8px 18px rgb(47 111 214 / .3)}
+.agenda-week li.is-today small,.agenda-week li.is-today b{color:#fff}
+.agenda-week li.is-today i{background:#fff}
+.agenda-empty-body{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px dashed color-mix(in srgb,#2f6fd6 35%,var(--border));border-radius:14px;background:color-mix(in srgb,#2f6fd6 5%,var(--surface))}
+.agenda-empty-icon{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,#2f6fd6 14%,var(--surface));color:#2f6fd6}
+.agenda-empty-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.agenda-empty-body strong{display:block;margin-bottom:2px;font-size:14px;color:var(--home-ink)}
+.agenda-empty-body p{margin:0;font-size:12.5px;line-height:1.5;color:var(--text-3)}
+.agenda-empty-actions{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.agenda-add{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 16px;border-radius:11px;background:linear-gradient(135deg,var(--brand),color-mix(in srgb,var(--brand) 60%,#1d4f91));color:#fff;font-size:13px;font-weight:700;text-decoration:none;box-shadow:0 6px 14px color-mix(in srgb,var(--brand) 30%,transparent);transition:transform .15s,box-shadow .15s}
+.agenda-add:hover{transform:translateY(-1px);box-shadow:0 10px 20px color-mix(in srgb,var(--brand) 35%,transparent)}
+.agenda-add svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.agenda-kinds{display:inline-flex;gap:5px}
+.agenda-kinds i{width:9px;height:9px;border-radius:3px;background:var(--tone)}
+@media(max-width:380px){.agenda-week{gap:4px}.agenda-week b{font-size:14px}}
