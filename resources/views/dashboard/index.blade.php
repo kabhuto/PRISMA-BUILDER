@@ -22,6 +22,8 @@
         $offset += $share;
     }
     $maxActivity = max(1, $byActivity->max() ?? 1);
+    // Each day of the trend with its count, for reading the chart by pointer or touch.
+    $trendPoints = collect($daily['days'])->map(fn ($day, $index) => [\Illuminate\Support\Carbon::parse($day)->translatedFormat('D, d M'), $daily['total'][$index]])->values();
 @endphp
 
 @section('content')
@@ -54,8 +56,9 @@
     <div class="monitor-charts">
         <section class="monitor-card monitor-trend" aria-labelledby="trend-heading">
             <header><h2 id="trend-heading">Respons 30 hari terakhir</h2><span class="home-chip">{{ number_format(array_sum($daily['total']), 0, ',', '.') }} respons</span></header>
-            <div class="monitor-trend-plot">
+            <div class="monitor-trend-plot" data-trend="{{ json_encode($trendPoints) }}" data-peak="{{ $peak }}">
                 <span class="monitor-axis-max">{{ $peak }}</span>
+                <span class="monitor-trend-cursor" hidden><i></i><b></b></span>
                 <svg viewBox="0 0 600 170" preserveAspectRatio="none" role="img" aria-label="Respons per hari selama 30 hari terakhir">
                     @foreach ([0.25, 0.5, 0.75] as $grid)<line x1="0" x2="600" y1="{{ 170 * $grid }}" y2="{{ 170 * $grid }}"/>@endforeach
                     <path class="area" d="{{ $area }}"/><path class="line" d="{{ $line }}"/>
@@ -91,13 +94,41 @@
             <header><h2 id="activity-heading">Respons per kegiatan</h2></header>
             <div class="monitor-bars">
                 @forelse ($byActivity as $activity => $count)
-                    <div class="monitor-bar"><span title="{{ $activity }}">{{ $activity }}</span><span class="monitor-bar-track"><i style="width: {{ round($count / $maxActivity * 100) }}%"></i></span><b>{{ number_format($count, 0, ',', '.') }}</b></div>
+                    <div class="monitor-bar" title="{{ $activity }}: {{ number_format($count, 0, ',', '.') }} respons"><span>{{ $activity }}</span><span class="monitor-bar-track"><i style="width: {{ round($count / $maxActivity * 100) }}%"></i></span><b>{{ number_format($count, 0, ',', '.') }}</b></div>
                 @empty
                     <p class="home-panel-empty">Belum ada respons.</p>
                 @endforelse
             </div>
         </section>
     </div>
+
+    <script>
+        (() => {
+            // Point at (or touch) the chart to read the day and its number of responses.
+            const plot = document.querySelector('[data-trend]');
+            if (!plot) return;
+            const days = JSON.parse(plot.dataset.trend);
+            const peak = Number(plot.dataset.peak) || 1;
+            const cursor = plot.querySelector('.monitor-trend-cursor');
+            const label = cursor.querySelector('b');
+            const show = event => {
+                const box = plot.getBoundingClientRect();
+                const ratio = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width));
+                const index = Math.round(ratio * (days.length - 1));
+                const [day, count] = days[index];
+                const x = index / (days.length - 1) * box.width;
+                const y = (168 - (count / peak) * 164) * box.height / 170;
+                cursor.hidden = false;
+                cursor.style.setProperty('--x', x + 'px');
+                cursor.style.setProperty('--y', Math.max(0, y) + 'px');
+                cursor.classList.toggle('is-right', x > box.width * 0.6);
+                label.textContent = day + ' · ' + count.toLocaleString('id-ID') + ' respons';
+            };
+            plot.addEventListener('pointermove', show);
+            plot.addEventListener('pointerdown', show);
+            plot.addEventListener('pointerleave', () => (cursor.hidden = true));
+        })();
+    </script>
 
     <section class="monitor-card monitor-calendar" id="kalender" aria-labelledby="calendar-heading">
         <header>

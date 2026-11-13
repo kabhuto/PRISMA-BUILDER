@@ -122,3 +122,31 @@
 .agenda-form-row{grid-template-columns:1fr 1fr}
 .agenda-form-row input[type=date]{grid-column:1/-1;order:-1}
 @media(max-width:760px){.agenda-form-row input[type=time]{grid-column:auto}}
+
+/* The trend chart answers a pointer or a touch: a line at the day, a dot on the curve, the number. */
+.monitor-trend-plot{touch-action:pan-y;cursor:crosshair}
+.monitor-trend-cursor{position:absolute;inset:0;pointer-events:none}
+.monitor-trend-cursor[hidden]{display:none}
+.monitor-trend-cursor::before{content:"";position:absolute;top:0;bottom:0;left:var(--x);width:1px;background:color-mix(in srgb,#2f6fd6 55%,transparent)}
+.monitor-trend-cursor i{position:absolute;left:var(--x);top:var(--y);width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border:2.5px solid #2f6fd6;border-radius:50%;background:var(--surface)}
+.monitor-trend-cursor b{position:absolute;top:2px;left:var(--x);transform:translate(10px,0);padding:4px 9px;border-radius:8px;background:var(--home-ink);color:var(--surface);font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 6px 16px rgb(15 42 61 / .2)}
+.monitor-trend-cursor.is-right b{transform:translate(calc(-100% - 10px),0)}
+.monitor-trend-plot:has(.monitor-trend-cursor:not([hidden])) .monitor-axis-max{opacity:0}
+
+/* Tablets: no doubled gap between the trend and the cards below it. */
+@media(max-width:1200px){.monitor-charts{row-gap:0}}
+
+/* Phones: number cards stay short (icon beside the number), activity names are read in full. */
+@media(max-width:760px){
+    .monitor-kpi{display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:10px;align-items:center;padding:12px}
+    .monitor-kpi-icon{grid-row:1/3;width:34px;height:34px;margin:0;border-radius:10px}
+    .monitor-kpi-icon svg{width:18px;height:18px}
+    .monitor-kpi strong{font-size:21px}
+    .monitor-kpi span{font-size:12.5px}
+    .monitor-kpi small{grid-column:1/-1;margin-top:4px;font-size:11px;line-height:1.3}
+    .monitor-trend-plot{height:150px}
+    .monitor-ring{gap:12px}
+    .monitor-bar{grid-template-columns:minmax(0,1fr) auto;row-gap:4px}
+    .monitor-bar>span:first-child{grid-column:1/-1;white-space:normal}
+    .monitor-bar-track{grid-column:1}
+}
