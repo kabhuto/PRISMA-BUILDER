@@ -130,6 +130,52 @@ class Monitoring
     }
 
     /**
+     * What the bell in the top bar rings for: agenda and deadlines from today to the day after
+     * tomorrow, and progress reports petugas should have sent but did not. Worked out once per request.
+     *
+     * @return Collection<int, array{title: string, detail: string, url: string, color: string, when: string}>
+     */
+    public static function urgent(): Collection
+    {
+        return once(function (): Collection {
+            $today = now()->startOfDay();
+            $items = self::upcoming(8, 2)->map(function (array $event) use ($today): array {
+                $days = (int) $today->diffInDays(Carbon::parse($event['date']), false);
+                $when = match ($days) {
+                    0 => 'Hari ini',
+                    1 => 'Besok',
+                    default => 'Lusa',
+                };
+
+                return [
+                    'title' => $event['title'],
+                    'detail' => ($event['time'] ? 'Pukul '.$event['time'].' · ' : '').$event['label'],
+                    'url' => $event['url'] ?? route('dashboard', ['bulan' => Carbon::parse($event['date'])->format('Y-m')]).'#kalender',
+                    'color' => $event['color'],
+                    'when' => $when,
+                ];
+            });
+
+            $surveys = Survey::query()->usable()->whereNotNull('report_every')->whereNull('closed_at')->get();
+            $lastReports = ProgressReport::query()->whereIn('survey_id', $surveys->modelKeys())->selectRaw('survey_id, MAX(report_date) as last_date')->groupBy('survey_id')->pluck('last_date', 'survey_id');
+            foreach ($surveys as $survey) {
+                $due = collect($survey->reportDueDates(now()->subDays(14), now()->subDay()))->last();
+                if ($due !== null && (string) ($lastReports[$survey->id] ?? '') < $due) {
+                    $items->push([
+                        'title' => 'Laporan progres belum masuk: '.$survey->title,
+                        'detail' => 'Terlambat · seharusnya '.Carbon::parse($due)->translatedFormat('d M'),
+                        'url' => route('progress.index', $survey),
+                        'color' => '#e2493b',
+                        'when' => 'Terlambat',
+                    ]);
+                }
+            }
+
+            return $items->values();
+        });
+    }
+
+    /**
      * What happened to the forms lately: made, published, a new version, closed, locked.
      *
      * @return Collection<int, array{at: Carbon, text: string, kind: string, url: string}>

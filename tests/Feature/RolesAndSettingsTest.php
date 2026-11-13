@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Agenda;
 use App\Models\ApiToken;
 use App\Models\Survey;
 use App\Models\SurveyTemplate;
@@ -96,6 +97,19 @@ class RolesAndSettingsTest extends TestCase
         $this->get(route('form.create', $survey))->assertNotFound();
         $token = ApiToken::issue('Uji', false)[1];
         $this->withToken($token)->getJson(route('api.surveys.index'))->assertOk()->assertJsonCount(0, 'data');
+    }
+
+    public function test_the_bell_rings_for_agenda_in_the_next_days_only(): void
+    {
+        $this->actingAs(User::factory()->employee()->create());
+        Agenda::query()->create(['title' => 'Briefing petugas besok', 'kind' => 'briefing', 'date' => now()->addDay()->toDateString(), 'time' => '08:00']);
+        Agenda::query()->create(['title' => 'Rapat bulan depan', 'kind' => 'rapat', 'date' => now()->addDays(20)->toDateString()]);
+
+        $this->get(route('history.index'))->assertOk()
+            ->assertSee('data-bell', false)
+            ->assertSeeInOrder(['Notifikasi', 'Besok', 'Briefing petugas besok', 'Pukul 08:00'])
+            ->assertDontSee('Rapat bulan depan')
+            ->assertSee('Mode gelap');
     }
 
     public function test_beranda_shows_everyones_forms_and_riwayat_only_ones_own(): void

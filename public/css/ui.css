@@ -332,8 +332,8 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
 .user-name{font-size:13.5px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .user-caret{flex:none;width:16px;height:16px;fill:none;stroke:var(--text-2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .user-menu-pop{position:absolute;z-index:30;right:0;top:calc(100% + 8px);display:flex;flex-direction:column;min-width:220px;padding:8px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}
-.user-menu-pop strong{padding:4px 8px 0;font-size:14px;color:var(--text)}
-.user-menu-pop small{padding:0 8px 8px;margin-bottom:4px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-3)}
+.user-menu-pop>strong{padding:4px 8px 0;font-size:14px;color:var(--text)}
+.user-menu-pop>small{padding:0 8px 8px;margin-bottom:4px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-3)}
 .user-menu-pop a{padding:8px;border-radius:8px;color:var(--text);font-size:13.5px;text-decoration:none}
 .user-menu-pop a:hover{background:var(--surface-2)}
 .icon-logout{display:grid;place-items:center;width:38px;height:38px;border:0;border-radius:10px;background:none;color:var(--text-2);cursor:pointer}
@@ -436,3 +436,56 @@ body.admin-page,body.login-page{background:var(--bg);background-image:none;color
 @media(min-width:761px){.main-nav .nav-link.is-phone-only{display:none}}
 .main-nav .nav-link.is-off{opacity:.6}
 .main-nav .nav-link.is-off span:first-of-type{text-decoration:line-through;text-decoration-thickness:1px}
+
+/* ---------- Top bar like a phone app: the bell and the account, nothing else. Guide, colour and theme live in the account menu. ---------- */
+.topbar-tools{gap:8px}
+.bell-menu{position:relative}
+.bell-menu>summary{list-style:none}
+.bell-menu>summary::-webkit-details-marker{display:none}
+.bell-button{position:relative;display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--surface);color:var(--text-2);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.bell-button:hover,.bell-menu[open] .bell-button{background:var(--surface-2);color:var(--text);border-color:var(--border-strong)}
+.bell-button:focus-visible{outline:none;box-shadow:var(--focus)}
+.bell-button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.bell-count{position:absolute;top:-4px;right:-4px;display:grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:#e2493b;color:#fff;font-size:10.5px;font-weight:800;line-height:1;box-shadow:0 0 0 2px var(--surface);animation:bell-pop .4s ease-out}
+.bell-count.is-seen{min-width:10px;width:10px;height:10px;padding:0;top:1px;right:1px;font-size:0;background:color-mix(in srgb,#e2493b 70%,var(--surface))}
+.bell-menu:has(.bell-count:not(.is-seen)) .bell-button svg{animation:bell-ring 2.4s ease-in-out 1s 2;transform-origin:50% 10%}
+@keyframes bell-pop{from{transform:scale(0)}}
+@keyframes bell-ring{0%,30%,100%{transform:rotate(0)}5%{transform:rotate(14deg)}10%{transform:rotate(-12deg)}15%{transform:rotate(8deg)}20%{transform:rotate(-5deg)}25%{transform:rotate(2deg)}}
+@media(prefers-reduced-motion:reduce){.bell-count,.bell-menu .bell-button svg{animation:none!important}}
+.bell-pop{position:absolute;z-index:35;right:0;top:calc(100% + 10px);display:flex;flex-direction:column;width:340px;max-height:min(70vh,480px);border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.bell-pop>header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--border)}
+.bell-pop>header strong{font-size:15px;color:var(--text)}
+.bell-pop>header small{font-size:12px;color:var(--text-3)}
+.bell-list{flex:1;overflow:auto;padding:6px}
+.bell-item{display:flex;align-items:flex-start;gap:10px;padding:10px;border-radius:12px;color:var(--text);text-decoration:none}
+.bell-item:hover{background:var(--surface-2)}
+.bell-item-when{flex:none;min-width:64px;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--tone) 14%,var(--surface));color:color-mix(in srgb,var(--tone) 80%,var(--text));font-size:11px;font-weight:800;text-align:center}
+.bell-item-text{display:flex;flex-direction:column;gap:2px;min-width:0}
+.bell-item-text strong{font-size:13px;font-weight:700;line-height:1.35}
+.bell-item-text small{font-size:12px;color:var(--text-3)}
+.bell-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:22px 16px;text-align:center}
+.bell-empty svg{width:34px;height:34px;padding:8px;border-radius:50%;background:color-mix(in srgb,#1f9d55 14%,var(--surface));fill:none;stroke:#1f9d55;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.bell-empty p{margin:0;font-size:13px;color:var(--text-3)}
+.bell-all{padding:11px 16px;border-top:1px solid var(--border);color:var(--brand-strong);font-size:13px;font-weight:700;text-align:center;text-decoration:none}
+.bell-all:hover{background:var(--surface-2)}
+
+/* The account: avatar and caret in a pill; the menu holds everything else, logout included. */
+.user-menu>summary{display:flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border:1px solid var(--border);border-radius:999px;background:var(--surface)}
+.user-menu-pop{min-width:240px}
+.user-menu-logout{display:block}
+@media(min-width:761px){.user-menu-logout{display:block}}
+.user-menu-look{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:4px 0 0;padding:8px 0 4px;border-top:1px solid var(--border)}
+.user-menu-look .accent-picker{position:static}
+.user-menu-look .theme-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:38px;padding:0 10px;border-radius:10px;font:inherit;font-size:13px;font-weight:600;color:var(--text)}
+.user-menu-look .theme-toggle-label{display:inline!important;font-size:13px}
+.user-menu-look span.theme-icon-dark,.user-menu-look span.theme-icon-light{white-space:nowrap}
+.user-menu-look .accent-pop{top:auto;bottom:0;right:calc(100% + 10px)}
+@media(max-width:760px){
+    .topbar-tools{gap:8px}
+    .user-caret{display:block}
+    .user-menu>summary{padding:2px 8px 2px 2px}
+    .bell-pop{position:fixed;top:64px;right:10px;left:10px;width:auto;max-height:calc(100vh - 170px)}
+    .user-menu-look .accent-pop{position:fixed;top:66px;bottom:auto;right:12px;left:12px}
+}
+.user-menu-look .theme-toggle svg{flex:none}
+.user-menu-pop{min-width:260px}
