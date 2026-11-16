@@ -74,8 +74,8 @@
             <polygon points="924,473 842,520 842,866 924,913" fill="#fff" opacity=".12"/>
             <polygon points="432,974 473,902 543,943 759.5,818 842,866 543,1038" fill="#fff" opacity=".16"/>
             <polyline class="pe-edge" points="162,473 543,253 924,473"/>
-            <polyline points="326.5,568 543,443 759.5,568 759.5,818 543,943 473,902" fill="none" stroke="#08204d" stroke-opacity=".18" stroke-width="6" stroke-linejoin="round"/>
-            <polyline points="326.5,568 326.5,818" fill="none" stroke="#08204d" stroke-opacity=".18" stroke-width="6"/>
+            <polyline class="pe-shade" points="326.5,568 543,443 759.5,568 759.5,818 543,943 473,902" fill="none" stroke="#08204d" stroke-opacity=".18" stroke-width="6" stroke-linejoin="round"/>
+            <polyline class="pe-shade" points="326.5,568 326.5,818" fill="none" stroke="#08204d" stroke-opacity=".18" stroke-width="6"/>
 
             {{-- The cube, as wide from every ribbon as the ribbons are wide. --}}
             <g class="pe-cube">
@@ -129,6 +129,12 @@
         @keyframes pe-bob{0%,100%{transform:scale(1.05)}50%{transform:scale(1.15)}}
         @keyframes pe-halo{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
         @keyframes pe-pulse{from{transform:scale(1);opacity:.85}to{transform:scale(1.3);opacity:0}}
+        /* Dark pages: no dark shadow under the mark but a soft light around it, ribbons a touch brighter, a stronger glow below. */
+        :root[data-theme="dark"] .pe-mark{filter:brightness(1.08) saturate(1.12) drop-shadow(0 0 1.5px rgb(255 255 255 / .35)) drop-shadow(0 0 22px rgb(70 160 255 / .22))}
+        :root[data-theme="dark"] .pe-shade{stroke-opacity:0}
+        :root[data-theme="dark"] .pe-edge{stroke-opacity:.6}
+        :root[data-theme="dark"] .pe-floor{opacity:1;filter:brightness(1.6)}
+        :root[data-theme="dark"] .pe-halo{mix-blend-mode:screen}
         @media(prefers-reduced-motion:reduce){.pe *{animation:none!important}}
     </style>
 @endonce
