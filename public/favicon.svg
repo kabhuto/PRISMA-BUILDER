@@ -1,63 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="190 225 706 935">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="150 225 786 900">
     <style>.pe-edge{fill:none;stroke:#fff;stroke-opacity:.4;stroke-width:3;stroke-linejoin:round}</style><defs>
-        <linearGradient id="pecd0c44-bt" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0a6fd8"/><stop offset="1" stop-color="#14b4ff"/></linearGradient>
-        <linearGradient id="pecd0c44-bi" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b4fc0"/><stop offset="1" stop-color="#083a92"/></linearGradient>
-        <linearGradient id="pecd0c44-bl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0aaaff"/><stop offset="1" stop-color="#0a4fb2"/></linearGradient>
-        <linearGradient id="pecd0c44-bli" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a5ad0"/><stop offset="1" stop-color="#062e78"/></linearGradient>
-        <linearGradient id="pecd0c44-ot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a00"/><stop offset="1" stop-color="#ffae12"/></linearGradient>
-        <linearGradient id="pecd0c44-oi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8400a"/><stop offset="1" stop-color="#e05a0a"/></linearGradient>
-        <linearGradient id="pecd0c44-or" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa21c"/><stop offset=".55" stop-color="#ff7a08"/><stop offset="1" stop-color="#ee5506"/></linearGradient>
-        <linearGradient id="pecd0c44-ori" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6a08"/><stop offset="1" stop-color="#c8460a"/></linearGradient>
-        <linearGradient id="pecd0c44-gt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6cc214"/><stop offset=".6" stop-color="#a6e82a"/><stop offset="1" stop-color="#c2f43a"/></linearGradient>
-        <linearGradient id="pecd0c44-gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb812"/><stop offset="1" stop-color="#2f8f0a"/></linearGradient>
-        <linearGradient id="pecd0c44-gr" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8f0a"/><stop offset="1" stop-color="#3fa012"/></linearGradient>
-        <linearGradient id="pecd0c44-ct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7d0d"/><stop offset="1" stop-color="#ffc414"/></linearGradient>
-        <linearGradient id="pecd0c44-cl" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14b4ff"/><stop offset="1" stop-color="#0a4fb8"/></linearGradient>
-        <linearGradient id="pecd0c44-cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6e82a"/><stop offset="1" stop-color="#2a8f0a"/></linearGradient>
-        <linearGradient id="pecd0c44-sheen" x1="0" y1="0" x2="1" y2="0">
+        <linearGradient id="pe1c13ca-bt" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0a6fd8"/><stop offset="1" stop-color="#14b4ff"/></linearGradient>
+        <linearGradient id="pe1c13ca-bi" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b4fc0"/><stop offset="1" stop-color="#083a92"/></linearGradient>
+        <linearGradient id="pe1c13ca-bl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0aaaff"/><stop offset="1" stop-color="#0a4fb2"/></linearGradient>
+        <linearGradient id="pe1c13ca-bli" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a5ad0"/><stop offset="1" stop-color="#062e78"/></linearGradient>
+        <linearGradient id="pe1c13ca-ot" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff8a00"/><stop offset="1" stop-color="#ffae12"/></linearGradient>
+        <linearGradient id="pe1c13ca-oi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8400a"/><stop offset="1" stop-color="#e05a0a"/></linearGradient>
+        <linearGradient id="pe1c13ca-or" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa21c"/><stop offset=".55" stop-color="#ff7a08"/><stop offset="1" stop-color="#ee5506"/></linearGradient>
+        <linearGradient id="pe1c13ca-ori" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6a08"/><stop offset="1" stop-color="#c8460a"/></linearGradient>
+        <linearGradient id="pe1c13ca-gt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6cc214"/><stop offset=".6" stop-color="#a6e82a"/><stop offset="1" stop-color="#c2f43a"/></linearGradient>
+        <linearGradient id="pe1c13ca-gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5cb812"/><stop offset="1" stop-color="#2f8f0a"/></linearGradient>
+        <linearGradient id="pe1c13ca-gr" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f8f0a"/><stop offset="1" stop-color="#3fa012"/></linearGradient>
+        <linearGradient id="pe1c13ca-ct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7d0d"/><stop offset="1" stop-color="#ffc414"/></linearGradient>
+        <linearGradient id="pe1c13ca-cl" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14b4ff"/><stop offset="1" stop-color="#0a4fb8"/></linearGradient>
+        <linearGradient id="pe1c13ca-cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6e82a"/><stop offset="1" stop-color="#2a8f0a"/></linearGradient>
+        <linearGradient id="pe1c13ca-sheen" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
         </linearGradient>
-        <radialGradient id="pecd0c44-glow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
-        <radialGradient id="pecd0c44-floor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2e86ff" stop-opacity=".42"/><stop offset=".55" stop-color="#3cc06a" stop-opacity=".2"/><stop offset="1" stop-color="#3cc06a" stop-opacity="0"/></radialGradient>
-        <clipPath id="pecd0c44-clip-all"><polygon points="215,493 543,240 543,428 350,575 350,1028 215,935"/><polygon points="543,240 871,493 871,935 778,880 736,855 736,575 543,428"/><polygon points="425,860 573,960 736,855 871,935 568,1145 425,1048"/><polygon points="543,535 658,613 658,765 543,845 425,765 425,613"/></clipPath>
-        <filter id="pecd0c44-soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#1556b8" flood-opacity=".24"/></filter>
-        <filter id="pecd0c44-lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0b2f6e" flood-opacity=".35"/></filter>
-        <filter id="pecd0c44-icon" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05204a" flood-opacity=".45"/></filter>
+        <radialGradient id="pe1c13ca-glow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <radialGradient id="pe1c13ca-floor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2e86ff" stop-opacity=".42"/><stop offset=".55" stop-color="#3cc06a" stop-opacity=".2"/><stop offset="1" stop-color="#3cc06a" stop-opacity="0"/></radialGradient>
+        <clipPath id="pe1c13ca-clip-all"><polygon points="163,459.4 543,240 543,421.3 320,550 320,995 163,904.4"/><polygon points="543,240 923,459.4 923,904.4 815,842 766,813.7 766,550 543,421.3"/><polygon points="423,815.9 592.6,913.9 766,813.7 923,904.4 568,1109.4 423,1025.6"/><polygon points="543,492 663,561.3 663,699.8 543,769.1 423,699.8 423,561.3"/></clipPath>
+        <filter id="pe1c13ca-soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#1556b8" flood-opacity=".24"/></filter>
+        <filter id="pe1c13ca-lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0b2f6e" flood-opacity=".35"/></filter>
+        <filter id="pe1c13ca-icon" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05204a" flood-opacity=".45"/></filter>
     </defs>
-            <g class="pe-mark" filter="url(#pecd0c44-soft)">
-                                                            <g class="pe-piece" style="--pe-dx: -34px; --pe-dy: 6px; --pe-tone: #1e7be0; --pe-ribbon: #0a3d9e" >
-                                            <polygon points="215,493 308,550 308,1000 215,935" fill="url(#pecd0c44-bl)" stroke="url(#pecd0c44-bl)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="308,550 350,575 350,1028 308,1000" fill="url(#pecd0c44-bli)" stroke="url(#pecd0c44-bli)" stroke-width="1.5" stroke-linejoin="round"/>
-                                                                <polyline class="pe-edge" points="308,550 308,1000"/>
+            <g class="pe-mark" filter="url(#pe1c13ca-soft)">
+                                                            <g class="pe-piece" style="--pe-dx: -34px; --pe-dy: 0px; --pe-tone: #1e7be0; --pe-ribbon: #0a3d9e" >
+                                            <polygon points="163,459.4 271,521.7 271,966.7 163,904.4" fill="url(#pe1c13ca-bl)" stroke="url(#pe1c13ca-bl)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="271,521.7 320,550 320,995 271,966.7" fill="url(#pe1c13ca-bli)" stroke="url(#pe1c13ca-bli)" stroke-width="1.5" stroke-linejoin="round"/>
+                                                                <polyline class="pe-edge" points="271,521.7 271,966.7"/>
                                                         </g>
-                                                            <g class="pe-piece" style="--pe-dx: -18px; --pe-dy: -28px; --pe-tone: #2f9e44; --pe-ribbon: #0a4fb8" >
-                                            <polygon points="215,493 543,240 543,368 308,550" fill="url(#pecd0c44-bt)" stroke="url(#pecd0c44-bt)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="308,550 543,368 543,428 350,575" fill="url(#pecd0c44-bi)" stroke="url(#pecd0c44-bi)" stroke-width="1.5" stroke-linejoin="round"/>
-                                                                <polyline class="pe-edge" points="215,493 308,550 543,368"/>
+                                                            <g class="pe-piece" style="--pe-dx: -17px; --pe-dy: -30px; --pe-tone: #2f9e44; --pe-ribbon: #0a4fb8" >
+                                            <polygon points="163,459.4 543,240 543,364.7 271,521.7" fill="url(#pe1c13ca-bt)" stroke="url(#pe1c13ca-bt)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="271,521.7 543,364.7 543,421.3 320,550" fill="url(#pe1c13ca-bi)" stroke="url(#pe1c13ca-bi)" stroke-width="1.5" stroke-linejoin="round"/>
+                                                                <polyline class="pe-edge" points="163,459.4 271,521.7 543,364.7"/>
                                                         </g>
-                                                            <g class="pe-piece" style="--pe-dx: 18px; --pe-dy: -28px; --pe-tone: #0f9d8f; --pe-ribbon: #c2440a" >
-                                            <polygon points="543,240 871,493 778,550 543,368" fill="url(#pecd0c44-ot)" stroke="url(#pecd0c44-ot)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="543,368 778,550 736,575 543,428" fill="url(#pecd0c44-oi)" stroke="url(#pecd0c44-oi)" stroke-width="1.5" stroke-linejoin="round"/>
-                                                                <polyline class="pe-edge" points="543,368 778,550 871,493"/>
+                                                            <g class="pe-piece" style="--pe-dx: 17px; --pe-dy: -30px; --pe-tone: #0f9d8f; --pe-ribbon: #c2440a" >
+                                            <polygon points="543,240 923,459.4 815,521.7 543,364.7" fill="url(#pe1c13ca-ot)" stroke="url(#pe1c13ca-ot)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="543,364.7 815,521.7 766,550 543,421.3" fill="url(#pe1c13ca-oi)" stroke="url(#pe1c13ca-oi)" stroke-width="1.5" stroke-linejoin="round"/>
+                                                                <polyline class="pe-edge" points="543,364.7 815,521.7 923,459.4"/>
                                                         </g>
                                                             <g class="pe-piece" style="--pe-dx: 34px; --pe-dy: 0px; --pe-tone: #f07a12; --pe-ribbon: #b8400a" >
-                                            <polygon points="778,550 871,493 871,935 778,880" fill="url(#pecd0c44-or)" stroke="url(#pecd0c44-or)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="736,575 778,550 778,880 736,855" fill="url(#pecd0c44-ori)" stroke="url(#pecd0c44-ori)" stroke-width="1.5" stroke-linejoin="round"/>
-                                                                <polyline class="pe-edge" points="778,550 778,880"/>
+                                            <polygon points="815,521.7 923,459.4 923,904.4 815,842" fill="url(#pe1c13ca-or)" stroke="url(#pe1c13ca-or)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="766,550 815,521.7 815,842 766,813.7" fill="url(#pe1c13ca-ori)" stroke="url(#pe1c13ca-ori)" stroke-width="1.5" stroke-linejoin="round"/>
+                                                                <polyline class="pe-edge" points="815,521.7 815,842"/>
                                                         </g>
-                                                            <g class="pe-piece" style="--pe-dx: 10px; --pe-dy: 32px; --pe-tone: #7a52cc; --pe-ribbon: #11651f" >
-                                            <polygon points="425,860 573,960 736,855 800,893 568,1048 425,945" fill="url(#pecd0c44-gt)" stroke="url(#pecd0c44-gt)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="425,945 568,1048 568,1145 425,1048" fill="url(#pecd0c44-gf)" stroke="url(#pecd0c44-gf)" stroke-width="1.5" stroke-linejoin="round"/>
-                                            <polygon points="568,1048 800,893 871,935 568,1145" fill="url(#pecd0c44-gr)" stroke="url(#pecd0c44-gr)" stroke-width="1.5" stroke-linejoin="round"/>
-                                                                <polyline class="pe-edge" points="425,945 568,1048 800,893"/>
-                                            <polyline class="pe-edge" points="568,1048 568,1145"/>
+                                                            <g class="pe-piece" style="--pe-dx: 17px; --pe-dy: 30px; --pe-tone: #7a52cc; --pe-ribbon: #11651f" >
+                                            <polygon points="423,815.9 592.6,913.9 766,813.7 815,842 568,984.6 423,900.9" fill="url(#pe1c13ca-gt)" stroke="url(#pe1c13ca-gt)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="423,900.9 568,984.6 568,1109.4 423,1025.6" fill="url(#pe1c13ca-gf)" stroke="url(#pe1c13ca-gf)" stroke-width="1.5" stroke-linejoin="round"/>
+                                            <polygon points="568,984.6 815,842 923,904.4 568,1109.4" fill="url(#pe1c13ca-gr)" stroke="url(#pe1c13ca-gr)" stroke-width="1.5" stroke-linejoin="round"/>
+                                                                <polyline class="pe-edge" points="423,900.9 568,984.6 815,842"/>
+                                            <polyline class="pe-edge" points="568,984.6 568,1109.4"/>
                                                         </g>
             <g class="pe-cube">
-                <polygon points="543,535 658,613 543,688 425,613" fill="url(#pecd0c44-ct)" stroke="url(#pecd0c44-ct)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polygon points="425,613 543,688 543,845 425,765" fill="url(#pecd0c44-cl)" stroke="url(#pecd0c44-cl)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polygon points="543,688 658,613 658,765 543,845" fill="url(#pecd0c44-cr)" stroke="url(#pecd0c44-cr)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polyline class="pe-edge" points="425,613 543,688 658,613"/>
-                <line class="pe-edge" x1="543" y1="688" x2="543" y2="845"/>
+                <polygon points="543,492 663,561.3 543,630.6 423,561.3" fill="url(#pe1c13ca-ct)" stroke="url(#pe1c13ca-ct)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="423,561.3 543,630.6 543,769.1 423,699.8" fill="url(#pe1c13ca-cl)" stroke="url(#pe1c13ca-cl)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="543,630.6 663,561.3 663,699.8 543,769.1" fill="url(#pe1c13ca-cr)" stroke="url(#pe1c13ca-cr)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polyline class="pe-edge" points="423,561.3 543,630.6 663,561.3"/>
+                <line class="pe-edge" x1="543" y1="630.6" x2="543" y2="769.1"/>
             </g>
         </g>
             </svg>

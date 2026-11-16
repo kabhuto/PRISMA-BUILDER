@@ -15,36 +15,36 @@
     // Per app: name, role, icon centre, colour, icon (bold, filled, 24 grid), the way its piece drifts out (dx, dy),
     // the deep colour of its ribbon, its faces [points, gradient] and the light lines on its folds.
     $apps = [
-        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 282, 765, '#1e7be0', 'M9 1.5h6A1.5 1.5 0 0 1 16.5 3v.5H18A2.5 2.5 0 0 1 20.5 6v14.5A2.5 2.5 0 0 1 18 23H6a2.5 2.5 0 0 1-2.5-2.5V6A2.5 2.5 0 0 1 6 3.5h1.5V3A1.5 1.5 0 0 1 9 1.5Zm.5 2.5v1.5h5V4h-5Zm6.8 7.2-1.6-1.4-4.2 4.6-2-1.9-1.5 1.5 3.6 3.4 5.7-6.2Z',
-            [-34, 6], '#0a3d9e',
-            [['215,493 308,550 308,1000 215,935', 'bl'], ['308,550 350,575 350,1028 308,1000', 'bli']],
-            ['308,550 308,1000']],
-        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 410, 432, '#2f9e44', 'M12 1a8 8 0 0 1 8 8c0 6-8 14-8 14S4 15 4 9a8 8 0 0 1 8-8Zm0 4.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Z',
-            [-18, -28], '#0a4fb8',
-            [['215,493 543,240 543,368 308,550', 'bt'], ['308,550 543,368 543,428 350,575', 'bi']],
-            ['215,493 308,550 543,368']],
-        'sm' => ['PRISMA SM', 'Manajemen survei', 676, 432, '#0f9d8f', 'M8.5 11.5a4.25 4.25 0 1 1 0-8.5 4.25 4.25 0 0 1 0 8.5Zm8.5.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7ZM1 21.5c0-4 3.3-7 7.5-7s7.5 3 7.5 7v.5H1v-.5Zm16.4.5v-.5c0-2.3-.8-4.3-2.2-5.8.6-.1 1.2-.2 1.8-.2 3.6 0 6 2.3 6 5.6v.9h-5.6Z',
-            [18, -28], '#c2440a',
-            [['543,240 871,493 778,550 543,368', 'ot'], ['543,368 778,550 736,575 543,428', 'oi']],
-            ['543,368 778,550 871,493']],
-        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 804, 712, '#f07a12', 'M12 1.5c5 0 9 1.6 9 3.8S17 9 12 9 3 7.5 3 5.3s4-3.8 9-3.8ZM3 8.4c1.8 1.4 5.2 2.3 9 2.3s7.2-.9 9-2.3v4.3c0 2.1-4 3.8-9 3.8s-9-1.7-9-3.8V8.4Zm0 7.4c1.8 1.4 5.2 2.3 9 2.3s7.2-.9 9-2.3v2.9c0 2.1-4 3.8-9 3.8s-9-1.7-9-3.8v-2.9Z',
+        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 242, 735, '#1e7be0', 'M9 1.5h6A1.5 1.5 0 0 1 16.5 3v.5H18A2.5 2.5 0 0 1 20.5 6v14.5A2.5 2.5 0 0 1 18 23H6a2.5 2.5 0 0 1-2.5-2.5V6A2.5 2.5 0 0 1 6 3.5h1.5V3A1.5 1.5 0 0 1 9 1.5Zm.5 2.5v1.5h5V4h-5Zm6.8 7.2-1.6-1.4-4.2 4.6-2-1.9-1.5 1.5 3.6 3.4 5.7-6.2Z',
+            [-34, 0], '#0a3d9e',
+            [['163,459.4 271,521.7 271,966.7 163,904.4', 'bl'], ['271,521.7 320,550 320,995 271,966.7', 'bli']],
+            ['271,521.7 271,966.7']],
+        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 392, 418, '#2f9e44', 'M12 1a8 8 0 0 1 8 8c0 6-8 14-8 14S4 15 4 9a8 8 0 0 1 8-8Zm0 4.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Z',
+            [-17, -30], '#0a4fb8',
+            [['163,459.4 543,240 543,364.7 271,521.7', 'bt'], ['271,521.7 543,364.7 543,421.3 320,550', 'bi']],
+            ['163,459.4 271,521.7 543,364.7']],
+        'sm' => ['PRISMA SM', 'Manajemen survei', 694, 418, '#0f9d8f', 'M8.5 11.5a4.25 4.25 0 1 1 0-8.5 4.25 4.25 0 0 1 0 8.5Zm8.5.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7ZM1 21.5c0-4 3.3-7 7.5-7s7.5 3 7.5 7v.5H1v-.5Zm16.4.5v-.5c0-2.3-.8-4.3-2.2-5.8.6-.1 1.2-.2 1.8-.2 3.6 0 6 2.3 6 5.6v.9h-5.6Z',
+            [17, -30], '#c2440a',
+            [['543,240 923,459.4 815,521.7 543,364.7', 'ot'], ['543,364.7 815,521.7 766,550 543,421.3', 'oi']],
+            ['543,364.7 815,521.7 923,459.4']],
+        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 845, 683, '#f07a12', 'M12 1.5c5 0 9 1.6 9 3.8S17 9 12 9 3 7.5 3 5.3s4-3.8 9-3.8ZM3 8.4c1.8 1.4 5.2 2.3 9 2.3s7.2-.9 9-2.3v4.3c0 2.1-4 3.8-9 3.8s-9-1.7-9-3.8V8.4Zm0 7.4c1.8 1.4 5.2 2.3 9 2.3s7.2-.9 9-2.3v2.9c0 2.1-4 3.8-9 3.8s-9-1.7-9-3.8v-2.9Z',
             [34, 0], '#b8400a',
-            [['778,550 871,493 871,935 778,880', 'or'], ['736,575 778,550 778,880 736,855', 'ori']],
-            ['778,550 778,880']],
-        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 690, 985, '#7a52cc', 'M2 21h4v-7H2v7Zm6 0h4V10H8v11Zm6 0h4v-5h-4v5Zm6 0h3V7h-3v14ZM2.6 9.6 8.8 4l4.1 3.4L19.3 1.6l1.8 2-8 7.2L8.9 7.4 4.4 11.4 2.6 9.6Z',
-            [10, 32], '#11651f',
-            [['425,860 573,960 736,855 800,893 568,1048 425,945', 'gt'], ['425,945 568,1048 568,1145 425,1048', 'gf'], ['568,1048 800,893 871,935 568,1145', 'gr']],
-            ['425,945 568,1048 800,893', '568,1048 568,1145']],
+            [['815,521.7 923,459.4 923,904.4 815,842', 'or'], ['766,550 815,521.7 815,842 766,813.7', 'ori']],
+            ['815,521.7 815,842']],
+        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 722, 935, '#7a52cc', 'M2 21h4v-7H2v7Zm6 0h4V10H8v11Zm6 0h4v-5h-4v5Zm6 0h3V7h-3v14ZM2.6 9.6 8.8 4l4.1 3.4L19.3 1.6l1.8 2-8 7.2L8.9 7.4 4.4 11.4 2.6 9.6Z',
+            [17, 30], '#11651f',
+            [['423,815.9 592.6,913.9 766,813.7 815,842 568,984.6 423,900.9', 'gt'], ['423,900.9 568,984.6 568,1109.4 423,1025.6', 'gf'], ['568,984.6 815,842 923,904.4 568,1109.4', 'gr']],
+            ['423,900.9 568,984.6 815,842', '568,984.6 568,1109.4']],
     ];
     $outline = [
-        '215,493 543,240 543,428 350,575 350,1028 215,935',
-        '543,240 871,493 871,935 778,880 736,855 736,575 543,428',
-        '425,860 573,960 736,855 871,935 568,1145 425,1048',
-        '543,535 658,613 658,765 543,845 425,765 425,613',
+        '163,459.4 543,240 543,421.3 320,550 320,995 163,904.4',
+        '543,240 923,459.4 923,904.4 815,842 766,813.7 766,550 543,421.3',
+        '423,815.9 592.6,913.9 766,813.7 923,904.4 568,1109.4 423,1025.6',
+        '543,492 663,561.3 663,699.8 543,769.1 423,699.8 423,561.3',
     ];
     $hex = '0,-54 46.8,-27 46.8,27 0,54 -46.8,27 -46.8,-27';
 @endphp
-<svg @class([$class ?? 'prisma-emblem', 'pe', 'pe-solo' => ! $orbit, 'has-active' => $active]) viewBox="130 200 826 1010" role="img" aria-label="PRISMA{{ $active ? ' · '.$apps[$active][0] : '' }}">
+<svg @class([$class ?? 'prisma-emblem', 'pe', 'pe-solo' => ! $orbit, 'has-active' => $active]) viewBox="100 195 886 1000" role="img" aria-label="PRISMA{{ $active ? ' · '.$apps[$active][0] : '' }}">
     <defs>
         <linearGradient id="{{ $uid }}-bt" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0a6fd8"/><stop offset="1" stop-color="#14b4ff"/></linearGradient>
         <linearGradient id="{{ $uid }}-bi" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0b4fc0"/><stop offset="1" stop-color="#083a92"/></linearGradient>
@@ -72,10 +72,10 @@
     </defs>
 
     {{-- A coloured glow on the floor, as if the mark floats. --}}
-    <ellipse class="pe-floor" cx="543" cy="1180" rx="300" ry="30" fill="url(#{{ $uid }}-floor)"/>
+    <ellipse class="pe-floor" cx="543" cy="1152" rx="320" ry="30" fill="url(#{{ $uid }}-floor)"/>
 
     @if ($markImage ?? null)
-        <image class="pe-mark" href="{{ $markImage }}" x="215" y="240" width="656" height="905" preserveAspectRatio="xMidYMid meet"/>
+        <image class="pe-mark" href="{{ $markImage }}" x="163" y="240" width="760" height="869" preserveAspectRatio="xMidYMid meet"/>
     @else
         <g class="pe-mark" filter="url(#{{ $uid }}-soft)">
             {{-- The five pieces of the P; the open app's piece is drawn last so it drifts over the rest. --}}
@@ -109,11 +109,11 @@
 
             {{-- The cube, as in the sketch: orange on top, blue on the left, green on the right. --}}
             <g class="pe-cube">
-                <polygon points="543,535 658,613 543,688 425,613" fill="url(#{{ $uid }}-ct)" stroke="url(#{{ $uid }}-ct)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polygon points="425,613 543,688 543,845 425,765" fill="url(#{{ $uid }}-cl)" stroke="url(#{{ $uid }}-cl)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polygon points="543,688 658,613 658,765 543,845" fill="url(#{{ $uid }}-cr)" stroke="url(#{{ $uid }}-cr)" stroke-width="1.5" stroke-linejoin="round"/>
-                <polyline class="pe-edge" points="425,613 543,688 658,613"/>
-                <line class="pe-edge" x1="543" y1="688" x2="543" y2="845"/>
+                <polygon points="543,492 663,561.3 543,630.6 423,561.3" fill="url(#{{ $uid }}-ct)" stroke="url(#{{ $uid }}-ct)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="423,561.3 543,630.6 543,769.1 423,699.8" fill="url(#{{ $uid }}-cl)" stroke="url(#{{ $uid }}-cl)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="543,630.6 663,561.3 663,699.8 543,769.1" fill="url(#{{ $uid }}-cr)" stroke="url(#{{ $uid }}-cr)" stroke-width="1.5" stroke-linejoin="round"/>
+                <polyline class="pe-edge" points="423,561.3 543,630.6 663,561.3"/>
+                <line class="pe-edge" x1="543" y1="630.6" x2="543" y2="769.1"/>
             </g>
         </g>
         @unless ($active)
