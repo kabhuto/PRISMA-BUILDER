@@ -482,6 +482,6 @@
 @media(max-width:380px){.agenda-week{gap:4px}.agenda-week b{font-size:14px}}
 
 /* The PRISMA emblem in the hero: larger than the old mark, for the five apps around it. */
-.home-mark.pe{width:200px;height:auto;filter:none;margin:-18px 0 -18px -10px}
-.home-welcome-mark.pe{width:112px;height:auto;filter:none}
+.home-mark.pe{width:150px;height:auto;filter:drop-shadow(0 10px 20px rgb(31 99 176 / .22));margin:0}
+.home-welcome-mark.pe{width:96px;height:auto;filter:none}
 @media(max-width:760px){.home-mark.pe{width:120px;margin:0}}

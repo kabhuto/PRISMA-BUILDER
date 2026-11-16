@@ -6,15 +6,15 @@
     $active ??= null;
     $apps = [
         // Clockwise from the left, the way the data goes: build, collect, manage, process, show.
-        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 76, 714, 216, 714, '#1e7be0', 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z'],
-        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 295, 257, 380, 368, '#2f9e44', 'M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
-        'sm' => ['PRISMA SM', 'Manajemen survei', 790, 255, 705, 366, '#0f9d8f', 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm13 9v-1a4 4 0 0 0-3-3.9M16 3.1a3.5 3.5 0 0 1 0 6.8'],
-        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 1008, 711, 868, 711, '#f07a12', 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3Zm0 0v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3'],
-        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 798, 1153, 717, 1038, '#7a52cc', 'M3 3v18h18M7 15l4-4 3 3 6-6'],
+        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 262, 743, 0, 0, '#1e7be0', 'M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z'],
+        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 403, 413, 0, 0, '#2f9e44', 'M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z'],
+        'sm' => ['PRISMA SM', 'Manajemen survei', 683, 412, 0, 0, '#0f9d8f', 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm13 9v-1a4 4 0 0 0-3-3.9M16 3.1a3.5 3.5 0 0 1 0 6.8'],
+        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 822, 714, 0, 0, '#f07a12', 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3Zm0 0v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3'],
+        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 700, 1004, 0, 0, '#7a52cc', 'M3 3v18h18M7 15l4-4 3 3 6-6'],
     ];
     $orbit ??= true;
 @endphp
-<svg @class([$class ?? 'prisma-emblem', 'pe', 'pe-solo' => ! $orbit]) viewBox="{{ $orbit ? '-14 160 1110 1084' : '196 222 692 943' }}" role="img" aria-label="PRISMA{{ $active ? ' · '.$apps[$active][0] : '' }}">
+<svg @class([$class ?? 'prisma-emblem', 'pe', 'pe-solo' => ! $orbit]) viewBox="{{ $orbit ? '170 210 750 970' : '196 222 692 943' }}" role="img" aria-label="PRISMA{{ $active ? ' · '.$apps[$active][0] : '' }}">
     <defs>
         <linearGradient id="{{ $uid }}-b1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0a5fc4"/><stop offset="1" stop-color="#14a8ff"/></linearGradient>
         <linearGradient id="{{ $uid }}-b2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#11a2f6"/><stop offset="1" stop-color="#0b4fae"/></linearGradient>
@@ -26,26 +26,6 @@
         <linearGradient id="{{ $uid }}-cl" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14b0ff"/><stop offset="1" stop-color="#0a50b8"/></linearGradient>
         <linearGradient id="{{ $uid }}-cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a6e824"/><stop offset="1" stop-color="#2f8f06"/></linearGradient>
     </defs>
-
-    @if ($orbit)
-        {{-- The five apps, each on its own side, joined to the mark. --}}
-        @foreach ($apps as $key => [$name, $role, $x, $y, $sx, $sy, $color, $icon])
-            @php($on = $key === $active)
-            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}">
-                <title>{{ $name }} · {{ $role }}{{ $on ? ' (sedang dibuka)' : '' }}</title>
-                <line class="pe-link" x1="{{ $sx }}" y1="{{ $sy }}" x2="{{ $x }}" y2="{{ $y }}"/>
-                @if ($on)
-                    <circle class="pe-pulse" cx="{{ $x }}" cy="{{ $y }}" r="70"/>
-                    <circle class="pe-pulse pe-pulse-2" cx="{{ $x }}" cy="{{ $y }}" r="70"/>
-                    <circle class="pe-ring" cx="{{ $x }}" cy="{{ $y }}" r="88"/>
-                @endif
-                <g class="pe-badge" style="transform-origin: {{ $x }}px {{ $y }}px">
-                    <circle class="pe-disc" cx="{{ $x }}" cy="{{ $y }}" r="70"/>
-                    <svg x="{{ $x - 36 }}" y="{{ $y - 36 }}" width="72" height="72" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}"/></svg>
-                </g>
-            </g>
-        @endforeach
-    @endif
 
     {{-- The mark, drawn from the sketch: blue on the left and top, orange on the right, green along the bottom, the cube inside. --}}
     @if ($markImage ?? null)
@@ -71,15 +51,33 @@
         </g>
     </g>
     @endif
+    @if ($orbit)
+        {{-- The five apps, each sitting on the middle of its own side of the hexagon. --}}
+        @foreach ($apps as $key => [$name, $role, $x, $y, $sx, $sy, $color, $icon])
+            @php($on = $key === $active)
+            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}">
+                <title>{{ $name }} · {{ $role }}{{ $on ? ' (sedang dibuka)' : '' }}</title>
+                @if ($on)
+                    <circle class="pe-pulse" cx="{{ $x }}" cy="{{ $y }}" r="50"/>
+                    <circle class="pe-pulse pe-pulse-2" cx="{{ $x }}" cy="{{ $y }}" r="50"/>
+                    <circle class="pe-ring" cx="{{ $x }}" cy="{{ $y }}" r="64"/>
+                @endif
+                <g class="pe-badge" style="transform-origin: {{ $x }}px {{ $y }}px">
+                    <circle class="pe-disc" cx="{{ $x }}" cy="{{ $y }}" r="50"/>
+                    <svg x="{{ $x - 27 }}" y="{{ $y - 27 }}" width="54" height="54" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}"/></svg>
+                </g>
+            </g>
+        @endforeach
+    @endif
 </svg>
 @once
     <style>
         .pe{overflow:visible}
         .pe-link{stroke:color-mix(in srgb,var(--pe-tone) 30%,#9aa9b4);stroke-width:5;stroke-dasharray:4 14;stroke-linecap:round;opacity:.55}
-        .pe-disc{fill:var(--surface,#fff);stroke:color-mix(in srgb,#9aa9b4 55%,transparent);stroke-width:5}
-        .pe-icon path{fill:none;stroke:#8a99a5;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+        .pe-disc{fill:#fff;stroke:rgb(255 255 255 / .7);stroke-width:6;filter:drop-shadow(0 6px 10px rgb(10 40 80 / .28))}
+        .pe-icon path{fill:none;stroke:#6b7b88;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
         .pe-app{transition:opacity .3s}
-        .pe-app:not(.is-active){opacity:.82}
+        .pe-app:not(.is-active){opacity:.94}
         .pe-app:hover .pe-disc{stroke:var(--pe-tone)}
         .pe-app:hover .pe-icon path{stroke:var(--pe-tone)}
         /* The app this page belongs to: in colour, breathing, with data running along its line to the mark. */
