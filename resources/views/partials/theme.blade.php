@@ -17,4 +17,6 @@
 @endif
 @if ($tabIcon = \App\Support\AppSettings::logo('favicon'))
     <link rel="icon" href="{{ $tabIcon }}">
+@else
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
 @endif

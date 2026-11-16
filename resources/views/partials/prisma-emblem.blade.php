@@ -46,6 +46,7 @@
         <linearGradient id="{{ $uid }}-sheen" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
         </linearGradient>
+        <linearGradient id="{{ $uid }}-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity=".1"/></linearGradient>
         <radialGradient id="{{ $uid }}-glow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
         <radialGradient id="{{ $uid }}-floor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2e86ff" stop-opacity=".42"/><stop offset=".55" stop-color="#3cc06a" stop-opacity=".2"/><stop offset="1" stop-color="#3cc06a" stop-opacity="0"/></radialGradient>
         <clipPath id="{{ $uid }}-clip-all">@foreach ($bands as [$points])<polygon points="{{ $points }}"/>@endforeach<polygon points="543,568 651,630 651,756 543,818 435,756 435,630"/></clipPath>
@@ -92,18 +93,22 @@
     @endif
 
     @if ($orbit)
-        {{-- The five apps, white icons on the middle of five sides, all the same distance from the centre. --}}
+        {{-- The five apps on the middle of five sides, all the same distance from the centre: each icon set in a small
+             glass hexagon that echoes the mark; the open app's hexagon is solid white and lit. --}}
+        @php($hex = '0,-66 57.2,-33 57.2,33 0,66 -57.2,33 -57.2,-33')
         @foreach ($apps as $key => [$name, $role, $x, $y, $color, $icon])
             @php($on = $key === $active)
-            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}">
+            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}" transform="translate({{ $x }} {{ $y }})">
                 <title>{{ $name }} · {{ $role }}{{ $on ? ' (sedang dibuka)' : '' }}</title>
                 @if ($on)
-                    <circle class="pe-halo" cx="{{ $x }}" cy="{{ $y }}" r="86" fill="url(#{{ $uid }}-glow)"/>
-                    <circle class="pe-pulse" cx="{{ $x }}" cy="{{ $y }}" r="66"/>
-                    <circle class="pe-pulse pe-pulse-2" cx="{{ $x }}" cy="{{ $y }}" r="66"/>
+                    <circle class="pe-halo" r="96" fill="url(#{{ $uid }}-glow)"/>
+                    <polygon class="pe-pulse" points="{{ $hex }}"/>
+                    <polygon class="pe-pulse pe-pulse-2" points="{{ $hex }}"/>
                 @endif
-                <g class="pe-glyph" filter="url(#{{ $uid }}-icon)">
-                    <svg x="{{ $x - 48 }}" y="{{ $y - 48 }}" width="96" height="96" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}" fill-rule="evenodd"/></svg>
+                <g class="pe-badge" filter="url(#{{ $uid }}-icon)">
+                    <polygon class="pe-badge-bg" points="{{ $hex }}" fill="url(#{{ $uid }}-glass)"/>
+                    <polygon class="pe-badge-shine" points="0,-66 57.2,-33 0,-8 -57.2,-33" fill="#fff"/>
+                    <svg x="-31" y="-31" width="62" height="62" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}" fill-rule="evenodd"/></svg>
                 </g>
             </g>
         @endforeach
@@ -117,9 +122,15 @@
         .pe-cube{transform-box:fill-box;transform-origin:center;animation:pe-float 5s ease-in-out infinite}
         .pe-floor{transform-box:fill-box;transform-origin:center;animation:pe-floor 5s ease-in-out infinite}
         .pe-icon path{fill:#fff}
-        .pe-app:not(.is-active) .pe-glyph{opacity:.97}
-        /* The app this page belongs to: its icon a little larger, with light breathing around it. */
-        .pe-app.is-active .pe-glyph{transform-box:fill-box;transform-origin:center;animation:pe-bob 3s ease-in-out infinite}
+        /* Glass hexagons: a light tint of white, a crisp white rim, a shine on the upper half. */
+        .pe-badge-bg{stroke:rgb(255 255 255 / .85);stroke-width:4;stroke-linejoin:round}
+        .pe-badge-shine{opacity:.16}
+        .pe-app:hover .pe-badge-bg{stroke:#fff}
+        /* The app this page belongs to: a solid white hexagon, the icon in that app's colour, light breathing around it. */
+        .pe-app.is-active .pe-badge-bg{fill:#fff;stroke:#fff}
+        .pe-app.is-active .pe-badge-shine{opacity:0}
+        .pe-app.is-active .pe-icon path{fill:var(--pe-tone)}
+        .pe-app.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 3s ease-in-out infinite}
         .pe-halo{transform-box:fill-box;transform-origin:center;animation:pe-halo 3s ease-in-out infinite}
         .pe-pulse{fill:none;stroke:#fff;stroke-width:5;transform-box:fill-box;transform-origin:center;animation:pe-pulse 2.6s ease-out infinite}
         .pe-pulse-2{animation-delay:1.3s}
@@ -130,11 +141,9 @@
         @keyframes pe-halo{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
         @keyframes pe-pulse{from{transform:scale(1);opacity:.85}to{transform:scale(1.3);opacity:0}}
         /* Dark pages: no dark shadow under the mark but a soft light around it, ribbons a touch brighter, a stronger glow below. */
-        :root[data-theme="dark"] .pe-mark{filter:brightness(1.08) saturate(1.12) drop-shadow(0 0 1.5px rgb(255 255 255 / .35)) drop-shadow(0 0 22px rgb(70 160 255 / .22))}
+        :root[data-theme="dark"] .pe-mark{filter:drop-shadow(0 0 26px rgb(40 140 255 / .28))}
         :root[data-theme="dark"] .pe-shade{stroke-opacity:0}
-        :root[data-theme="dark"] .pe-edge{stroke-opacity:.6}
-        :root[data-theme="dark"] .pe-floor{opacity:1;filter:brightness(1.6)}
-        :root[data-theme="dark"] .pe-halo{mix-blend-mode:screen}
+        :root[data-theme="dark"] .pe-floor{opacity:.9}
         @media(prefers-reduced-motion:reduce){.pe *{animation:none!important}}
     </style>
 @endonce

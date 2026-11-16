@@ -150,7 +150,7 @@ class RolesAndSettingsTest extends TestCase
 
         $this->put(route('settings.logo', 'navbar'), ['reset' => 1])->assertRedirect();
         Storage::disk('public')->assertMissing($navbar);
-        $this->get(route('surveys.index'))->assertSee('<span class="brand-mark">', false);
+        $this->get(route('surveys.index'))->assertSee('brand-emblem', false);
     }
 
     public function test_a_superadmin_makes_templates_from_forms_and_hides_built_in_ones(): void

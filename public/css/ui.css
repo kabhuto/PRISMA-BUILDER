@@ -502,3 +502,9 @@ img.is-uploaded{object-fit:contain}
 @media(max-width:900px){.login-emblem-mobile{display:block;width:150px;margin:0 auto 6px}}
 .manual-emblem{float:right;width:180px;margin:-6px 0 10px 18px}
 @media(max-width:600px){.manual-emblem{float:none;display:block;width:170px;margin:0 auto 12px}}
+
+/* The PRISMA mark in the top bar (in place of the "bps" letters), still: only the passing light moves. */
+.brand-emblem{flex:none;display:block;width:30px;height:auto}
+.brand-emblem .pe-floor{display:none}
+.brand-emblem .pe-cube{animation:none}
+@media(max-width:760px){.brand-emblem{width:27px}}
