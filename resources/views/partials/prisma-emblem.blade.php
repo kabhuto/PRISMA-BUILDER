@@ -8,11 +8,11 @@
     $orbit ??= true;
     // [name, role, centre x, centre y, colour, icon (filled, 24 grid)], clockwise from the left as the data goes.
     $apps = [
-        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 283, 765, '#1e7be0', 'M9 2h6a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V3a1 1 0 0 1 1-1Zm1 2v1h4V4h-4ZM8 10v2h8v-2H8Zm0 4v2h6v-2H8Z'],
-        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 398, 418, '#2f9e44', 'M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z'],
-        'sm' => ['PRISMA SM', 'Manajemen survei', 690, 418, '#0f9d8f', 'M9 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.5 1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM2 20c0-3.6 3.1-6 7-6s7 2.4 7 6v1H2v-1Zm15.4 1v-1c0-1.9-.7-3.5-1.9-4.7.3 0 .7-.1 1-.1 3.2 0 5.5 1.9 5.5 4.8v1h-4.6Z'],
-        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 802, 712, '#f07a12', 'M12 2.5 22 8l-10 5.5L2 8l10-5.5Zm-7.7 9.2L12 16l7.7-4.3L22 13l-10 5.5L2 13l2.3-1.3Zm0 5L12 21l7.7-4.3L22 18l-10 5.5L2 18l2.3-1.3Z'],
-        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 676, 992, '#7a52cc', 'M3 20h3v-6H3v6Zm5 0h3v-9H8v9Zm5 0h3v-5h-3v5Zm5 0h3V9h-3v11ZM3 10.5 9 5l4 3.5L19.6 2l1.4 1.4-8 8L9 7.8l-4.6 4.1L3 10.5Z'],
+        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 283, 713, '#1e7be0', 'M9 2h6a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V3a1 1 0 0 1 1-1Zm1 2v1h4V4h-4ZM8 10v2h8v-2H8Zm0 4v2h6v-2H8Z'],
+        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 413, 434, '#2f9e44', 'M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z'],
+        'sm' => ['PRISMA SM', 'Manajemen survei', 673, 434, '#0f9d8f', 'M9 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.5 1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM2 20c0-3.6 3.1-6 7-6s7 2.4 7 6v1H2v-1Zm15.4 1v-1c0-1.9-.7-3.5-1.9-4.7.3 0 .7-.1 1-.1 3.2 0 5.5 1.9 5.5 4.8v1h-4.6Z'],
+        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 801, 713, '#f07a12', 'M12 2.5 22 8l-10 5.5L2 8l10-5.5Zm-7.7 9.2L12 16l7.7-4.3L22 13l-10 5.5L2 13l2.3-1.3Zm0 5L12 21l7.7-4.3L22 18l-10 5.5L2 18l2.3-1.3Z'],
+        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 673, 975, '#7a52cc', 'M3 20h3v-6H3v6Zm5 0h3v-9H8v9Zm5 0h3v-5h-3v5Zm5 0h3V9h-3v11ZM3 10.5 9 5l4 3.5L19.6 2l1.4 1.4-8 8L9 7.8l-4.6 4.1L3 10.5Z'],
     ];
     $bands = [
         'b' => '216,493 543,242 543,428 350,575 350,1028 216,935',
