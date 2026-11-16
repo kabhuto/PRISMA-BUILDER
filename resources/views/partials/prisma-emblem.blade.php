@@ -3,7 +3,7 @@
      the cube floats inside. Each ribbon has a light front face and a darker inner face, as in the sketch.
      The block is cut into five pieces, one per PRISMA app, each carrying that app's icon in a small hexagon.
      $active: the app this page belongs to (builder, sm, collect, datalab, dashboard): its piece breaks away from the P and
-     drifts out and back, its icon lit. $class: class of the <svg>; $orbit: false for the mark alone (no icons);
+     eases a little way out and back, so the P keeps its shape, its icon lit. $class: class of the <svg>; $orbit: false for the mark alone (no icons);
      $markImage: an uploaded logo in place of the drawing. --}}
 @php
     $uid = 'pe'.substr(md5(uniqid('', true)), 0, 6);
@@ -135,26 +135,26 @@
         .pe-badge-bg{fill:var(--pe-ribbon);fill-opacity:.7;stroke:rgb(255 255 255 / .92);stroke-width:4;stroke-linejoin:round}
         .pe-badge-shine{opacity:.14}
         .pe-app:hover .pe-badge-bg{stroke:#fff}
-        /* The open app: its piece breaks away from the P and drifts out and back; its hexagon solid white, the icon in the
+        /* The open app: its piece breaks away from the P and eases a little way out and back, so the P keeps its shape; its hexagon solid white, the icon in the
            app's colour, light breathing around it. */
-        .pe-piece.is-active{animation:pe-drift 3.2s ease-in-out infinite}
+        .pe-piece.is-active{animation:pe-drift 4.8s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
         .pe-piece.is-active .pe-badge-bg{fill:#fff;fill-opacity:1;stroke:#fff}
         .pe-piece.is-active .pe-badge-shine{opacity:0}
         .pe-piece.is-active .pe-icon path{fill:var(--pe-tone)}
-        .pe-piece.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 3.2s ease-in-out infinite}
-        .pe-halo{transform-box:fill-box;transform-origin:center;animation:pe-halo 3.2s ease-in-out infinite}
+        .pe-piece.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 4.8s cubic-bezier(.45,0,.55,1) infinite}
+        .pe-halo{transform-box:fill-box;transform-origin:center;animation:pe-halo 4.8s cubic-bezier(.45,0,.55,1) infinite}
         .pe-pulse{fill:none;stroke:#fff;stroke-width:4;transform-box:fill-box;transform-origin:center;animation:pe-pulse 2.6s ease-out infinite}
         .pe-pulse-2{animation-delay:1.3s}
-        @keyframes pe-drift{0%,100%{transform:translate(calc(var(--pe-dx) * .45),calc(var(--pe-dy) * .45))}50%{transform:translate(var(--pe-dx),var(--pe-dy))}}
+        @keyframes pe-drift{0%,12%,100%{transform:translate(0,0)}55%{transform:translate(calc(var(--pe-dx) * .32),calc(var(--pe-dy) * .32))}}
         @keyframes pe-sheen{0%,55%{transform:skewX(-18deg) translateX(0)}85%,100%{transform:skewX(-18deg) translateX(1500px)}}
         @keyframes pe-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
         @keyframes pe-floor{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.9);opacity:.75}}
-        @keyframes pe-bob{0%,100%{transform:scale(1.05)}50%{transform:scale(1.12)}}
+        @keyframes pe-bob{0%,100%{transform:scale(1.04)}50%{transform:scale(1.09)}}
         @keyframes pe-halo{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.08)}}
         @keyframes pe-pulse{from{transform:scale(1);opacity:.85}to{transform:scale(1.3);opacity:0}}
         /* Dark pages: no dark shadow under the mark but a soft light around it and a stronger glow below. */
         :root[data-theme="dark"] .pe-mark{filter:drop-shadow(0 0 26px rgb(40 140 255 / .28))}
         :root[data-theme="dark"] .pe-floor{opacity:.9}
-        @media(prefers-reduced-motion:reduce){.pe *{animation:none!important}.pe-piece.is-active{transform:translate(calc(var(--pe-dx) * .6),calc(var(--pe-dy) * .6))}}
+        @media(prefers-reduced-motion:reduce){.pe *{animation:none!important}}
     </style>
 @endonce
