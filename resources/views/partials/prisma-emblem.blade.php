@@ -42,7 +42,7 @@
         <linearGradient id="{{ $uid }}-ct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7d0d"/><stop offset="1" stop-color="#ffd21a"/></linearGradient>
         <linearGradient id="{{ $uid }}-cl" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#26c2ff"/><stop offset="1" stop-color="#0b55c6"/></linearGradient>
         <linearGradient id="{{ $uid }}-cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b9f02c"/><stop offset="1" stop-color="#2a9a0c"/></linearGradient>
-        <linearGradient id="{{ $uid }}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+        <linearGradient id="{{ $uid }}-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
         <linearGradient id="{{ $uid }}-sheen" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
         </linearGradient>
@@ -50,7 +50,7 @@
         <radialGradient id="{{ $uid }}-glow"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".5" stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
         <radialGradient id="{{ $uid }}-floor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#2e86ff" stop-opacity=".42"/><stop offset=".55" stop-color="#3cc06a" stop-opacity=".2"/><stop offset="1" stop-color="#3cc06a" stop-opacity="0"/></radialGradient>
         <clipPath id="{{ $uid }}-clip-all">@foreach ($bands as [$points])<polygon points="{{ $points }}"/>@endforeach<polygon points="543,568 651,630 651,756 543,818 435,756 435,630"/></clipPath>
-        <filter id="{{ $uid }}-soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0b2a55" flood-opacity=".22"/></filter>
+        <filter id="{{ $uid }}-soft" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#1556b8" flood-opacity=".24"/></filter>
         <filter id="{{ $uid }}-icon" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#05204a" flood-opacity=".45"/></filter>
     </defs>
 
@@ -98,7 +98,7 @@
         @php($hex = '0,-66 57.2,-33 57.2,33 0,66 -57.2,33 -57.2,-33')
         @foreach ($apps as $key => [$name, $role, $x, $y, $color, $icon])
             @php($on = $key === $active)
-            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}" transform="translate({{ $x }} {{ $y }})">
+            <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}; --pe-ribbon: {{ ['builder' => '#0a3d9e', 'collect' => '#0a4fb8', 'sm' => '#c2440a', 'datalab' => '#b8400a', 'dashboard' => '#11651f'][$key] }}" transform="translate({{ $x }} {{ $y }})">
                 <title>{{ $name }} · {{ $role }}{{ $on ? ' (sedang dibuka)' : '' }}</title>
                 @if ($on)
                     <circle class="pe-halo" r="96" fill="url(#{{ $uid }}-glow)"/>
@@ -123,11 +123,11 @@
         .pe-floor{transform-box:fill-box;transform-origin:center;animation:pe-floor 5s ease-in-out infinite}
         .pe-icon path{fill:#fff}
         /* Glass hexagons: a light tint of white, a crisp white rim, a shine on the upper half. */
-        .pe-badge-bg{stroke:rgb(255 255 255 / .85);stroke-width:4;stroke-linejoin:round}
-        .pe-badge-shine{opacity:.16}
+        .pe-badge-bg{fill:var(--pe-ribbon);fill-opacity:.62;stroke:rgb(255 255 255 / .92);stroke-width:4.5;stroke-linejoin:round}
+        .pe-badge-shine{opacity:.14}
         .pe-app:hover .pe-badge-bg{stroke:#fff}
         /* The app this page belongs to: a solid white hexagon, the icon in that app's colour, light breathing around it. */
-        .pe-app.is-active .pe-badge-bg{fill:#fff;stroke:#fff}
+        .pe-app.is-active .pe-badge-bg{fill:#fff;fill-opacity:1;stroke:#fff}
         .pe-app.is-active .pe-badge-shine{opacity:0}
         .pe-app.is-active .pe-icon path{fill:var(--pe-tone)}
         .pe-app.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 3s ease-in-out infinite}
