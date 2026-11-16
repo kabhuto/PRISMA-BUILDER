@@ -38,6 +38,7 @@
         <div class="manual-body">
             <section class="manual-section" id="alur" data-manual-item>
                 <header><span class="eyebrow">GAMBARAN BESAR</span><h2>Alur PRISMA</h2></header>
+                <div class="manual-emblem">@include('partials.prisma-emblem', ['class' => 'manual-emblem-svg', 'active' => 'builder', 'markImage' => \App\Support\AppSettings::logo('prisma')])</div>
                 <p>PRISMA terdiri dari beberapa aplikasi yang saling tersambung. Data berjalan dari kiri ke kanan; aplikasi yang sedang Anda buka ditandai.</p>
                 <ol class="manual-flow">
                     @foreach ($guide['alur'] as $step)

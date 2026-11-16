@@ -14,6 +14,7 @@
     @include('partials.theme-toggle', ['class' => 'theme-toggle-floating'])
     <main class="login-shell">
         <section class="login-hero" aria-hidden="true">
+            <div class="login-emblem">@include('partials.prisma-emblem', ['active' => 'builder', 'markImage' => \App\Support\AppSettings::logo('prisma')])</div>
             <div class="brand">
                 @include('partials.brand', ['full' => true])
             </div>
@@ -32,6 +33,7 @@
             <div class="brand login-brand-mobile">
                 @include('partials.brand')
             </div>
+            <div class="login-emblem-mobile">@include('partials.prisma-emblem', ['active' => 'builder', 'markImage' => \App\Support\AppSettings::logo('prisma')])</div>
             <h1>Masuk admin</h1>
             <p class="muted">Untuk membuat kuesioner dan melihat respons. Responden tidak perlu masuk; mereka cukup membuka tautan formulir.</p>
 

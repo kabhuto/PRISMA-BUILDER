@@ -480,3 +480,8 @@
 .agenda-kinds{display:inline-flex;gap:5px}
 .agenda-kinds i{width:9px;height:9px;border-radius:3px;background:var(--tone)}
 @media(max-width:380px){.agenda-week{gap:4px}.agenda-week b{font-size:14px}}
+
+/* The PRISMA emblem in the hero: larger than the old mark, for the five apps around it. */
+.home-mark.pe{width:200px;height:auto;filter:none;margin:-18px 0 -18px -10px}
+.home-welcome-mark.pe{width:112px;height:auto;filter:none}
+@media(max-width:760px){.home-mark.pe{width:120px;margin:0}}

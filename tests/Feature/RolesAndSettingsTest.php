@@ -145,7 +145,7 @@ class RolesAndSettingsTest extends TestCase
         Storage::disk('public')->assertExists($navbar);
         $this->get(route('surveys.index'))->assertOk()
             ->assertSee('class="brand-logo" src="'.asset('storage/'.$navbar).'"', false)
-            ->assertSee('home-mark is-uploaded', false)
+            ->assertSee('<image class="pe-mark" href="'.asset('storage/'.AppSettings::get('logo_prisma')).'"', false)
             ->assertSee('<link rel="icon" href="'.asset('storage/'.AppSettings::get('logo_favicon')).'">', false);
 
         $this->put(route('settings.logo', 'navbar'), ['reset' => 1])->assertRedirect();

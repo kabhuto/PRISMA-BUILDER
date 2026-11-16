@@ -57,7 +57,7 @@
                 <h1>{{ auth()->user()?->name ?? 'Admin' }}</h1>
                 <span>{{ $today ? number_format($today, 0, ',', '.').' respons masuk hari ini' : 'Belum ada respons hari ini' }}</span>
             </div>
-            @include('partials.prisma-mark', ['class' => 'home-welcome-mark', 'idSuffix' => 'w'])
+            @include('partials.prisma-emblem', ['class' => 'home-welcome-mark', 'active' => 'builder', 'markImage' => \App\Support\AppSettings::logo('prisma')])
         </div>
         <div class="home-quick">
             <a href="{{ route('surveys.start') }}">
@@ -85,7 +85,7 @@
         </div>
         <div class="home-hero-body">
             <div class="home-title">
-                @include('partials.prisma-mark', ['class' => 'home-mark'])
+                @include('partials.prisma-emblem', ['class' => 'home-mark', 'active' => 'builder', 'markImage' => \App\Support\AppSettings::logo('prisma')])
                 <div>
                     <div class="home-eyebrow"><span class="home-eyebrow-dots" aria-hidden="true"></span> BERANDA
                         <span class="home-live"><i aria-hidden="true"></i>{{ $today ? number_format($today, 0, ',', '.').' respons masuk hari ini' : 'Belum ada respons hari ini' }}</span>
