@@ -8,11 +8,11 @@
     $orbit ??= true;
     // [name, role, centre x, centre y, colour, icon (filled, 24 grid)], clockwise from the left as the data goes.
     $apps = [
-        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 268, 760, '#1e7be0', 'M9 2h6a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V3a1 1 0 0 1 1-1Zm1 2v1h4V4h-4ZM8 10v2h8v-2H8Zm0 4v2h6v-2H8Z'],
-        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 392, 405, '#2f9e44', 'M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z'],
-        'sm' => ['PRISMA SM', 'Manajemen survei', 694, 405, '#0f9d8f', 'M9 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.5 1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM2 20c0-3.6 3.1-6 7-6s7 2.4 7 6v1H2v-1Zm15.4 1v-1c0-1.9-.7-3.5-1.9-4.7.3 0 .7-.1 1-.1 3.2 0 5.5 1.9 5.5 4.8v1h-4.6Z'],
-        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 812, 712, '#f07a12', 'M12 2.5 22 8l-10 5.5L2 8l10-5.5Zm-7.7 9.2L12 16l7.7-4.3L22 13l-10 5.5L2 13l2.3-1.3Zm0 5L12 21l7.7-4.3L22 18l-10 5.5L2 18l2.3-1.3Z'],
-        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 690, 1010, '#7a52cc', 'M3 20h3v-6H3v6Zm5 0h3v-9H8v9Zm5 0h3v-5h-3v5Zm5 0h3V9h-3v11ZM3 10.5 9 5l4 3.5L19.6 2l1.4 1.4-8 8L9 7.8l-4.6 4.1L3 10.5Z'],
+        'builder' => ['PRISMA Builder', 'Menyusun kuesioner', 283, 765, '#1e7be0', 'M9 2h6a1 1 0 0 1 1 1v1h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2V3a1 1 0 0 1 1-1Zm1 2v1h4V4h-4ZM8 10v2h8v-2H8Zm0 4v2h6v-2H8Z'],
+        'collect' => ['PRISMA Collect', 'Pendataan lapangan', 398, 418, '#2f9e44', 'M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 4.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6Z'],
+        'sm' => ['PRISMA SM', 'Manajemen survei', 690, 418, '#0f9d8f', 'M9 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm7.5 1a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4ZM2 20c0-3.6 3.1-6 7-6s7 2.4 7 6v1H2v-1Zm15.4 1v-1c0-1.9-.7-3.5-1.9-4.7.3 0 .7-.1 1-.1 3.2 0 5.5 1.9 5.5 4.8v1h-4.6Z'],
+        'datalab' => ['PRISMA DataLab', 'Pengolahan data', 802, 712, '#f07a12', 'M12 2.5 22 8l-10 5.5L2 8l10-5.5Zm-7.7 9.2L12 16l7.7-4.3L22 13l-10 5.5L2 13l2.3-1.3Zm0 5L12 21l7.7-4.3L22 18l-10 5.5L2 18l2.3-1.3Z'],
+        'dashboard' => ['PRISMA Dashboard', 'Monitoring', 676, 992, '#7a52cc', 'M3 20h3v-6H3v6Zm5 0h3v-9H8v9Zm5 0h3v-5h-3v5Zm5 0h3V9h-3v11ZM3 10.5 9 5l4 3.5L19.6 2l1.4 1.4-8 8L9 7.8l-4.6 4.1L3 10.5Z'],
     ];
     $bands = [
         'b' => '216,493 543,242 543,428 350,575 350,1028 216,935',
@@ -94,12 +94,12 @@
             <g @class(['pe-app', 'is-active' => $on]) style="--pe-tone: {{ $color }}">
                 <title>{{ $name }} · {{ $role }}{{ $on ? ' (sedang dibuka)' : '' }}</title>
                 @if ($on)
-                    <circle class="pe-halo" cx="{{ $x }}" cy="{{ $y }}" r="80" fill="url(#{{ $uid }}-glow)"/>
-                    <circle class="pe-pulse" cx="{{ $x }}" cy="{{ $y }}" r="52"/>
-                    <circle class="pe-pulse pe-pulse-2" cx="{{ $x }}" cy="{{ $y }}" r="52"/>
+                    <circle class="pe-halo" cx="{{ $x }}" cy="{{ $y }}" r="78" fill="url(#{{ $uid }}-glow)"/>
+                    <circle class="pe-pulse" cx="{{ $x }}" cy="{{ $y }}" r="56"/>
+                    <circle class="pe-pulse pe-pulse-2" cx="{{ $x }}" cy="{{ $y }}" r="56"/>
                 @endif
                 <g class="pe-glyph" filter="url(#{{ $uid }}-icon)">
-                    <svg x="{{ $x - 34 }}" y="{{ $y - 34 }}" width="68" height="68" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}"/></svg>
+                    <svg x="{{ $x - 46 }}" y="{{ $y - 46 }}" width="92" height="92" viewBox="0 0 24 24" class="pe-icon"><path d="{{ $icon }}"/></svg>
                 </g>
             </g>
         @endforeach
@@ -112,7 +112,7 @@
         .pe-cube{transform-box:fill-box;transform-origin:center;animation:pe-float 5s ease-in-out infinite}
         .pe-floor{transform-box:fill-box;transform-origin:center;animation:pe-floor 5s ease-in-out infinite}
         .pe-icon path{fill:#fff}
-        .pe-app:not(.is-active) .pe-glyph{opacity:.82;transition:opacity .25s}
+        .pe-app:not(.is-active) .pe-glyph{opacity:.96;transition:opacity .25s}
         .pe-app:hover .pe-glyph{opacity:1}
         /* The app this page belongs to: its icon brighter and larger, with light breathing around it. */
         .pe-app.is-active .pe-glyph{transform-box:fill-box;transform-origin:center;animation:pe-bob 3s ease-in-out infinite}
@@ -122,9 +122,9 @@
         @keyframes pe-sheen{0%,55%{transform:skewX(-18deg) translateX(0)}85%,100%{transform:skewX(-18deg) translateX(1500px)}}
         @keyframes pe-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
         @keyframes pe-floor{0%,100%{transform:scaleX(1);opacity:1}50%{transform:scaleX(.9);opacity:.75}}
-        @keyframes pe-bob{0%,100%{transform:scale(1.12)}50%{transform:scale(1.24)}}
+        @keyframes pe-bob{0%,100%{transform:scale(1.04)}50%{transform:scale(1.14)}}
         @keyframes pe-halo{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}
-        @keyframes pe-pulse{from{transform:scale(1);opacity:.85}to{transform:scale(1.7);opacity:0}}
+        @keyframes pe-pulse{from{transform:scale(1);opacity:.85}to{transform:scale(1.35);opacity:0}}
         @media(prefers-reduced-motion:reduce){.pe *{animation:none!important}}
     </style>
 @endonce
