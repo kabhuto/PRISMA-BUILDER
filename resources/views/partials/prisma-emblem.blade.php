@@ -137,12 +137,12 @@
         .pe-app:hover .pe-badge-bg{stroke:#fff}
         /* The open app: its piece breaks away from the P and opens out of the P and settles back until the P is whole again; its hexagon solid white, the icon in the
            app's colour, light breathing around it. */
-        .pe-piece.is-active{animation:pe-drift 3s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
+        .pe-piece.is-active{animation:pe-drift 3.3s cubic-bezier(.45,0,.55,1) infinite;will-change:transform}
         .pe-piece.is-active .pe-badge-bg{fill:#fff;fill-opacity:1;stroke:#fff}
         .pe-piece.is-active .pe-badge-shine{opacity:0}
         .pe-piece.is-active .pe-icon path{fill:var(--pe-tone)}
-        .pe-piece.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 3s cubic-bezier(.45,0,.55,1) infinite}
-        .pe-halo{transform-box:fill-box;transform-origin:center;animation:pe-halo 3s cubic-bezier(.45,0,.55,1) infinite}
+        .pe-piece.is-active .pe-badge{transform-box:fill-box;transform-origin:center;animation:pe-bob 3.3s cubic-bezier(.45,0,.55,1) infinite}
+        .pe-halo{transform-box:fill-box;transform-origin:center;animation:pe-halo 3.3s cubic-bezier(.45,0,.55,1) infinite}
         .pe-pulse{fill:none;stroke:#fff;stroke-width:4;transform-box:fill-box;transform-origin:center;animation:pe-pulse 2.6s ease-out infinite}
         .pe-pulse-2{animation-delay:1.3s}
         @keyframes pe-drift{0%,18%,88%,100%{transform:translate(0,0)}50%,56%{transform:translate(var(--pe-dx),var(--pe-dy))}}
