@@ -485,3 +485,10 @@
 .home-mark.pe{width:150px;height:auto;filter:drop-shadow(0 10px 20px rgb(31 99 176 / .22));margin:0}
 .home-welcome-mark.pe{width:96px;height:auto;filter:none}
 @media(max-width:760px){.home-mark.pe{width:120px;margin:0}}
+
+/* Phones: the emblem on the left of the greeting, the name beside it, as in the other PRISMA apps. */
+@media(max-width:760px){
+    .home-welcome{justify-content:flex-start;align-items:center;gap:14px}
+    .home-welcome>div{flex:1;min-width:0}
+    .home-welcome-mark.pe{order:-1;flex:none;width:96px}
+}
