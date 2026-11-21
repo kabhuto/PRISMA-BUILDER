@@ -35,6 +35,8 @@ class ResponseDashboardTest extends TestCase
 
     public function test_a_response_records_when_filling_began_and_the_sending_device(): void
     {
+        // Waktu dibekukan: durasi dihitung terhadap jam, jadi tanpa ini sebuah detik bergeser membuat asersi gagal.
+        \Illuminate\Support\Carbon::setTestNow(now()->startOfSecond());
         $survey = $this->survey();
         $startedAt = now()->subMinutes(4)->subSeconds(12);
 
